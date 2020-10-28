@@ -96,7 +96,7 @@ public abstract class Player implements Comparable<Player> {
     }
     
     public void inJail(){
-        this.numberCase=11; //Case prison
+        this.numberCase=10; //Case prison
         this.isInJail=true;
     }
     

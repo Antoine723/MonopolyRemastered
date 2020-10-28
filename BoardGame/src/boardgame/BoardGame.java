@@ -118,7 +118,7 @@ public class BoardGame{
             while(isChoiceCorrect==false){
                 String choice=scanner.next();
                 
-                if(pieces.contains(choice)){
+                if(pieces.contains(choice)){ //Voir pour gérer la casse
                     isChoiceCorrect=true;
                     pieces.remove(choice);
                     choices.add(choice);
@@ -149,7 +149,7 @@ public class BoardGame{
     public static void board_creation(){
         
         
-        //board.add(new Case("Départ",0)); //Voir pour le type de la case départ (bonus case ?/other ?)
+        board.add(new Case("Départ",0));
         board.add(new Avenue(60,2,"Boulevard de Belleville",1,"Marron"));
         board.add(new Bonus("Caisse de communauté",2));
         board.add(new Avenue(60,4,"Rue Lecourbe",3,"Marron"));
@@ -169,7 +169,7 @@ public class BoardGame{
         board.add(new Bonus("Caisse de communauté",17));
         board.add(new Avenue(180,14,"Boulevard Saint-Michel",18,"Orange"));
         board.add(new Avenue(200,16,"Place Pigalle",19,"Orange"));
-        //Parc gratuit case 20
+        board.add(new Case("Parc gratuit",20));
         board.add(new Avenue(220,18,"Avenue Matignon",21,"Rouge"));
         board.add(new Bonus("Chance",22));
         board.add(new Avenue(220,18,"Boulevard Malesherbes",23,"Rouge"));
@@ -179,7 +179,7 @@ public class BoardGame{
         board.add(new Avenue(260,22,"Place de la bourse",27,"Jaune"));
         board.add(new Company(150,"Compagnie de distribution des eaux",28));
         board.add(new Avenue(280,24,"Rue La Fayette",29,"Jaune"));
-        //Case aller en prison 30
+        board.add(new Case("Allez en prison",30));
         board.add(new Avenue(300,26,"Avenue de Breuteuil",31,"Vert"));
         board.add(new Avenue(300,26,"Avenue Foch",32,"Vert"));
         board.add(new Bonus("Caisse de communauté",33));
