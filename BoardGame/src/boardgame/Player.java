@@ -15,10 +15,11 @@ public abstract class Player implements Comparable<Player> {
     
     private String name;
     private int capital=1000;
-    private int numberCase=1;
+    private int numberCase=0;
     private boolean isInJail=false;
     private int playerNumber;
     private int numberOfAvenues=0;
+    private int free_card=0;
     
     public String getName() {
         return name;
@@ -40,9 +41,14 @@ public abstract class Player implements Comparable<Player> {
         return playerNumber;
     }
 
+    public int getFree_card() {
+        return free_card;
+    }
+    
     public int getNumberOfAvenues() {
         return numberOfAvenues;
     }
+    
     
     public void setName(String name) {
         this.name = name;
@@ -67,6 +73,11 @@ public abstract class Player implements Comparable<Player> {
     public void setNumberOfAvenues(int numberOfAvenues) {
         this.numberOfAvenues = numberOfAvenues;
     }
+
+    public void setFree_card(int free_card) {
+        this.free_card = free_card;
+    }
+
     
     public int rollsDice(){
         Random rand=new Random();
@@ -86,6 +97,7 @@ public abstract class Player implements Comparable<Player> {
     
     public void inJail(){
         this.numberCase=11; //Case prison
+        this.isInJail=true;
     }
     
     

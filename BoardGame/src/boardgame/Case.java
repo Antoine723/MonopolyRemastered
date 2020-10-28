@@ -13,7 +13,6 @@ public class Case {
     private String name;
     private int caseNumber;
     
-    
     public String getName() {
         return name;
     }

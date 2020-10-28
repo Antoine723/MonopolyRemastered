@@ -24,12 +24,12 @@ public class BoardGame{
     static ArrayList <Integer> order= new ArrayList();
     static ArrayList <String> choices= new ArrayList();
     static ArrayList <Player> players = new ArrayList();
-    static ArrayList <Player> players_in_game;
-    
+    static ArrayList <Player> players_in_game=new ArrayList();
+    static ArrayList <Case> board=new ArrayList();
     
     
     static int randomNum;
-    static ArrayList pieces= new ArrayList() {{
+    static ArrayList <String> pieces= new ArrayList() {{
         add("Hat");
         add("Cannon");
         add("Car");
@@ -65,11 +65,11 @@ public class BoardGame{
         }
         Collections.sort(players); //Tri de l'arraylist joueurs par leur ordre de jeu
         players_in_game.addAll(players);
-        
-        //Tant que la partie n'est pas terminée (tant qu'il reste plsu d'un joueur en jeu
-        while(players_in_game.size()>1){
+        board_creation();
+        //Tant que la partie n'est pas terminée (tant qu'il reste plus d'un joueur en jeu
+        /*while(players_in_game.size()>1){
             
-        }
+        }*/
         
         
         
@@ -117,6 +117,7 @@ public class BoardGame{
             
             while(isChoiceCorrect==false){
                 String choice=scanner.next();
+                
                 if(pieces.contains(choice)){
                     isChoiceCorrect=true;
                     pieces.remove(choice);
@@ -145,17 +146,17 @@ public class BoardGame{
         
         
     }
-    public static ArrayList <Case> board_creation(){
-        ArrayList <Case> board=new ArrayList();
+    public static void board_creation(){
         
-        //board.add(new Case("Départ",1)); //Voir pour le type de la case départ (bonus case ?/other ?)
-        board.add(new Avenue(60,2,"Boulevard de Belleville",2,"Marron"));
-        board.add(new Bonus("Caisse de communauté",3));
-        board.add(new Avenue(60,4,"Rue Lecourbe",4,"Marron"));
-        board.add(new Taxes("Impôt sur le revenu",5,200));
-        board.add(new RailRoad(200,25,"Gare Montparnasse",6));
-        board.add(new Avenue(100,6,"Rue Vaugirard",7,"Ciel"));
-        board.add(new Bonus("Chance",8));
+        
+        //board.add(new Case("Départ",0)); //Voir pour le type de la case départ (bonus case ?/other ?)
+        board.add(new Avenue(60,2,"Boulevard de Belleville",1,"Marron"));
+        board.add(new Bonus("Caisse de communauté",2));
+        board.add(new Avenue(60,4,"Rue Lecourbe",3,"Marron"));
+        board.add(new Taxes("Impôt sur le revenu",4,200));
+        board.add(new RailRoad(200,25,"Gare Montparnasse",5));
+        board.add(new Avenue(100,6,"Rue Vaugirard",6,"Ciel"));
+        board.add(new Bonus("Chance",7));
         board.add(new Avenue(100,6,"Rue de Courcelles",8,"Ciel"));
         board.add(new Avenue(120,8,"Avenue de la République",9,"Ciel"));
         board.add(new Prison("Prison",10));
@@ -188,7 +189,6 @@ public class BoardGame{
         board.add(new Avenue(350,35,"Avenue des Champs-Elysées",37,"Bleu"));
         board.add(new Taxes("Taxe de luxe",38,100));
         board.add(new Avenue(400,50,"Rue de la Paix",39,"Bleu"));
-        return board;
     }
 
     
