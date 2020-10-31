@@ -18,8 +18,12 @@ public class NoMoney extends Attack{
         
     }
     
-    public void declineMoney(){
-        
+    public void declineMoney(Player attackedPlayer)
+    {
+        if(attackedPlayer.getNumberCase() == 0)
+        {
+            attackedPlayer.setCapital(attackedPlayer.getCapital());             // implémneter la case départ pour ne pas avoir le bonus ici
+        }
     }
     
 }

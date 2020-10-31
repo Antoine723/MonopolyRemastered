@@ -18,7 +18,9 @@ public class Inflation extends Attack {
         
     }
     
-    public void payDoubleRent(){
-        
+    public void payDoubleRent(Property property, Player attackedPlayer)
+    {
+           property.setBoughtPrice(property.getBoughtPrice() * 2); // on double le prix d'achat
+           property.setAssociatedPlayer(attackedPlayer.getName()); // on associe le joueur attaqué à la propriété doublée
     }
 }
