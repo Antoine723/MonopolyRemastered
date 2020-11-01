@@ -20,6 +20,7 @@ public abstract class Player implements Comparable<Player> {
     private int playerNumber;
     private int numberOfAvenues=0;
     private int free_card=0;
+    private int numberOfProperty=0;
     
     public String getName() {
         return name;
@@ -47,6 +48,10 @@ public abstract class Player implements Comparable<Player> {
     
     public int getNumberOfAvenues() {
         return numberOfAvenues;
+    }
+
+    public int getNumberOfProperty() {
+        return numberOfProperty;
     }
     
     
@@ -76,6 +81,10 @@ public abstract class Player implements Comparable<Player> {
 
     public void setFree_card(int free_card) {
         this.free_card = free_card;
+    }
+
+    public void setNumberOfProperty(int numberOfProperty) {
+        this.numberOfProperty = numberOfProperty;
     }
 
     

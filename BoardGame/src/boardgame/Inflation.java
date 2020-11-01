@@ -11,10 +11,9 @@ package boardgame;
  */
 public class Inflation extends Attack {
     
-    public Inflation(String name, String effect, String associatedPlayer){
-        this.setName(name);
-        this.setEffect(effect);
-        this.setAssociatedPlayer(associatedPlayer);
+    public Inflation(){
+        this.setName("Inflation");
+        this.setEffect("Vous pouvez imposer à un joueur de payer 2 fois plus cher le prochain terrain qu'il veut acheter");
         
     }
     
@@ -22,5 +21,6 @@ public class Inflation extends Attack {
     {
            property.setBoughtPrice(property.getBoughtPrice() * 2); // on double le prix d'achat
            property.setAssociatedPlayer(attackedPlayer.getName()); // on associe le joueur attaqué à la propriété doublée
+           this.setIsUsed(true);
     }
 }

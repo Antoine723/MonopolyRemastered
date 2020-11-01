@@ -12,12 +12,19 @@ import java.util.Random;
 public class Covid extends Event{
     
     Random rand=new Random();
+    private boolean inAction=false;
     
-    public Covid(String name, String effect){
-        this.setName(name);
-        this.setEffect(effect);
+    public Covid(){
+        this.setName("Covid");
     }
-    
+
+    public boolean isInAction() {
+        return inAction;
+    }
+
+    public void setInAction(boolean inAction) {
+        this.inAction = inAction;
+    }
     public void closeHotel(Avenue avenue ,Player player)  // gérer la notion de tour
     {
         if(avenue.getHotel() > 0)               // l'event ne concerne que les hôtels

@@ -12,9 +12,8 @@ import java.util.Random;
 public class Strike extends Attack {
     Random rand = new Random();
     
-    public Strike(String name, String effect){
-        this.setName(name);
-        this.setEffect(effect);
+    public Strike(){
+        this.setName("Strike");
     }
     
     public void closeRailRoad(Property property,Player attackedPlayer)              // ajouter la notion de tour

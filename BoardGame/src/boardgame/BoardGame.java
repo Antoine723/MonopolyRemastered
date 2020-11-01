@@ -17,6 +17,8 @@ import java.util.Scanner;
  */
 public class BoardGame{
     
+    //--------------------------------------------------------------------------
+    //DECLARATION DES VARIABLES
     static int numberOfPlayers=0;
     static int numberOfTurns=0;
     static boolean isChoiceCorrect;
@@ -26,9 +28,6 @@ public class BoardGame{
     static ArrayList <Player> players = new ArrayList();
     static ArrayList <Player> players_in_game=new ArrayList();
     static ArrayList <Case> board=new ArrayList();
-    
-    
-    static int randomNum;
     static ArrayList <String> pieces= new ArrayList() {{
         add("Hat");
         add("Cannon");
@@ -41,11 +40,41 @@ public class BoardGame{
         add("Car, capacité = déplacement sur la case de son choix dès lors que le pion se trouve sur la  case \"Parc Gratuit\" +loyer doublé pour les propriétés de couleur orange 1 tour sur 4 ");
         add("Mayor, capacité = possibilité de poser un hôtel directement + somme touchée en passant sur la case départ est proportionnelle au nombre de propriétés");
     }};
+    static ArrayList <Attack> attacks=new ArrayList(){{
+        add(giveAway);
+        add(noMoney);
+        add(inflation);
+    }};
+    static ArrayList <Event> events=new ArrayList(){{
+        add(covid);
+        add(earthquake);
+        add(strike);
+    }};
+    
+    
+    
+    static GiveAway giveAway=new GiveAway();
+    static NoMoney noMoney=new NoMoney();
+    static Inflation inflation=new Inflation();
+    
+    
+    static Covid covid=new Covid();
+    static Earthquake earthquake=new Earthquake();
+    static Strike strike=new Strike();
+    static int randomNum;
+    
+    
     
     static Scanner scanner = new Scanner(System.in);
     
+    //--------------------------------------------------------------------------
+    
+    
+    
+    
+    
     public static void main(String[] args) {
-        initialize();
+        //initialize();
         
         //Instanciation des pions dans le main selon l'initialisation de la partie (choix des joueurs)
         for(int i=0;i<numberOfPlayers;i++){
@@ -64,10 +93,18 @@ public class BoardGame{
             }
         }
         Collections.sort(players); //Tri de l'arraylist joueurs par leur ordre de jeu
+        
+        //Attribution des cartes attaques
+        for (int i=0;i<numberOfPlayers;i++){
+            attacks.get(i).setAssociatedPlayer(players.get(i).getName());
+        }
         players_in_game.addAll(players);
         board_creation();
         //Tant que la partie n'est pas terminée (tant qu'il reste plus d'un joueur en jeu
         /*while(players_in_game.size()>1){
+            numberOfTurns++;
+            
+            
             
         }*/
         
@@ -80,7 +117,7 @@ public class BoardGame{
     public static void initialize(){
         
         System.out.println("Bonjour, voici une version du Monopoly remasterisée par Antoine Asset et Thibaut Blasselle");
-        System.out.println("Combien de joueurs vont jouer ? ");
+        System.out.println("Combien de joueurs vont jouer ? (maximum 3)"); //Max 3 pour l'instant car 3 cartes attaques, sinon possibilité d'avoir plusieurs joeuurs avec la même carte attaque
        
         try{ //Saisie du nombre de joueurs
             numberOfPlayers=scanner.nextInt();
@@ -189,10 +226,41 @@ public class BoardGame{
         board.add(new Avenue(350,35,"Avenue des Champs-Elysées",37,"Bleu"));
         board.add(new Taxes("Taxe de luxe",38,100));
         board.add(new Avenue(400,50,"Rue de la Paix",39,"Bleu"));
+        System.out.println(board.get(1).getClass().getSuperclass().getSimpleName());
     }
 
+    public static void turn(){
+        
+    }
     
     
     
     
+    public static void displayInventory(Player player, ArrayList <Case> board){
+        Property prop=null;
+        Avenue av=null;
+        System.out.println(player.getName());
+        System.out.println("Vous avez "+player.getCapital()+" €");
+        System.out.println("Vous possèdez :");
+        for(int i=0;i<board.size();i++){
+            if(board.get(i).getClass().getSuperclass().getSimpleName().equals("Property")) prop=(Property) (board.get(i)); //Si la case est une propriété, on caste la case pour pouvoir utiliser les méthodes propres à la classe Property
+            if(prop.getAssociatedPlayer().equals(player.getName())){ //Si la propriété appartient au joueur actuel, on affiche le nom de sa propriété
+                System.out.print(prop.getName());
+                if(board.get(i).getClass().getSimpleName().equals("Avenue")){ //Si la propriété est une avenue, on affiche le nombre de maisons/hôtel s'il y en a
+                    av=(Avenue) (board.get(i));
+                    if(av.getHouse()>0) System.out.print(" avec "+av.getHouse()+" maison(s) dessus");
+                    else if(av.getHotel()>0) System.out.print(" avec "+av.getHotel()+" hôtel dessus");
+                }
+            }
+        }
+        for(int i=0;i<numberOfPlayers;i++){ //Car nombre de joueurs=nombre de cartes attaque pour l'instant
+            if(attacks.get(i).getAssociatedPlayer().equals(player.getName()) && !attacks.get(i).isItUsed()){
+                System.out.println("Vous pouvez utiliser votre carte attaque "+attacks.get(i).getName());
+                System.out.println("En utilisant cette carte, "+attacks.get(i).getEffect());
+            }
+        }
+        //Event à gérer
+        
+        
+}
 }

@@ -14,7 +14,7 @@ public class Attack {
     private String name;
     private String effect;
     private boolean isUsed=false;
-    private String associatedPlayer;
+    private String associatedPlayer=null;
 
     public String getName() {
         return name;
@@ -24,7 +24,7 @@ public class Attack {
         return effect;
     }
 
-    public boolean isIsUsed() {
+    public boolean isItUsed() {
         return isUsed;
     }
 

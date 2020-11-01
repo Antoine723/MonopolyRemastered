@@ -12,22 +12,14 @@ package boardgame;
 public class Event {
     
     private String name;
-    private String effect;
 
     public String getName() {
         return name;
     }
 
-    public String getEffect() {
-        return effect;
-    }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setEffect(String effect) {
-        this.effect = effect;
     }
     
     

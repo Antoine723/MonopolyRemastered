@@ -13,11 +13,9 @@ import java.util.Scanner;
 public class GiveAway extends Attack {
     Scanner scanner = new Scanner(System.in);
     
-    public GiveAway(String name, String effect, String associatedPlayer){
-        this.setName(name);
-        this.setEffect(effect);
-        this.setAssociatedPlayer(associatedPlayer);
-        
+    public GiveAway(){
+        this.setName("GiveAway");
+        this.setEffect("Vous pouvez forcer un joueur à vendre son terrain");   
     }
     
     public void sellAvenue(Avenue avenue ,Player attackedPlayer) // le choix du joueur attaqué et le terrain choisi sera géré via boardgame
@@ -27,6 +25,7 @@ public class GiveAway extends Attack {
             avenue.setRent(avenue.computeRent());                                                    // on retourne le loyer de base gérer par la fonction computeRent
             attackedPlayer.setCapital(attackedPlayer.getCapital() + avenue.getBoughtPrice()/2);     // On modifie le capital et on ajoute le prix d'achat + prix maisons et/ou hotels à définir
             attackedPlayer.setNumberOfAvenues(attackedPlayer.getNumberOfAvenues() - 1);             // on retire au joueur attaqué sa propriété
+            this.setIsUsed(true);
     }
     
 }

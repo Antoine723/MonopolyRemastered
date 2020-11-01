@@ -11,19 +11,19 @@ package boardgame;
  */
 public class NoMoney extends Attack{
     
-    public NoMoney(String name, String effect, String associatedPlayer){
-        this.setName(name);
-        this.setEffect(effect);
-        this.setAssociatedPlayer(associatedPlayer);
+    public NoMoney(){
+        this.setName("NoMoney");
+        this.setEffect("Le joueur visé ne touchera pas l'argent de la case départ pendant 3 tours");
         
     }
     
-    public void declineMoney(Player attackedPlayer)
+    public void declineMoney(Player attackedPlayer) //A modifier
     {
-        if(attackedPlayer.getNumberCase() == 0)
+        if(attackedPlayer.getNumberCase() == 0) //Pour un certain nombre de tours (pour l'instant 3 tours
         {
             attackedPlayer.setCapital(attackedPlayer.getCapital());             // implémneter la case départ pour ne pas avoir le bonus ici
         }
+        this.setIsUsed(true);
     }
     
 }

@@ -12,9 +12,8 @@ import java.util.Random;
 public class Earthquake extends Event {
     Random rand=new Random();
     
-    public Earthquake(String name, String effect){
-        this.setName(name);
-        this.setEffect(effect);
+    public Earthquake(){
+        this.setName("Earthquake");
     }
     
     public void collapse(Avenue avenue)            // gérer la notion de tour
