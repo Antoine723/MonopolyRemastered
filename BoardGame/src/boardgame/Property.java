@@ -13,7 +13,7 @@ public class Property extends Case {
     private boolean isBought;
     private int boughtPrice;
     private int rent;
-    private String associatedPlayer;
+    private Player associatedPlayer;
     
     public Property(String name, int caseNumber){
         this.setName(name);
@@ -33,7 +33,7 @@ public class Property extends Case {
         return rent;
     }
 
-    public String getAssociatedPlayer() {
+    public Player getAssociatedPlayer() {
         return associatedPlayer;
     }
 
@@ -49,7 +49,7 @@ public class Property extends Case {
         this.rent = rent;
     }
 
-    public void setAssociatedPlayer(String associatedPlayer) {
+    public void setAssociatedPlayer(Player associatedPlayer) {
         this.associatedPlayer = associatedPlayer;
     }
     
@@ -60,7 +60,7 @@ public class Property extends Case {
     public int buy(Player player,int price){
         if(player.getCapital()-price>0){ //A voir si on met la condition ici ou dans le jeu
             player.setCapital(player.getCapital()-price);
-            this.associatedPlayer=player.getName();
+            this.associatedPlayer=player;
             player.setNumberOfProperty(player.getNumberOfProperty()+1);
             this.isBought=true;
             return 1; //Si renvoie 1, alors l'achat a été effectué correctement, si -1, alors non
@@ -74,7 +74,7 @@ public class Property extends Case {
         if(buyer.getCapital()-price>0){//Pareil ici que pour buy
             buyer.setCapital(buyer.getCapital()-price);
             seller.setCapital(seller.getCapital()+price);
-            this.associatedPlayer=buyer.getName();
+            this.associatedPlayer=buyer;
             /*seller.setNumberOfProperty(seller.getNumberOfProperty()-1);
             buyer.setNumberOfProperty(buyer.getNumberOfProperty()+1);*/
             return 1;

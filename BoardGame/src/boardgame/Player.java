@@ -5,6 +5,7 @@
  */
 package boardgame;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -21,6 +22,8 @@ public abstract class Player implements Comparable<Player> {
     private int numberOfAvenues=0;
     private int free_card=0;
     private int numberOfProperty=0;
+    private int numberOfRailRoads=0;
+    private int numberOfCompanies=0;
     
     public String getName() {
         return name;
@@ -52,6 +55,14 @@ public abstract class Player implements Comparable<Player> {
 
     public int getNumberOfProperty() {
         return numberOfProperty;
+    }
+
+    public int getNumberOfRailRoads() {
+        return numberOfRailRoads;
+    }
+
+    public int getNumberOfCompanies() {
+        return numberOfCompanies;
     }
     
     
@@ -87,10 +98,23 @@ public abstract class Player implements Comparable<Player> {
         this.numberOfProperty = numberOfProperty;
     }
 
+    public void setNumberOfRailRoads(int numberOfRailRoads) {
+        this.numberOfRailRoads = numberOfRailRoads;
+    }
+
+    public void setNumberOfCompanies(int numberOfCompanies) {
+        this.numberOfCompanies = numberOfCompanies;
+    }
+
     
-    public int rollsDice(){
+    public ArrayList <Integer> rollsDice(){
         Random rand=new Random();
-        return rand.nextInt(11)+2;
+        ArrayList <Integer> dice= new ArrayList(){{
+            add(rand.nextInt(6)+1);
+            add(rand.nextInt(6)+1);
+        }};
+        
+        return dice;
     }
     
     public void putHouse(Avenue avenue,int numberOfHouses,int price){

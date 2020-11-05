@@ -5,6 +5,8 @@
  */
 package boardgame;
 
+import java.util.Scanner;
+
 /**
  *
  * @author Antoine
@@ -12,7 +14,7 @@ package boardgame;
 public class Prison extends Case {
     
     private String playerName=null;
-
+    private Scanner choice = new Scanner(System.in);
     public Prison(String name, int caseNumber){
         this.setName(name);
         this.setCaseNumber(caseNumber);

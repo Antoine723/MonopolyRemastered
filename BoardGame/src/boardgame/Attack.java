@@ -14,7 +14,7 @@ public class Attack {
     private String name;
     private String effect;
     private boolean isUsed=false;
-    private String associatedPlayer=null;
+    private Player associatedPlayer=null;
 
     public String getName() {
         return name;
@@ -28,7 +28,7 @@ public class Attack {
         return isUsed;
     }
 
-    public String getAssociatedPlayer() {
+    public Player getAssociatedPlayer() {
         return associatedPlayer;
     }
 
@@ -44,7 +44,7 @@ public class Attack {
         this.effect = effect;
     }
 
-    public void setAssociatedPlayer(String associatedPlayer) {
+    public void setAssociatedPlayer(Player associatedPlayer) {
         this.associatedPlayer = associatedPlayer;
     }
     

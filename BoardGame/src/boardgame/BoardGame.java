@@ -22,6 +22,19 @@ public class BoardGame{
     static int numberOfPlayers=0;
     static int numberOfTurns=0;
     static boolean isChoiceCorrect;
+    static int randomNum;
+    static Scanner scanner = new Scanner(System.in);
+    static Scanner prison_choice = new Scanner(System.in);
+    static GiveAway giveAway=new GiveAway();
+    static NoMoney noMoney=new NoMoney();
+    static Inflation inflation=new Inflation();
+    
+    static Covid covid=new Covid();
+    static Earthquake earthquake=new Earthquake();
+    static Strike strike=new Strike();
+    
+    
+    
     static ArrayList <String> names= new ArrayList();
     static ArrayList <Integer> order= new ArrayList();
     static ArrayList <String> choices= new ArrayList();
@@ -40,6 +53,7 @@ public class BoardGame{
         add("Car, capacité = déplacement sur la case de son choix dès lors que le pion se trouve sur la  case \"Parc Gratuit\" +loyer doublé pour les propriétés de couleur orange 1 tour sur 4 ");
         add("Mayor, capacité = possibilité de poser un hôtel directement + somme touchée en passant sur la case départ est proportionnelle au nombre de propriétés");
     }};
+    
     static ArrayList <Attack> attacks=new ArrayList(){{
         add(giveAway);
         add(noMoney);
@@ -51,22 +65,6 @@ public class BoardGame{
         add(strike);
     }};
     
-    
-    
-    static GiveAway giveAway=new GiveAway();
-    static NoMoney noMoney=new NoMoney();
-    static Inflation inflation=new Inflation();
-    
-    
-    static Covid covid=new Covid();
-    static Earthquake earthquake=new Earthquake();
-    static Strike strike=new Strike();
-    static int randomNum;
-    
-    
-    
-    static Scanner scanner = new Scanner(System.in);
-    
     //--------------------------------------------------------------------------
     
     
@@ -74,8 +72,7 @@ public class BoardGame{
     
     
     public static void main(String[] args) {
-        //initialize();
-        
+        initialize();
         //Instanciation des pions dans le main selon l'initialisation de la partie (choix des joueurs)
         for(int i=0;i<numberOfPlayers;i++){
             if(players.get(i).equals("Hat")){
@@ -96,17 +93,38 @@ public class BoardGame{
         
         //Attribution des cartes attaques
         for (int i=0;i<numberOfPlayers;i++){
-            attacks.get(i).setAssociatedPlayer(players.get(i).getName());
+            attacks.get(i).setAssociatedPlayer(players.get(i));
         }
         players_in_game.addAll(players);
         board_creation();
+        /*Avenue ave= (Avenue) board.get(1);
+        ave.setAssociatedPlayer(players.get(0));
+        players.get(0).setNumberOfAvenues(players.get(0).getNumberOfAvenues());
+        ave.setHouse(ave.getHouse()+2);
+        Avenue ave2= (Avenue) board.get(3);
+        ave2.setAssociatedPlayer(players.get(0));
+        players.get(0).setNumberOfAvenues(players.get(0).getNumberOfAvenues());
+        ave2.setHotel(ave2.getHotel()+1);
+        Covid cov=(Covid) (events.get(0));
+        cov.setInAction(true);*/
+        
+        for(int i=0;i<numberOfPlayers;i++){
+            displayInventory(players.get(i),board);
+        }
         //Tant que la partie n'est pas terminée (tant qu'il reste plus d'un joueur en jeu
-        /*while(players_in_game.size()>1){
+        while(players_in_game.size()>1){
             numberOfTurns++;
+            for(int i=0;i<players_in_game.size();i++){ //On fait le tour des joueurs encore en jeu
+                if(players_in_game.get(i).isIsInJail()) getOutOfJail(players_in_game.get(i));//On teste d'abord si le joueur est en prison
+                else{ //S'il ne l'est pas, il joue son tour normalement
+                    displayInventory(players_in_game.get(i),board);
+                    //choice();
+                }
+            }
             
             
             
-        }*/
+        }
         
         
         
@@ -229,7 +247,9 @@ public class BoardGame{
         System.out.println(board.get(1).getClass().getSuperclass().getSimpleName());
     }
 
-    public static void turn(){
+    public static void choice(){
+        
+        
         
     }
     
@@ -239,28 +259,79 @@ public class BoardGame{
     public static void displayInventory(Player player, ArrayList <Case> board){
         Property prop=null;
         Avenue av=null;
+        System.out.println("");
         System.out.println(player.getName());
         System.out.println("Vous avez "+player.getCapital()+" €");
-        System.out.println("Vous possèdez :");
+        System.out.println("");
+        System.out.println("Vous possèdez : ");
         for(int i=0;i<board.size();i++){
-            if(board.get(i).getClass().getSuperclass().getSimpleName().equals("Property")) prop=(Property) (board.get(i)); //Si la case est une propriété, on caste la case pour pouvoir utiliser les méthodes propres à la classe Property
-            if(prop.getAssociatedPlayer().equals(player.getName())){ //Si la propriété appartient au joueur actuel, on affiche le nom de sa propriété
-                System.out.print(prop.getName());
-                if(board.get(i).getClass().getSimpleName().equals("Avenue")){ //Si la propriété est une avenue, on affiche le nombre de maisons/hôtel s'il y en a
-                    av=(Avenue) (board.get(i));
-                    if(av.getHouse()>0) System.out.print(" avec "+av.getHouse()+" maison(s) dessus");
-                    else if(av.getHotel()>0) System.out.print(" avec "+av.getHotel()+" hôtel dessus");
+            if(board.get(i) instanceof Property){ 
+                prop=(Property) (board.get(i));
+                if(prop.getAssociatedPlayer()!= null && prop.getAssociatedPlayer().equals(player)){ //Si la propriété appartient au joueur actuel, on affiche le nom de sa propriété
+                    if(board.get(i) instanceof Avenue){ //Si la propriété est une avenue, on affiche le nombre de maisons/hôtel s'il y en a
+                        av=(Avenue) (board.get(i));
+                        if(av.getHouse()>0) System.out.println(av.getName()+" avec "+av.getHouse()+" maison(s) dessus, ");
+                        else if(av.getHotel()>0) System.out.println(av.getName()+" avec "+av.getHotel()+" hôtel dessus, ");
+                    }
                 }
-            }
+            } //Si la case est une propriété, on caste la case pour pouvoir utiliser les méthodes propres à la classe Property
+            
         }
         for(int i=0;i<numberOfPlayers;i++){ //Car nombre de joueurs=nombre de cartes attaque pour l'instant
-            if(attacks.get(i).getAssociatedPlayer().equals(player.getName()) && !attacks.get(i).isItUsed()){
+            if(attacks.get(i).getAssociatedPlayer().equals(player) && !attacks.get(i).isItUsed()){
+                System.out.println("");
                 System.out.println("Vous pouvez utiliser votre carte attaque "+attacks.get(i).getName());
                 System.out.println("En utilisant cette carte, "+attacks.get(i).getEffect());
             }
         }
-        //Event à gérer
+        System.out.println("");
+        if(covid.isInAction()){
+            System.out.println("Le covid circule actuellement");//Ajouter affichage du niveau d'alerte
+        }
+        if(strike.isInAction()){
+            System.out.println("Il y a actuellement une grève des trains");
+        }
         
         
 }
+    
+    public static void getOutOfJail(Player player)
+    {
+        System.out.println("Pour sortir, faites votre choix : freecard si vous avec une carte de libération, pay si vous voulez payer (50€), ou roll si vous voulez tenter votre chance avec un double");
+        switch(prison_choice.nextLine())                           // on lit la réponse du joueur
+            {
+                case "freecard":                
+
+                    if(player.getFree_card() > 0)               // si le joueur posséde une carte, il sort de prison
+                    {
+                        player.setIsInJail(false);
+                        player.setFree_card(player.getFree_card() - 1);     // on actualise le nombre de cartes
+                        System.out.println("Il vous reste à présent " + player.getFree_card() + " cartes pour sortir de prison");
+                    }
+                    break;
+
+                case "pay":
+
+                    if(player.getCapital() >= 50)                           // si le joueur souhaite payer la caution
+                    {
+                        player.setIsInJail(false);
+                        player.setCapital(player.getCapital() - 50);        // on actualise le capital
+                        System.out.println("Vous disposez à présent de " + player.getCapital() + " euros");
+                    }
+                    break;
+
+                case "roll":
+                    if (player.rollsDice().get(0)==player.rollsDice().get(1) )    // si le joueur a fait un double
+                    {
+                        player.setIsInJail(false);
+                        System.out.println("Félicitations ! Votre double vous permet de sortir de prison");
+                    }
+                    else
+                    {
+                        System.out.println("Dommage ! Vous restez en prison");
+                        player.setIsInJail(true);
+                    }
+                    break;
+            }
+    }
 }
