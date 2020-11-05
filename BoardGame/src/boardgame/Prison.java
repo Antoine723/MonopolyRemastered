@@ -13,19 +13,19 @@ import java.util.Scanner;
  */
 public class Prison extends Case {
     
-    private String playerName=null;
+    private Player player=null;
 
     public Prison(String name, int caseNumber){
         this.setName(name);
         this.setCaseNumber(caseNumber);
         
     }
-    public String getPlayerName() {
-        return playerName;
+    public Player getPlayerName() {
+        return player;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setPlayerName(Player player) {
+        this.player = player;
     }
     
 }
