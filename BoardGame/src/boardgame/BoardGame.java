@@ -42,7 +42,6 @@ public class BoardGame{
     }};
     static ArrayList <Attack> attacks=new ArrayList(){{
         add(giveAway);
-        add(noMoney);
         add(inflation);
     }};
     static ArrayList <Event> events=new ArrayList(){{
@@ -54,7 +53,6 @@ public class BoardGame{
     
     
     static GiveAway giveAway=new GiveAway();
-    static NoMoney noMoney=new NoMoney();
     static Inflation inflation=new Inflation();
     
     
