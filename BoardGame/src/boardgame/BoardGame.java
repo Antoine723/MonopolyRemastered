@@ -25,9 +25,10 @@ public class BoardGame{
     static int randomNum;
     static Scanner scanner = new Scanner(System.in);
     static Scanner prison_choice = new Scanner(System.in);
+    
     static GiveAway giveAway=new GiveAway();
-    static NoMoney noMoney=new NoMoney();
     static Inflation inflation=new Inflation();
+    static Robber robber=new Robber();
     
     static Covid covid=new Covid();
     static Earthquake earthquake=new Earthquake();
@@ -56,7 +57,7 @@ public class BoardGame{
     
     static ArrayList <Attack> attacks=new ArrayList(){{
         add(giveAway);
-        add(noMoney);
+        add(robber);
         add(inflation);
     }};
     static ArrayList <Event> events=new ArrayList(){{

@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Prison extends Case {
     
     private String playerName=null;
-    private Scanner choice = new Scanner(System.in);
+
     public Prison(String name, int caseNumber){
         this.setName(name);
         this.setCaseNumber(caseNumber);
@@ -27,7 +27,5 @@ public class Prison extends Case {
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
-    
-    
     
 }
