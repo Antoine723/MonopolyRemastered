@@ -24,10 +24,9 @@ public class Robber extends Attack
     
     public void stealAvenue(Avenue avenue, Player attackedPlayer,Player robber)
     {
-        System.out.println("Sélectionner le terrain que vous souhaitez voler à " + attackedPlayer.getName());
         boolean correct = false;
         while(!correct)
-            if(choice.nextLine().equals(avenue.getAssociatedPlayer()))          // on vérifie que le terrain sélectionné appartient bien au joueur attaqué
+            if(avenue.getAssociatedPlayer().equals(attackedPlayer))          // on vérifie que le terrain sélectionné appartient bien au joueur attaqué
             {
                 switch(rand.nextInt(2))                                         // le voleur a une chance sur deux de réussir
                 {
