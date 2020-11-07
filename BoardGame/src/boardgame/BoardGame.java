@@ -107,25 +107,29 @@ public class BoardGame{
         players.get(0).setNumberOfAvenues(players.get(0).getNumberOfAvenues());
         ave2.setHotel(ave2.getHotel()+1);
         Covid cov=(Covid) (events.get(0));
-        cov.setInAction(true);*/
+        cov.setInAction(true);
+        RailRoad rai= (RailRoad) (board.get(15));
+        rai.setAssociatedPlayer(players.get(0));
+        Company com=(Company) (board.get(12));
+        com.setAssociatedPlayer(players.get(0));*/
         
         for(int i=0;i<numberOfPlayers;i++){
-            displayInventory(players.get(i),board);
+            displayInventory(players.get(i));
         }
         //Tant que la partie n'est pas terminée (tant qu'il reste plus d'un joueur en jeu
-        while(players_in_game.size()>1){
+        /*while(players_in_game.size()>1){
             numberOfTurns++;
             for(int i=0;i<players_in_game.size();i++){ //On fait le tour des joueurs encore en jeu
                 if(players_in_game.get(i).isIsInJail()) getOutOfJail(players_in_game.get(i));//On teste d'abord si le joueur est en prison
                 else{ //S'il ne l'est pas, il joue son tour normalement
-                    displayInventory(players_in_game.get(i),board);
+                    displayInventory(players_in_game.get(i));
                     //choice();
                 }
             }
             
             
             
-        }
+        }*/
         
         
         
@@ -245,21 +249,32 @@ public class BoardGame{
         board.add(new Avenue(350,35,"Avenue des Champs-Elysées",37,"Bleu"));
         board.add(new Taxes("Taxe de luxe",38,100));
         board.add(new Avenue(400,50,"Rue de la Paix",39,"Bleu"));
-        System.out.println(board.get(1).getClass().getSuperclass().getSimpleName());
     }
 
-    public static void choice(){
+    public static void choice(Player player){
         
+        //Possibilité de poser maisons/hôtels sur ses propriétés SI il en a ET qu'il a tout le groupe de couleur (ET qu'il a assez d'argent), il peut lancer les dés ensuite
+        //Possibilité de vendre propriétés SI il en possède une
+        //Possibilité de jouer carte attaque SI il ne l'a pas encore utilisée
+        //Possibilité de lancer les dés --> Affiche le nombre qu'il a fait, déplace le joueur et affiche la case sur laquelle il est : 
+        //      SI propriété --> SI appartient à un autre joueur, affiche montant à payer et paye le joueur en question
+        //                   --> SI n'appartient à personne, affiche qu'il peut l'acheter + montant à payer + attente du choix, SI oui alors attribue la prop au joueur + réduit son capital
+        //      SI pas propriété --> effectue l'effet s'il en a un
         
+        //ATTENTION TOUJOURS PRENDRE EN COMPTE EVENEMENT
+        
+        //AJOUTER EFFET DU PION
         
     }
     
     
     
     
-    public static void displayInventory(Player player, ArrayList <Case> board){
+    public static void displayInventory(Player player){
         Property prop=null;
         Avenue av=null;
+        RailRoad rail=null;
+        Company comp=null;
         System.out.println("");
         System.out.println(player.getName());
         System.out.println("Vous avez "+player.getCapital()+" €");
@@ -273,6 +288,14 @@ public class BoardGame{
                         av=(Avenue) (board.get(i));
                         if(av.getHouse()>0) System.out.println(av.getName()+" avec "+av.getHouse()+" maison(s) dessus, ");
                         else if(av.getHotel()>0) System.out.println(av.getName()+" avec "+av.getHotel()+" hôtel dessus, ");
+                    }
+                    else if(board.get(i) instanceof RailRoad){
+                        rail= (RailRoad) board.get(i);
+                        System.out.println(rail.getName());
+                    }
+                    else if(board.get(i) instanceof Company){
+                        comp=(Company) board.get(i);
+                        System.out.println(comp.getName());
                     }
                 }
             } //Si la case est une propriété, on caste la case pour pouvoir utiliser les méthodes propres à la classe Property
@@ -291,11 +314,10 @@ public class BoardGame{
         }
         if(strike.isInAction()){
             System.out.println("Il y a actuellement une grève des trains");
-        }
-        
-        
-}
+        }    
+    }
     
+   
     public static void getOutOfJail(Player player)
     {
         System.out.println("Pour sortir, faites votre choix : freecard si vous avec une carte de libération, pay si vous voulez payer (50€), ou roll si vous voulez tenter votre chance avec un double");
