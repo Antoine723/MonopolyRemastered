@@ -5,7 +5,6 @@
  */
 package boardgame;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  *
@@ -14,7 +13,6 @@ import java.util.Scanner;
 public class Robber extends Attack
 {
     Random rand = new Random();
-    Scanner choice = new Scanner(System.in);
     
     public Robber()
     {
