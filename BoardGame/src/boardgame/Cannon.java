@@ -16,20 +16,26 @@ public class Cannon extends Player implements Citizen {
         this.setPlayerNumber(playerNumber);
     }
     
-    public int shoot(Avenue avenue){ //A voir pour caler dans la méthode la boucle for avec le choix du joueur+propriété visée
-        if(avenue.getHouse()>0){
-            avenue.setHouse(avenue.getHouse()-1);
-            return 1;
-        }
-        else {
-            System.out.println("Veuillez sélectionner une propriété qui dispose d'au moins 1 maison");
-            return -1;
+    public void shoot(Avenue avenue){ //A voir pour caler dans la méthode la boucle for avec le choix du joueur+propriété visée
+        boolean isHouseDestroyed = false;
+        while(isHouseDestroyed == false)
+        {
+            if(avenue.getHouse()>0)
+            {
+                avenue.setHouse(avenue.getHouse()-1);
+                System.out.println("Quel malheur ! Un joueur vient de détruire une maison sur " + avenue.getName());
+                isHouseDestroyed = true;
+            }
+            else 
+            {
+                System.out.println("Veuillez sélectionner une propriété qui dispose d'au moins 1 maison");
+                isHouseDestroyed = false;
+            }
         }
     }
     
-    public void doubleRent(){
-        
-    }
+    @Override
+    public void doubleRent(){}
     
     
 }
