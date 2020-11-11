@@ -13,8 +13,8 @@ public class Company extends Property{
     
     private int number=0;
     //A ajouter loyer=4*montant des dés si une compagnie, si les 2 *10
-    public Company(int price, String name, int caseNumber){
-        super(name,caseNumber);
+    public Company(int price, String name, int caseNumber,int mortgage){                //      AJOUT DE MORTGAGE
+        super(name,caseNumber,mortgage);
         this.setBoughtPrice(price);
         
     }

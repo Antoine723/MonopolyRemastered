@@ -210,45 +210,45 @@ public class BoardGame{
         
         
         board.add(new Case("Départ",0));
-        board.add(new Avenue(60,2,"Boulevard de Belleville",1,"Marron"));
+        board.add(new Avenue(60,200,"Boulevard de Belleville",1,"Marron",3000));        // AJOUT DE L'HYPOTHEQUE EN DERNIER ARGUMENT + VRAI PRIX DES LOYERS
         board.add(new Bonus("Caisse de communauté",2));
-        board.add(new Avenue(60,4,"Rue Lecourbe",3,"Marron"));
+        board.add(new Avenue(60,400,"Rue Lecourbe",3,"Marron",3000));
         board.add(new Taxes("Impôt sur le revenu",4,200));
-        board.add(new RailRoad(200,25,"Gare Montparnasse",5));
-        board.add(new Avenue(100,6,"Rue Vaugirard",6,"Ciel"));
+        board.add(new RailRoad(200,2500,"Gare Montparnasse",5,10000));
+        board.add(new Avenue(100,600,"Rue de Vaugirard",6,"Ciel",5000));
         board.add(new Bonus("Chance",7));
-        board.add(new Avenue(100,6,"Rue de Courcelles",8,"Ciel"));
-        board.add(new Avenue(120,8,"Avenue de la République",9,"Ciel"));
+        board.add(new Avenue(100,600,"Rue de Courcelles",8,"Ciel",5000));
+        board.add(new Avenue(120,800,"Avenue de la République",9,"Ciel",6000));
         board.add(new Prison("Prison",10));
-        board.add(new Avenue(140,10,"Boulevard de la Villette",11,"Rose"));
-        board.add(new Company(150,"Compagnie de distribution d'électricité",12));
-        board.add(new Avenue(140,10,"Avenue de Neuilly",13,"Rose"));
-        board.add(new Avenue(160,12,"Rue de Paradis",14,"Rose"));
-        board.add(new RailRoad(200,25,"Gare de Lyon",15));
-        board.add(new Avenue(180,14,"Avenue Mozart",16,"Orange"));
+        board.add(new Avenue(140,1000,"Boulevard de la Villette",11,"Rose",7000));
+        board.add(new Company(150,"Compagnie de distribution d'électricité",12,7500));
+        board.add(new Avenue(140,1000,"Avenue de Neuilly",13,"Rose",7000));
+        board.add(new Avenue(160,1200,"Rue de Paradis",14,"Rose",8000));
+        board.add(new RailRoad(200,2500,"Gare de Lyon",15,10000));
+        board.add(new Avenue(180,1400,"Avenue Mozart",16,"Orange",9000));
         board.add(new Bonus("Caisse de communauté",17));
-        board.add(new Avenue(180,14,"Boulevard Saint-Michel",18,"Orange"));
-        board.add(new Avenue(200,16,"Place Pigalle",19,"Orange"));
+        board.add(new Avenue(180,1400,"Boulevard Saint-Michel",18,"Orange",9000));
+        board.add(new Avenue(200,1600,"Place Pigalle",19,"Orange",10000));
         board.add(new Case("Parc gratuit",20));
-        board.add(new Avenue(220,18,"Avenue Matignon",21,"Rouge"));
+        board.add(new Avenue(220,1800,"Avenue Matignon",21,"Rouge",11000));
         board.add(new Bonus("Chance",22));
-        board.add(new Avenue(220,18,"Boulevard Malesherbes",23,"Rouge"));
-        board.add(new Avenue(240,20,"Avenue Henri-Martin",24,"Rouge"));
-        board.add(new RailRoad(200,25,"Gare du Nord",25));
-        board.add(new Avenue(260,22,"Faubourg Saint-Honoré",26,"Jaune"));
-        board.add(new Avenue(260,22,"Place de la bourse",27,"Jaune"));
-        board.add(new Company(150,"Compagnie de distribution des eaux",28));
-        board.add(new Avenue(280,24,"Rue La Fayette",29,"Jaune"));
+        board.add(new Avenue(220,1800,"Boulevard Malesherbes",23,"Rouge",11000));
+        board.add(new Avenue(240,2000,"Avenue Henri-Martin",24,"Rouge",12000));
+        board.add(new RailRoad(200,2500,"Gare du Nord",25,10000));
+        board.add(new Avenue(260,2200,"Faubourg Saint-Honoré",26,"Jaune",13000));
+        board.add(new Avenue(260,2200,"Place de la bourse",27,"Jaune",13000));
+        board.add(new Company(150,"Compagnie de distribution des eaux",28,7500));
+        board.add(new Avenue(280,2400,"Rue La Fayette",29,"Jaune",14000));
         board.add(new Case("Allez en prison",30));
-        board.add(new Avenue(300,26,"Avenue de Breuteuil",31,"Vert"));
-        board.add(new Avenue(300,26,"Avenue Foch",32,"Vert"));
+        board.add(new Avenue(300,2600,"Avenue de Breuteuil",31,"Vert",15000));
+        board.add(new Avenue(300,2600,"Avenue Foch",32,"Vert",15000));
         board.add(new Bonus("Caisse de communauté",33));
-        board.add(new Avenue(320,28,"Boulevard des Capucines",34,"Vert"));
-        board.add(new RailRoad(200,25,"Gare Saint-Lazare",35));
+        board.add(new Avenue(320,2800,"Boulevard des Capucines",34,"Vert",16000));
+        board.add(new RailRoad(200,2500,"Gare Saint-Lazare",35,10000));
         board.add(new Bonus("Chance",36));
-        board.add(new Avenue(350,35,"Avenue des Champs-Elysées",37,"Bleu"));
+        board.add(new Avenue(350,3500,"Avenue des Champs-Elysées",37,"Bleu",17500));
         board.add(new Taxes("Taxe de luxe",38,100));
-        board.add(new Avenue(400,50,"Rue de la Paix",39,"Bleu"));
+        board.add(new Avenue(400,5000,"Rue de la Paix",39,"Bleu",20000));
     }
 
     public static void choice(Player player){

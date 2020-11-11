@@ -16,9 +16,10 @@ public class Avenue extends Property{
     private String color;
     private int priceOfHouseAndHotels = 0;
     private float soldAvenueCoeff = 0 ;
+    private int mortgage = 0;
     //Coefficient multiplicateur nombre de maison/hotel avec loyer
-    public Avenue(int price,int rent, String name, int caseNumber, String color){
-        super(name,caseNumber);
+    public Avenue(int price,int rent, String name, int caseNumber, String color,int mortgage){      // AJOUT DE MORTGAGE
+        super(name,caseNumber,mortgage);
         this.setBoughtPrice(price);
         this.setRent(rent);
         this.color=color;
@@ -48,7 +49,6 @@ public class Avenue extends Property{
         this.soldAvenueCoeff = soldAvenueCoeff;
     }
 
-
     public String getColor() {
         return color;
     }
@@ -75,6 +75,7 @@ public class Avenue extends Property{
             case "Violet":
                 avenue.setPriceOfHouseAndHotels(5000);
                 avenue.setSoldAvenueCoeff(0.2F);                                 // selon la couleur de la case on attribue le prix des hôtels et maisons
+                
                 break;                                                           // on attribue aussi un coefficient pour la carte attaque GiveAway
                 
             case "Ciel":
@@ -103,15 +104,40 @@ public class Avenue extends Property{
                 break;
             case "Vert":
                 avenue.setPriceOfHouseAndHotels(20000);
-                avenue.setSoldAvenueCoeff(0.8F);  
+                avenue.setSoldAvenueCoeff(0.8F);
+                avenue.setMortgage(150);
                 break;
                 
             case "Bleu":
             avenue.setPriceOfHouseAndHotels(20000);
-            avenue.setSoldAvenueCoeff(0.8F);  
+            avenue.setSoldAvenueCoeff(0.8F);
+            avenue.setMortgage(250);
             break;
 
         }
+    }   
+    
+    public int computeRentOfAvenue(Avenue avenue,Player player)                 // AJOUT D'UNE FONCTION COMPUTE AVENUE
+                                                                                // comment l'implémenter sans énumérer chaque cas ??
+    {
+        switch(avenue.getCaseNumber())
+        {
+            case 1:
+                switch(avenue.getHouse())
+                {
+                    case 1:
+                        avenue.setRent(1000);
+                    case 2:
+                        avenue.setRent(3000);
+                    case 3:
+                        avenue.setRent(9000);
+                    case 4:
+                        avenue.setRent(16000);
+                }
+                
+        }
+        return avenue.getRent();
     }
+    
     
 }

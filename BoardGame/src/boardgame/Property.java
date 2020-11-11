@@ -14,8 +14,9 @@ public class Property extends Case {
     private int boughtPrice;
     private int rent;
     private Player associatedPlayer;
+    private int mortgage;
     
-    public Property(String name, int caseNumber){
+    public Property(String name, int caseNumber,int mortgage){                  // AJOUT DE MORTGAGE
         this.setName(name);
         this.setCaseNumber(caseNumber);
         
@@ -31,6 +32,14 @@ public class Property extends Case {
 
     public int getRent() {
         return rent;
+    }
+
+    public int getMortgage() {                                                  // AJOUT DE GETTER ET SETTER POUR MORTGAGE
+        return mortgage;
+    }
+
+    public void setMortgage(int mortgage) {
+        this.mortgage = mortgage;
     }
 
     public Player getAssociatedPlayer() {

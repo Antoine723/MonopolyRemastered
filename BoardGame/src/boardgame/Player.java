@@ -142,5 +142,17 @@ public abstract class Player implements Comparable<Player> {
     }
     
     
-    
+    public void putOnMortgage(Player player, Property prop)                     // mortgage = hypothèque
+    {
+        if (prop instanceof Avenue)                                             // si c'est une avenue on supprime maisons et hôtels
+        {
+            ((Avenue) prop).setHotel(0);
+            ((Avenue) prop).setHouse(0);
+            player.setCapital(player.getCapital() + (prop.getMortgage()));
+        }
+        else
+        {
+            player.setCapital(player.getCapital() + prop.getMortgage());
+        }
+    }
 }

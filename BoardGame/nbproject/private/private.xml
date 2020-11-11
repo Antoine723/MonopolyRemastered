@@ -4,11 +4,17 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/BoardGame.java</file>
-            <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/GiveAway.java</file>
-            <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/Robber.java</file>
+            <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/Taxes.java</file>
+            <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/Prison.java</file>
             <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/Property.java</file>
+            <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/Inflation.java</file>
+            <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/Car.java</file>
             <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/Avenue.java</file>
+            <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/Mayor.java</file>
+            <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/Citizen.java</file>
+            <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/Company.java</file>
             <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/Player.java</file>
+            <file>file:/C:/Users/thibb/Desktop/Cours/M1/Java/Projet/MonopolyRemastered/BoardGame/src/boardgame/RailRoad.java</file>
         </group>
     </open-files>
 </project-private>

@@ -13,8 +13,8 @@ public class RailRoad extends Property {
     
     private int number=0;
     
-    public RailRoad(int price,int rent, String name, int caseNumber){
-        super(name,caseNumber);
+    public RailRoad(int price,int rent, String name, int caseNumber,int mortgage){          // AJOUT DE MORTGAGE
+        super(name,caseNumber,mortgage);
         this.setBoughtPrice(price);
         this.setRent(rent);
     }
@@ -34,37 +34,40 @@ public class RailRoad extends Property {
     }
     
     
-    public int computing(Property prop)
+    public int computing(Property prop,Player player)                          // AJOUT D'UNE FONCTION COMPUTING POUR TOUT CALCULER D'UN COUP -> SUPPRIMER COMPUTE RENT ??
     {
         if(prop instanceof Avenue)
         {
-            return prop.getRent();
+            return prop.getRent();   //faire fonction compute avenue
         }
         else if (prop instanceof RailRoad)
         {
             switch(prop.getAssociatedPlayer().getNumberOfRailRoads())
             {
                 case 2:
-                    prop.setRent(prop.getRent() + (int) 0.5*prop.getRent());
+                    prop.setRent(5000);                                         // valeurs indiquées sur les cartes
                     break;
 
                 case 3:
-                    prop.setRent(prop.getRent() + (int) 1.5*prop.getRent());
+                    prop.setRent(10000);
                     break;
 
                 case 4:
-                    prop.setRent(prop.getRent() + (int) 2*prop.getRent());
+                    prop.setRent(20000);
                     break;
             }
-            return prop.getRent();
+            return prop.getRent();                                              // s' il n'y a qu'une gare on renvoie juste le loyer
         }
         
         else
         {
-            if (prop.getAssociatedPlayer().getNumberOfCompanies() == 2)
+            if (prop.getAssociatedPlayer().getNumberOfCompanies() == 1)         // si on a 1 compagnie
             {
-                prop.setRent(prop.getRent() + (int) 2*prop.getRent());
+                prop.setRent((player.rollsDice().get(0) + player.rollsDice().get(1)) * 400);        // instructions de la carte (400*valuer indiquée par les dés)
             }
+            else if(prop.getAssociatedPlayer().getNumberOfCompanies() == 2)
+                prop.setRent((player.rollsDice().get(0) + player.rollsDice().get(1)) * 1000);           // idem
+            
             return prop.getRent();
         }
     }
