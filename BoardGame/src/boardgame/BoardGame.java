@@ -25,6 +25,8 @@ public class BoardGame{
     static int randomNum;
     static Scanner scanner = new Scanner(System.in);
     static Scanner prison_choice = new Scanner(System.in);
+    static Random rand=new Random();
+    static boolean useAttack=true;
     
     static GiveAway giveAway=new GiveAway();
     static Inflation inflation=new Inflation();
@@ -94,7 +96,7 @@ public class BoardGame{
         
         //Attribution des cartes attaques
         for (int i=0;i<numberOfPlayers;i++){
-            attacks.get(i).setAssociatedPlayer(players.get(i));
+            players.get(i).setAttack_card(attacks.get(rand.nextInt(attacks.size())));
         }
         players_in_game.addAll(players);
         board_creation();
@@ -113,9 +115,21 @@ public class BoardGame{
         Company com=(Company) (board.get(12));
         com.setAssociatedPlayer(players.get(0));*/
         
-        for(int i=0;i<numberOfPlayers;i++){
-            displayInventory(players.get(i));
+        /*players.get(0).addProperty((Avenue)(board.get(1)));
+        players.get(0).addProperty((Avenue)(board.get(3)));
+        players.get(0).addProperty((Avenue)(board.get(6)));
+        players.get(0).addProperty((Avenue)(board.get(9)));
+        ArrayList <Avenue> play_ave = new ArrayList();
+        for(int i=0;i<players.get(0).getProperties().size();i++){
+            if(players.get(0).getProperties().get(i) instanceof Avenue) play_ave.add((Avenue)(players.get(0).getProperties().get(i)));
         }
+        ArrayList <String> test=groupOfAvenues(players.get(0),play_ave);
+        for(int i=0;i<test.size();i++){
+            System.out.println(test.get(i));
+        }
+        /*for(int i=0;i<numberOfPlayers;i++){
+            displayInventory(players.get(i));
+        }*/
         //Tant que la partie n'est pas terminée (tant qu'il reste plus d'un joueur en jeu
         /*while(players_in_game.size()>1){
             numberOfTurns++;
@@ -252,9 +266,25 @@ public class BoardGame{
     }
 
     public static void choice(Player player){
+        ArrayList <Avenue> player_avenues= new ArrayList();
+        ArrayList <String> group_color=new ArrayList();
+        boolean sellProp=false; //variables booléennes pour savoir ce qu'on va proposer comme choix au joueur
+        boolean putHouseHotel=false;
+        for(int i=0;i<player.getProperties().size();i++){ //On va remplir la liste d'avenues du joueur à partir de sa liste de propriétés (pour proposer des choix sur ses avenues par la suite)
+            if(player.getProperties().get(i) instanceof Avenue){
+                player_avenues.add((Avenue)(player.getProperties().get(i))); //On ajoute toutes les avenues appartenant au joueur dans une ArrayList
+            }
+        }
+        if(!player.getProperties().isEmpty()) sellProp=true; //Si le joueur possède des propriétés, on pourra lui propsoer d'en vendre
+        group_color=groupOfAvenues(player,player_avenues);
+        if(!group_color.isEmpty()) putHouseHotel=true; //Si le joueur possède un groupe complet d'avenues (de même couleur), on va pouvoir lui proposer de poser maisons et hôtels
+            //Pour l'attaque, vérifier l'attribut isUsed de la carte attaque associée au joueur
         
+        
+        
+    }
         //Possibilité de poser maisons/hôtels sur ses propriétés SI il en a ET qu'il a tout le groupe de couleur (ET qu'il a assez d'argent), il peut lancer les dés ensuite
-        //Possibilité de vendre propriétés SI il en possède une
+        //Possibilité de vendre propriétés SI il en possède une OK
         //Possibilité de jouer carte attaque SI il ne l'a pas encore utilisée
         //Possibilité de lancer les dés --> Affiche le nombre qu'il a fait, déplace le joueur et affiche la case sur laquelle il est : 
         //      SI propriété --> SI appartient à un autre joueur, affiche montant à payer et paye le joueur en question
@@ -264,50 +294,38 @@ public class BoardGame{
         //ATTENTION TOUJOURS PRENDRE EN COMPTE EVENEMENT
         
         //AJOUTER EFFET DU PION
-        
-    }
+
     
     
     
     
     public static void displayInventory(Player player){
-        Property prop=null;
-        Avenue av=null;
-        RailRoad rail=null;
-        Company comp=null;
         System.out.println("");
         System.out.println(player.getName());
         System.out.println("Vous avez "+player.getCapital()+" €");
         System.out.println("");
         System.out.println("Vous possèdez : ");
-        for(int i=0;i<board.size();i++){
-            if(board.get(i) instanceof Property){ 
-                prop=(Property) (board.get(i));
-                if(prop.getAssociatedPlayer()!= null && prop.getAssociatedPlayer().equals(player)){ //Si la propriété appartient au joueur actuel, on affiche le nom de sa propriété
-                    if(board.get(i) instanceof Avenue){ //Si la propriété est une avenue, on affiche le nombre de maisons/hôtel s'il y en a
-                        av=(Avenue) (board.get(i));
-                        if(av.getHouse()>0) System.out.println(av.getName()+" avec "+av.getHouse()+" maison(s) dessus, ");
-                        else if(av.getHotel()>0) System.out.println(av.getName()+" avec "+av.getHotel()+" hôtel dessus, ");
-                    }
-                    else if(board.get(i) instanceof RailRoad){
-                        rail= (RailRoad) board.get(i);
-                        System.out.println(rail.getName());
-                    }
-                    else if(board.get(i) instanceof Company){
-                        comp=(Company) board.get(i);
-                        System.out.println(comp.getName());
-                    }
-                }
+        for(int i=0;i<player.getProperties().size();i++){
+            if(player.getProperties().get(i) instanceof Avenue){ //Si la propriété est une avenue, on affiche le nombre de maisons/hôtel s'il y en a
+                if( ((Avenue)(player.getProperties().get(i))).getHouse()>0) System.out.println(((Avenue)(player.getProperties().get(i))).getName()+" avec "+((Avenue)(player.getProperties().get(i))).getHouse()+" maison(s) dessus, ");
+                else if(((Avenue)(player.getProperties().get(i))).getHotel()>0) System.out.println(((Avenue)(player.getProperties().get(i))).getName()+" avec "+((Avenue)(player.getProperties().get(i))).getHotel()+" hôtel dessus, ");
+            }
+            else if(player.getProperties().get(i) instanceof RailRoad){
+                System.out.println(((RailRoad)(player.getProperties().get(i))).getName());
+            }
+            else if(player.getProperties().get(i) instanceof Company){
+                System.out.println( ((Company)(player.getProperties().get(i))).getName() );
             } //Si la case est une propriété, on caste la case pour pouvoir utiliser les méthodes propres à la classe Property
             
         }
-        for(int i=0;i<numberOfPlayers;i++){ //Car nombre de joueurs=nombre de cartes attaque pour l'instant
-            if(attacks.get(i).getAssociatedPlayer().equals(player) && !attacks.get(i).isItUsed()){
-                System.out.println("");
-                System.out.println("Vous pouvez utiliser votre carte attaque "+attacks.get(i).getName());
-                System.out.println("En utilisant cette carte, "+attacks.get(i).getEffect());
-            }
+        if(!player.getAttack_card().isItUsed()){
+            System.out.println("");
+            System.out.println("Vous pouvez utiliser votre carte attaque "+player.getAttack_card().getName());
+            System.out.println("En utilisant cette carte, "+player.getAttack_card().getEffect());
+            useAttack=true;
         }
+        else useAttack=false;
+        
         System.out.println("");
         if(covid.isInAction()){
             System.out.println("Le covid circule actuellement");//Ajouter affichage du niveau d'alerte
@@ -317,6 +335,29 @@ public class BoardGame{
         }    
     }
     
+    public static ArrayList <String> groupOfAvenues(Player player,ArrayList <Avenue> avenues){ //Va regarder si le joueur passé en paramètre possède un groupe complet d'avenues de même couleurs
+        ArrayList <Avenue> all_board_avenues=new ArrayList();
+        ArrayList <Avenue> group_board_avenues=new ArrayList();
+        ArrayList <String> color_groups=new ArrayList();
+        for(int i=0;i<board.size();i++){ //On récupère la liste des avenues du plateau de jeu
+            if(board.get(i) instanceof Avenue){
+                all_board_avenues.add((Avenue)(board.get(i)));
+            }
+        }
+        for(int i=0;i<all_board_avenues.size();i++){ //On parcourt cette liste
+            if(!group_board_avenues.isEmpty() && all_board_avenues.get(i).getColor().equals(group_board_avenues.get(0).getColor())) group_board_avenues.add(all_board_avenues.get(i)); //group_board_avenues est une liste qui va contenir les avenues qui sont de même couleur
+            else if(!group_board_avenues.isEmpty() && !all_board_avenues.get(i).getColor().equals(group_board_avenues.get(0).getColor())){
+                if(avenues.containsAll(group_board_avenues)) color_groups.add(group_board_avenues.get(0).getColor());
+                group_board_avenues.clear();
+                group_board_avenues.add(all_board_avenues.get(i));
+            }
+            else{
+                group_board_avenues.add(all_board_avenues.get(i));
+            }
+            
+        }
+        return color_groups; //On va, au fur et à mesure, insérer dans une liste (group_board_avenues) les avenues de même couleur, puis comparer avec celles possédées du joueur pour savoir s'il a le groupe en question, si c'est le cas, on ajotue à notre liste "color_group" la couleur du groupe qu'il possède
+    }
    
     public static void getOutOfJail(Player player)
     {

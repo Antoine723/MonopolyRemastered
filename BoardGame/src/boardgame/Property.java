@@ -70,6 +70,7 @@ public class Property extends Case {
         if(player.getCapital()-price>0){ //A voir si on met la condition ici ou dans le jeu
             player.setCapital(player.getCapital()-price);
             this.associatedPlayer=player;
+            player.addProperty(this);
             player.setNumberOfProperty(player.getNumberOfProperty()+1);
             this.isBought=true;
             return 1; //Si renvoie 1, alors l'achat a été effectué correctement, si -1, alors non
@@ -84,6 +85,8 @@ public class Property extends Case {
             buyer.setCapital(buyer.getCapital()-price);
             seller.setCapital(seller.getCapital()+price);
             this.associatedPlayer=buyer;
+            seller.removeProperty(this);
+            buyer.addProperty(this);
             /*seller.setNumberOfProperty(seller.getNumberOfProperty()-1);
             buyer.setNumberOfProperty(buyer.getNumberOfProperty()+1);*/
             return 1;
@@ -97,6 +100,7 @@ public class Property extends Case {
     public void sell(Player seller, int price){ //Fonction vendre à la banque
         seller.setCapital(seller.getCapital()+price);
         //seller.setNumberOfProperty(seller.getNumberOfProperty()-1);
+        seller.removeProperty(this);
         this.associatedPlayer=null;
         this.isBought=false;
         

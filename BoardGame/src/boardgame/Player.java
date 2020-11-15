@@ -24,6 +24,8 @@ public abstract class Player implements Comparable<Player> {
     private int numberOfProperty=0;
     private int numberOfRailRoads=0;
     private int numberOfCompanies=0;
+    private Attack attack_card=null;
+    private ArrayList <Property> properties=new ArrayList();
     
     public String getName() {
         return name;
@@ -64,6 +66,16 @@ public abstract class Player implements Comparable<Player> {
     public int getNumberOfCompanies() {
         return numberOfCompanies;
     }
+
+    public Attack getAttack_card() {
+        return attack_card;
+    }
+
+    public ArrayList<Property> getProperties() {
+        return properties;
+    }
+    
+    
     
     
     public void setName(String name) {
@@ -106,6 +118,17 @@ public abstract class Player implements Comparable<Player> {
         this.numberOfCompanies = numberOfCompanies;
     }
 
+    public void setAttack_card(Attack attack_card) {
+        this.attack_card = attack_card;
+    }
+
+    public void addProperty(Property prop){
+        this.properties.add(prop);
+    }
+    public void removeProperty(Property prop){
+        this.properties.remove(prop);
+    }
+    
     
     public ArrayList <Integer> rollsDice(){
         Random rand=new Random();
