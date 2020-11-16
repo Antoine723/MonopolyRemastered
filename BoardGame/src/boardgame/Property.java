@@ -9,7 +9,7 @@ package boardgame;
  *
  * @author Antoine
  */
-public class Property extends Case {
+public abstract class Property extends Case {
     private boolean isBought;
     private int boughtPrice;
     private int rent;

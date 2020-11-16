@@ -9,7 +9,7 @@ package boardgame;
  *
  * @author Antoine
  */
-public class Event {
+public abstract class Event {
     
     private String name;
 

@@ -23,4 +23,9 @@ public class Inflation extends Attack {
            property.setAssociatedPlayer(attackedPlayer); // on associe le joueur attaqué à la propriété doublée
            this.setIsUsed(true);
     }
+    
+    @Override
+    public void effect(){
+        System.out.println("Inflation");
+    }
 }

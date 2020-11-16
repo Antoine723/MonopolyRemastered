@@ -24,7 +24,8 @@ public class BoardGame{
     static boolean isChoiceCorrect;
     static int randomNum;
     static Scanner scanner = new Scanner(System.in);
-    static Scanner prison_choice = new Scanner(System.in);
+    static Scanner prison_choice_scanner = new Scanner(System.in);
+    static Scanner turn_choice_scanner=new Scanner(System.in);
     static Random rand=new Random();
     static boolean useAttack=true;
     
@@ -145,7 +146,7 @@ public class BoardGame{
             
         }*/
         
-        
+        players.get(0).getAttack_card().effect();
         
     
         
@@ -268,6 +269,7 @@ public class BoardGame{
     public static void choice(Player player){
         ArrayList <Avenue> player_avenues= new ArrayList();
         ArrayList <String> group_color=new ArrayList();
+        boolean turn_choice=false;
         boolean sellProp=false; //variables booléennes pour savoir ce qu'on va proposer comme choix au joueur
         boolean putHouseHotel=false;
         for(int i=0;i<player.getProperties().size();i++){ //On va remplir la liste d'avenues du joueur à partir de sa liste de propriétés (pour proposer des choix sur ses avenues par la suite)
@@ -279,6 +281,23 @@ public class BoardGame{
         group_color=groupOfAvenues(player,player_avenues);
         if(!group_color.isEmpty()) putHouseHotel=true; //Si le joueur possède un groupe complet d'avenues (de même couleur), on va pouvoir lui proposer de poser maisons et hôtels
             //Pour l'attaque, vérifier l'attribut isUsed de la carte attaque associée au joueur
+        System.out.println("Rappel : utiliser votre carte attaque vous fait passer votre tour");
+        System.out.println("Vous pouvez : ");
+        System.out.println("Lancer les dés (entrez \"rollsdice\") ");
+        if(!player.getAttack_card().isItUsed()) System.out.println("Utiliser votre carte attaque (entrez \"attack\") "+player.getAttack_card().getName()+" "+player.getAttack_card().getEffect());
+        if(sellProp) System.out.println("Vendre des propriétés (entrez \"sell\")");
+        if(putHouseHotel) System.out.println("Poser des maisons ou hôtel sur vos avenues (entrez \"putHouse\")");
+        
+        while(!turn_choice){
+            switch(turn_choice_scanner.nextLine()){
+                case "attack":
+                    player.getAttack_card();
+                    turn_choice=true;
+                    break;
+                
+            }
+        }
+        
         
         
         
@@ -362,7 +381,7 @@ public class BoardGame{
     public static void getOutOfJail(Player player)
     {
         System.out.println("Pour sortir, faites votre choix : freecard si vous avec une carte de libération, pay si vous voulez payer (50€), ou roll si vous voulez tenter votre chance avec un double");
-        switch(prison_choice.nextLine())                           // on lit la réponse du joueur
+        switch(prison_choice_scanner.nextLine())                           // on lit la réponse du joueur
             {
                 case "freecard":                
 

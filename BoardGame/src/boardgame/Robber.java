@@ -52,4 +52,9 @@ public class Robber extends Attack
         
             
     }
+    
+    @Override
+    public void effect(){
+        System.out.println("Robber");
+    }
 }

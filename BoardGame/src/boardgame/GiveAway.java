@@ -27,4 +27,8 @@ public class GiveAway extends Attack {
             this.setIsUsed(true);
     }
     
+    @Override
+    public void effect(){
+        System.out.println("GiveAway");
+    }
 }

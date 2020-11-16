@@ -9,7 +9,7 @@ package boardgame;
  *
  * @author Antoine
  */
-public class Attack {
+public abstract class Attack {
     
     private String name;
     private String effect;
@@ -40,7 +40,7 @@ public class Attack {
         this.effect = effect;
     }
     
-    
+    public abstract void effect();
     
     
 }
