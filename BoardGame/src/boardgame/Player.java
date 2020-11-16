@@ -140,14 +140,15 @@ public abstract class Player implements Comparable<Player> {
         return dice;
     }
     
-    public void putHouse(Avenue avenue,int numberOfHouses,int price){
+    public void putHouse(Avenue avenue,int numberOfHouses){
         avenue.setHouse(numberOfHouses);
-        this.capital=this.capital-price;
+        updateRentOfAvenue(avenue);
+        
         
     }
-    public void putHotel(Avenue avenue,int price){
+    public void putHotel(Avenue avenue){
         avenue.setHotel(1);
-        this.capital=this.capital-price;
+        updateRentOfAvenue(avenue);
         
     }
     
@@ -178,4 +179,300 @@ public abstract class Player implements Comparable<Player> {
             player.setCapital(player.getCapital() + prop.getMortgage());
         }
     }
+    
+    
+    public void updateRentOfAvenue(Avenue avenue)                 // AJOUT D'UNE FONCTION QUI DETERMINE LOYER APRES LA PAUSE D'UN HOTEL OU MAISON                                           
+    {
+        float houseCoefficient;
+        float hotelCoefficient;
+        
+        switch(avenue.getCaseNumber())
+        {
+            case 1:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient =1.2F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 2.0F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+            
+            case 3:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient =1.2F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 2.0F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+            
+            case 6:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient =1.3F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 2.1F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 8:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient =1.4F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 2.2F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 9:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient =1.5F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 2.3F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 11:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient =1.6F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 2.4F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 13:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient =1.7F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 2.5F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 14:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient =1.8F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 2.6F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 16:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient =1.9F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 2.7F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 18:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 2.0F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 2.8F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 19:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 2.1F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 2.9F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 21:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 2.2F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 3.0F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 23:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 2.3F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 3.1F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 24:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 2.4F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 3.2F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 26:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 2.5F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 3.3F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 27:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 2.6F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 3.4F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 29:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 2.7F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 3.5F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 31:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 2.8F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 3.6F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 32:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 2.9F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 3.7F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 34:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 3.0F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 3.8F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 37:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 3.1F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 3.9F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+                
+            case 39:
+                if(avenue.getHouse() > 0)
+                {
+                    houseCoefficient = 3.2F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHouse() *houseCoefficient));
+                }
+                else if(avenue.getHotel() > 0)
+                {
+                    hotelCoefficient = 4.0F;
+                    avenue.setRent((int) (avenue.getBoughtPrice() * avenue.getHotel() *hotelCoefficient));
+                }
+                break;
+        }
+    }  
 }
