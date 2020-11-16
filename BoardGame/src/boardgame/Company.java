@@ -27,10 +27,21 @@ public class Company extends Property{
         this.number = number;
     }
     
-    
-    @Override
-    public int computeRent(){
-        return super.computeRent()*number;
-    }
-    
+   
+   @Override
+   public int computing(Property prop,Player player)
+   {
+       if (prop.getAssociatedPlayer().getNumberOfCompanies() == 1)         // si on a 1 compagnie
+       {
+           prop.setRent((player.rollsDice().get(0) + player.rollsDice().get(1)) * 400);        // instructions de la carte (400*valuer indiquée par les dés)
+       }
+       
+       else if(prop.getAssociatedPlayer().getNumberOfCompanies() == 2)
+       {
+           prop.setRent((player.rollsDice().get(0) + player.rollsDice().get(1)) * 1000);        // idem
+       }           
+
+       return prop.getRent();
+   }
+        
 }

@@ -105,4 +105,11 @@ public abstract class Property extends Case {
         this.isBought=false;
         
     }
+    
+    public int computing(Property prop,Player player)                           // AJOUT D'UNE FONCTION COMPUTING POUR TOUT CALCULER D'UN COUP 
+    {
+        return prop.getRent();
+    }
+        
+    
 }

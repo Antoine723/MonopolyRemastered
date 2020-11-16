@@ -61,13 +61,7 @@ public class Avenue extends Property{
         this.hotel = hotel;
     }
     
-    
-    @Override
-    public int computeRent() {
-        if(house ==0 && hotel ==0) return super.getRent();
-        else return super.computeRent()*(house>0 ? house : hotel); 
-    }
-    
+   
     public void updatePriceOfHousesAndHotels(Avenue avenue)
     {
         switch(avenue.getColor())
@@ -117,27 +111,10 @@ public class Avenue extends Property{
         }
     }   
     
-    public int computeRentOfAvenue(Avenue avenue,Player player)                 // AJOUT D'UNE FONCTION COMPUTE AVENUE
-                                                                                // comment l'implémenter sans énumérer chaque cas ??
+    @Override
+    public int computing(Property prop,Player player)
     {
-        switch(avenue.getCaseNumber())
-        {
-            case 1:
-                switch(avenue.getHouse())
-                {
-                    case 1:
-                        avenue.setRent(1000);
-                    case 2:
-                        avenue.setRent(3000);
-                    case 3:
-                        avenue.setRent(9000);
-                    case 4:
-                        avenue.setRent(16000);
-                }
-                
-        }
-        return avenue.getRent();
+        return prop.getRent();
     }
-    
-    
+
 }
