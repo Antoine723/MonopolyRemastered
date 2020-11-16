@@ -23,6 +23,7 @@ public class BoardGame{
     static int numberOfTurns=0;
     static boolean isChoiceCorrect;
     static int randomNum;
+    static int i;
     static Scanner scanner = new Scanner(System.in);
     static Scanner prison_choice_scanner = new Scanner(System.in);
     static Scanner turn_choice_scanner=new Scanner(System.in);
@@ -78,7 +79,7 @@ public class BoardGame{
     public static void main(String[] args) {
         initialize();
         //Instanciation des pions dans le main selon l'initialisation de la partie (choix des joueurs)
-        for(int i=0;i<numberOfPlayers;i++){
+        for(i=0;i<numberOfPlayers;i++){
             if(players.get(i).equals("Hat")){
                 Hat hat=(Hat) (players.get(i));
             }
@@ -96,7 +97,7 @@ public class BoardGame{
         Collections.sort(players); //Tri de l'arraylist joueurs par leur ordre de jeu
         
         //Attribution des cartes attaques
-        for (int i=0;i<numberOfPlayers;i++){
+        for (i=0;i<numberOfPlayers;i++){
             players.get(i).setAttack_card(attacks.get(rand.nextInt(attacks.size())));
         }
         players_in_game.addAll(players);
@@ -121,20 +122,20 @@ public class BoardGame{
         players.get(0).addProperty((Avenue)(board.get(6)));
         players.get(0).addProperty((Avenue)(board.get(9)));
         ArrayList <Avenue> play_ave = new ArrayList();
-        for(int i=0;i<players.get(0).getProperties().size();i++){
+        for(i=0;i<players.get(0).getProperties().size();i++){
             if(players.get(0).getProperties().get(i) instanceof Avenue) play_ave.add((Avenue)(players.get(0).getProperties().get(i)));
         }
         ArrayList <String> test=groupOfAvenues(players.get(0),play_ave);
-        for(int i=0;i<test.size();i++){
+        for(i=0;i<test.size();i++){
             System.out.println(test.get(i));
         }
-        /*for(int i=0;i<numberOfPlayers;i++){
+        /*for(i=0;i<numberOfPlayers;i++){
             displayInventory(players.get(i));
         }*/
         //Tant que la partie n'est pas terminée (tant qu'il reste plus d'un joueur en jeu
         /*while(players_in_game.size()>1){
             numberOfTurns++;
-            for(int i=0;i<players_in_game.size();i++){ //On fait le tour des joueurs encore en jeu
+            for(i=0;i<players_in_game.size();i++){ //On fait le tour des joueurs encore en jeu
                 if(players_in_game.get(i).isIsInJail()) getOutOfJail(players_in_game.get(i));//On teste d'abord si le joueur est en prison
                 else{ //S'il ne l'est pas, il joue son tour normalement
                     displayInventory(players_in_game.get(i));
@@ -166,7 +167,7 @@ public class BoardGame{
 
         }
         
-        for(int i=0;i<numberOfPlayers;i++){
+        for(i=0;i<numberOfPlayers;i++){
             isChoiceCorrect=false;
             System.out.println("Entrez le nom du joueur");
             names.add(scanner.next());//Saisie du nom des joueurs et ajout de ceux-ci dans une arrayList de noms
@@ -269,10 +270,12 @@ public class BoardGame{
     public static void choice(Player player){
         ArrayList <Avenue> player_avenues= new ArrayList();
         ArrayList <String> group_color=new ArrayList();
-        boolean turn_choice=false;
+        Scanner prop_to_sell_scanner=new Scanner(System.in);
+        boolean turn_choice=false;//booléen qui va permettre de savoir si l'utilisateur joue sa carte attaque (et donc ne fait que ça lors de son tour)
+        boolean first_turn_choice=false; //booléen qui va permettre de savoir si l'utilisateur a déjà fait un premier choix (vente de propriété ou pose de bâtiment), car il peut faire l'un des 2 + lancer les dés
         boolean sellProp=false; //variables booléennes pour savoir ce qu'on va proposer comme choix au joueur
         boolean putHouseHotel=false;
-        for(int i=0;i<player.getProperties().size();i++){ //On va remplir la liste d'avenues du joueur à partir de sa liste de propriétés (pour proposer des choix sur ses avenues par la suite)
+        for(i=0;i<player.getProperties().size();i++){ //On va remplir la liste d'avenues du joueur à partir de sa liste de propriétés (pour proposer des choix sur ses avenues par la suite)
             if(player.getProperties().get(i) instanceof Avenue){
                 player_avenues.add((Avenue)(player.getProperties().get(i))); //On ajoute toutes les avenues appartenant au joueur dans une ArrayList
             }
@@ -280,7 +283,6 @@ public class BoardGame{
         if(!player.getProperties().isEmpty()) sellProp=true; //Si le joueur possède des propriétés, on pourra lui propsoer d'en vendre
         group_color=groupOfAvenues(player,player_avenues);
         if(!group_color.isEmpty()) putHouseHotel=true; //Si le joueur possède un groupe complet d'avenues (de même couleur), on va pouvoir lui proposer de poser maisons et hôtels
-            //Pour l'attaque, vérifier l'attribut isUsed de la carte attaque associée au joueur
         System.out.println("Rappel : utiliser votre carte attaque vous fait passer votre tour");
         System.out.println("Vous pouvez : ");
         System.out.println("Lancer les dés (entrez \"rollsdice\") ");
@@ -290,8 +292,71 @@ public class BoardGame{
         
         while(!turn_choice){
             switch(turn_choice_scanner.nextLine()){
-                case "attack":
-                    player.getAttack_card().effect(players,player,board);
+                case "attack": //Attention prendre en compte si l'utilisateur effectue une action qu'il n'a pas le droit de faire
+                    if(!player.getAttack_card().isItUsed()){
+                        player.getAttack_card().effect(players,player,board);
+                        turn_choice=true;
+                    }
+                    else System.out.println("Vous avez déjà utilisé votre carte");
+                    break;
+                case "sell": //Fini, mais voir pour ajouter while par rapport au choix et optimiser le code (ex : déclaration de variables)
+                    if(sellProp){
+                        if(!first_turn_choice){
+                            System.out.println("Laquelle de vos propriétés souhaitez-vous vendre ?");
+                            displayProperties(player);
+                            String prop_to_sell_name=prop_to_sell_scanner.nextLine();
+                            Property prop_to_sell=null;
+                            for(i=0;i<player.getProperties().size();i++){
+                                if(player.getProperties().get(i).equals(prop_to_sell_name)) prop_to_sell=player.getProperties().get(i);
+                            }
+                            System.out.println("Souhaitez-vous la vendre à un joueur ou à la banque ?");
+                            Scanner who_to_sell_scanner=new Scanner(System.in);
+                            switch(who_to_sell_scanner.nextLine()){
+                                case "Joueur": 
+                                    System.out.println("A qui souhaitez-vous le vendre ?");
+                                    displayPlayers(player);
+                                    Player player_to_sell=null;
+                                    String player_to_sell_name=who_to_sell_scanner.nextLine();
+                                    for(i=0;i<players.size();i++){
+                                        if(players.get(i).equals(player_to_sell_name)) player_to_sell=players.get(i);
+                                    }
+                                    System.out.println(player_to_sell.getName()+", souhaitez-vous acheter "+prop_to_sell+" à "+player.getName()+" ?");
+                                    Scanner answer_from_buyer_scanner= new Scanner(System.in);
+                                    switch(answer_from_buyer_scanner.nextLine()){
+                                        case "Oui":
+                                            prop_to_sell.sellToSomeone(player, player_to_sell);
+                                            break;
+                                        case"Non":
+                                            break;
+                                    }
+                                    
+                                    break;
+                        case "Banque":
+                            prop_to_sell.sell(player);
+                            break;
+                        default:
+                            System.out.println("Indiquez un choix possible");
+                            break;
+                        }
+                        first_turn_choice=true;
+                    }
+                    else System.out.println("Vous n'avez pas de propriétés à vendre");
+                    break;
+                    }
+                case "putHouse":
+                    if(putHouseHotel){
+                        if(!first_turn_choice){
+                            
+                            
+                            
+                            first_turn_choice=true;
+                        }
+                        
+                    }
+                    else System.out.println("Vous ne pouvez pas poser de maison ou d'hôtel, il vous faut un groupe complet d'avenues de même couleur pour pouvoir en poser");
+                    break;
+                case "rollsdice":
+                    
                     turn_choice=true;
                     break;
                 
@@ -316,7 +381,19 @@ public class BoardGame{
         //AJOUTER EFFET DU PION
 
     
+    public static void displayPlayers(Player player){
+        for(i=0;i<players.size();i++){
+            if(!players.get(i).equals(player)){
+                System.out.println(players.get(i).getName());
+            }
+        }
+    }
     
+    public static void displayProperties(Player player){
+        for(i=0;i<player.getProperties().size();i++){
+            System.out.println(player.getProperties().get(i));
+        }
+    }
     
     
     public static void displayInventory(Player player){
@@ -325,7 +402,7 @@ public class BoardGame{
         System.out.println("Vous avez "+player.getCapital()+" €");
         System.out.println("");
         System.out.println("Vous possèdez : ");
-        for(int i=0;i<player.getProperties().size();i++){
+        for(i=0;i<player.getProperties().size();i++){
             if(player.getProperties().get(i) instanceof Avenue){ //Si la propriété est une avenue, on affiche le nombre de maisons/hôtel s'il y en a
                 if( ((Avenue)(player.getProperties().get(i))).getHouse()>0) System.out.println(((Avenue)(player.getProperties().get(i))).getName()+" avec "+((Avenue)(player.getProperties().get(i))).getHouse()+" maison(s) dessus, ");
                 else if(((Avenue)(player.getProperties().get(i))).getHotel()>0) System.out.println(((Avenue)(player.getProperties().get(i))).getName()+" avec "+((Avenue)(player.getProperties().get(i))).getHotel()+" hôtel dessus, ");
@@ -359,12 +436,12 @@ public class BoardGame{
         ArrayList <Avenue> all_board_avenues=new ArrayList();
         ArrayList <Avenue> group_board_avenues=new ArrayList();
         ArrayList <String> color_groups=new ArrayList();
-        for(int i=0;i<board.size();i++){ //On récupère la liste des avenues du plateau de jeu
+        for(i=0;i<board.size();i++){ //On récupère la liste des avenues du plateau de jeu
             if(board.get(i) instanceof Avenue){
                 all_board_avenues.add((Avenue)(board.get(i)));
             }
         }
-        for(int i=0;i<all_board_avenues.size();i++){ //On parcourt cette liste
+        for(i=0;i<all_board_avenues.size();i++){ //On parcourt cette liste
             if(!group_board_avenues.isEmpty() && all_board_avenues.get(i).getColor().equals(group_board_avenues.get(0).getColor())) group_board_avenues.add(all_board_avenues.get(i)); //group_board_avenues est une liste qui va contenir les avenues qui sont de même couleur
             else if(!group_board_avenues.isEmpty() && !all_board_avenues.get(i).getColor().equals(group_board_avenues.get(0).getColor())){
                 if(avenues.containsAll(group_board_avenues)) color_groups.add(group_board_avenues.get(0).getColor());
