@@ -62,9 +62,6 @@ public abstract class Property extends Case {
         this.associatedPlayer = associatedPlayer;
     }
     
-    public int computeRent(){
-        return rent;
-    }
     
     public int buy(Player player){
         int price;
@@ -76,6 +73,8 @@ public abstract class Property extends Case {
             this.associatedPlayer=player;
             player.addProperty(this);
             this.isBought=true;
+            if(this instanceof Company) player.setNumberOfCompanies(player.getNumberOfCompanies()+1);
+            else if(this instanceof RailRoad) player.setNumberOfRailRoads(player.getNumberOfRailRoads()+1);
             return 1; //Si renvoie 1, alors l'achat a été effectué correctement, si -1, alors non
         } 
         else {
@@ -95,6 +94,14 @@ public abstract class Property extends Case {
                 this.associatedPlayer=buyer;
                 seller.removeProperty(this);
                 buyer.addProperty(this);
+                if(this instanceof Company){
+                    buyer.setNumberOfCompanies(buyer.getNumberOfCompanies()+1);
+                    seller.setNumberOfCompanies(seller.getNumberOfCompanies()-1);
+                }
+                else if(this instanceof RailRoad){
+                    buyer.setNumberOfRailRoads(buyer.getNumberOfRailRoads()+1);
+                    seller.setNumberOfRailRoads(seller.getNumberOfRailRoads()-1);
+                }
                 return 1;
             }
             else{
@@ -109,8 +116,13 @@ public abstract class Property extends Case {
         if(this instanceof Avenue){
             seller.setCapital(seller.getCapital()+((Avenue) (this)).getBoughtPrice()/2 + ((Avenue) (this)).getPriceOfHouseAndHotels()* (int) ((Avenue) (this)).getSoldAvenueCoeff());
         }
-        else{
+        else if(this instanceof Company){
             seller.setCapital(seller.getCapital()+this.getBoughtPrice());
+            seller.setNumberOfCompanies(seller.getNumberOfCompanies()-1);
+        }
+        else if(this instanceof RailRoad){
+            seller.setCapital(seller.getCapital()+this.getBoughtPrice());
+            seller.setNumberOfRailRoads(seller.getNumberOfRailRoads()-1);
         }
         seller.removeProperty(this);
         this.associatedPlayer=null;
@@ -118,7 +130,7 @@ public abstract class Property extends Case {
         
     }
     
-    public int computing(Property prop,Player player)                           // AJOUT D'UNE FONCTION COMPUTING POUR TOUT CALCULER D'UN COUP 
+    public int computing(Property prop,Player player)                           
     {
         return prop.getRent();
     }
