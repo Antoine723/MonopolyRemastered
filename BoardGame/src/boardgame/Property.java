@@ -66,7 +66,11 @@ public abstract class Property extends Case {
         return rent;
     }
     
-    public int buy(Player player,int price){
+    public int buy(Player player){
+        int price;
+        if(player.isInflated()) price=2*this.getBoughtPrice();
+        else price=this.getBoughtPrice();
+        
         if(player.getCapital()-price>0){ //A voir si on met la condition ici ou dans le jeu
             player.setCapital(player.getCapital()-price);
             this.associatedPlayer=player;
@@ -79,26 +83,35 @@ public abstract class Property extends Case {
             return -1;
         }
     }
-    public int sellToSomeone(Player seller, Player buyer, int price){
+    public int sellToSomeone(Player seller, Player buyer){
+        int price;
+        if(this instanceof Avenue) price = ((Avenue) (this)).getBoughtPrice()/2 + ((Avenue) (this)).getPriceOfHouseAndHotels()* (int) ((Avenue) (this)).getSoldAvenueCoeff();
+        
+        else price=this.getBoughtPrice();
+        
         if(buyer.getCapital()-price>0){//Pareil ici que pour buy
-            buyer.setCapital(buyer.getCapital()-price);
-            seller.setCapital(seller.getCapital()+price);
-            this.associatedPlayer=buyer;
-            seller.removeProperty(this);
-            buyer.addProperty(this);
-            /*seller.setNumberOfProperty(seller.getNumberOfProperty()-1);
-            buyer.setNumberOfProperty(buyer.getNumberOfProperty()+1);*/
-            return 1;
-        }
-        else{
-            System.out.println("Vous n'avez pas assez d'argent pour acheter cette propriété");
-            return -1;
-        } 
+                buyer.setCapital(buyer.getCapital()-price);
+                seller.setCapital(seller.getCapital()+price);
+                this.associatedPlayer=buyer;
+                seller.removeProperty(this);
+                buyer.addProperty(this);
+                return 1;
+            }
+            else{
+                System.out.println("Vous n'avez pas assez d'argent pour acheter cette propriété");
+                return -1;
+            }
+        
+        
         
     }
-    public void sell(Player seller, int price){ //Fonction vendre à la banque
-        seller.setCapital(seller.getCapital()+price);
-        //seller.setNumberOfProperty(seller.getNumberOfProperty()-1);
+    public void sell(Player seller){ //Fonction vendre à la banque
+        if(this instanceof Avenue){
+            seller.setCapital(seller.getCapital()+((Avenue) (this)).getBoughtPrice()/2 + ((Avenue) (this)).getPriceOfHouseAndHotels()* (int) ((Avenue) (this)).getSoldAvenueCoeff());
+        }
+        else{
+            seller.setCapital(seller.getCapital()+this.getBoughtPrice());
+        }
         seller.removeProperty(this);
         this.associatedPlayer=null;
         this.isBought=false;
