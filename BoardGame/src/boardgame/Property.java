@@ -71,7 +71,6 @@ public abstract class Property extends Case {
             player.setCapital(player.getCapital()-price);
             this.associatedPlayer=player;
             player.addProperty(this);
-            player.setNumberOfProperty(player.getNumberOfProperty()+1);
             this.isBought=true;
             return 1; //Si renvoie 1, alors l'achat a été effectué correctement, si -1, alors non
         } 
