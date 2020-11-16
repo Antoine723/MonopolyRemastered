@@ -22,7 +22,7 @@ public class Inflation extends Attack {
     
     public void payDoubleRent(Player attackedPlayer)
     {
-           attackedPlayer.set;
+           attackedPlayer.setInflated(true);
            this.setIsUsed(true);
     }
     

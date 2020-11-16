@@ -19,11 +19,11 @@ public abstract class Player implements Comparable<Player> {
     private int numberCase=0;
     private boolean isInJail=false;
     private int playerNumber;
-    private int numberOfAvenues=0;
     private int free_card=0;
-    private int numberOfProperty=0;
+    private int numberOfAvenues=0;
     private int numberOfRailRoads=0;
     private int numberOfCompanies=0;
+    private boolean inflated=false;
     private Attack attack_card=null;
     private ArrayList <Property> properties=new ArrayList();
     
@@ -55,9 +55,6 @@ public abstract class Player implements Comparable<Player> {
         return numberOfAvenues;
     }
 
-    public int getNumberOfProperty() {
-        return numberOfProperty;
-    }
 
     public int getNumberOfRailRoads() {
         return numberOfRailRoads;
@@ -73,6 +70,10 @@ public abstract class Player implements Comparable<Player> {
 
     public ArrayList<Property> getProperties() {
         return properties;
+    }
+
+    public boolean isInflated() {
+        return inflated;
     }
     
     
@@ -106,9 +107,6 @@ public abstract class Player implements Comparable<Player> {
         this.free_card = free_card;
     }
 
-    public void setNumberOfProperty(int numberOfProperty) {
-        this.numberOfProperty = numberOfProperty;
-    }
 
     public void setNumberOfRailRoads(int numberOfRailRoads) {
         this.numberOfRailRoads = numberOfRailRoads;
@@ -127,6 +125,10 @@ public abstract class Player implements Comparable<Player> {
     }
     public void removeProperty(Property prop){
         this.properties.remove(prop);
+    }
+
+    public void setInflated(boolean inflated) {
+        this.inflated = inflated;
     }
     
     
