@@ -5,6 +5,8 @@
  */
 package boardgame;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Antoine
@@ -40,7 +42,8 @@ public abstract class Attack {
         this.effect = effect;
     }
     
-    public abstract void effect();
+    public abstract void effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board);
+    
     
     
 }

@@ -5,6 +5,9 @@
  */
 package boardgame;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  *
  * @author Antoine
@@ -17,15 +20,26 @@ public class Inflation extends Attack {
         
     }
     
-    public void payDoubleRent(Property property, Player attackedPlayer)
+    public void payDoubleRent(Player attackedPlayer)
     {
-           property.setBoughtPrice(property.getBoughtPrice() * 2); // on double le prix d'achat
-           property.setAssociatedPlayer(attackedPlayer); // on associe le joueur attaqué à la propriété doublée
+           attackedPlayer.set;
            this.setIsUsed(true);
     }
     
     @Override
-    public void effect(){
-        System.out.println("Inflation");
+    public void effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board){
+        Scanner attacked_player_scanner=new Scanner(System.in);
+        players.remove(attacker);
+        System.out.println("Quel joueur voulez-vous attaquer ?");
+        for(int i=0;i<players.size();i++){
+            System.out.print(players.get(i));
+        }
+        String attackedPlayerName=attacked_player_scanner.nextLine();
+        Player attackedPlayer=null;
+        for(int i=0;i<players.size();i++){
+            if(players.get(i).getName().equals(attackedPlayerName)) attackedPlayer=players.get(i);
+        }
+        payDoubleRent(attackedPlayer);
+        
     }
 }

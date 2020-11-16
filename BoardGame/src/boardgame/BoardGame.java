@@ -146,7 +146,7 @@ public class BoardGame{
             
         }*/
         
-        players.get(0).getAttack_card().effect();
+        
         
     
         
@@ -291,11 +291,12 @@ public class BoardGame{
         while(!turn_choice){
             switch(turn_choice_scanner.nextLine()){
                 case "attack":
-                    player.getAttack_card();
+                    player.getAttack_card().effect(players,player,board);
                     turn_choice=true;
                     break;
                 
             }
+            
         }
         
         

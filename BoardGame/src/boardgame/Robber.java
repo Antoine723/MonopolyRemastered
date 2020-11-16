@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package boardgame;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  *
@@ -54,7 +56,29 @@ public class Robber extends Attack
     }
     
     @Override
-    public void effect(){
-        System.out.println("Robber");
+    public void effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board){
+        Scanner attacked_player_scanner=new Scanner(System.in);
+        Scanner avenue_scanner=new Scanner(System.in);
+        players.remove(attacker);
+        System.out.println("Quel joueur voulez-vous attaquer ?");
+        for(int i=0;i<players.size();i++){
+            System.out.print(players.get(i));
+        }
+        String attackedPlayerName=attacked_player_scanner.nextLine();
+        Player attackedPlayer=null;
+        for(int i=0;i<players.size();i++){
+            if(players.get(i).getName().equals(attackedPlayerName)) attackedPlayer=players.get(i);
+        }
+        System.out.println("Quelle avenue voulez-vous voler ? ");
+        for(int i=0;i<attackedPlayer.getProperties().size();i++){
+            if(attackedPlayer.getProperties().get(i) instanceof Avenue) System.out.println(attackedPlayer.getProperties().get(i).getName());
+        }
+        String chosen_avenue_name=avenue_scanner.nextLine();
+        Avenue chosen_avenue=null;
+        for(int i=0;i<attackedPlayer.getProperties().size();i++){
+            if(chosen_avenue_name.equals(attackedPlayer.getProperties().get(i).getName())) chosen_avenue=(Avenue)(attackedPlayer.getProperties().get(i));
+        }
+        
+        stealAvenue(chosen_avenue,attackedPlayer,attacker);
     }
 }
