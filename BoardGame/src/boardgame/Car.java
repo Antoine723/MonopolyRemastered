@@ -5,6 +5,7 @@
  */
 package boardgame;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -18,18 +19,25 @@ public class Car extends Player implements Citizen{
         this.setPlayerNumber(playerNumber);
     }
     
-    Scanner scanner = new Scanner(System.in);
-    int choice=this.getNumberCase();
+    Scanner case_choice_scanner = new Scanner(System.in);
     
-    public void moveTo(){
+    
+    public void moveTo(ArrayList <Case> board){
         boolean isChoiceCorrect=false;
+        String case_choice_name;
+        boolean correct_move=false;
+        Case case_choice=null;
         System.out.println("Choisissez la case sur laquelle vous souhaitez aller");
+        do{
+            case_choice_name=case_choice_scanner.nextLine();
+            for(int i=0;i<board.size();i++){
+                if(board.get(i).getName().equals(case_choice_name)) case_choice=board.get(i);
+            }
+            if(case_choice==this.getPlayer_case())System.out.println("Veuillez saisir une autre case que celle sur laquelle vous êtes actuellement");
+            else correct_move=true;
+        }while(!correct_move);
         
-        while(choice==this.getNumberCase()){
-            choice= scanner.nextInt();
-            if(choice==this.getNumberCase()) System.out.println("Veuillez saisir une autre case que celle sur laquelle vous êtes actuellement");
-        }
-        this.setNumberCase(choice);
+        this.setPlayer_case(case_choice);
     }
     
     public void doubleRent(){

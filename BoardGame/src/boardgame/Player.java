@@ -16,7 +16,7 @@ public abstract class Player implements Comparable<Player> {
     
     private String name;
     private int capital=1000;
-    private int numberCase=0;
+    private Case player_case;
     private boolean isInJail=false;
     private int playerNumber;
     private int free_card=0;
@@ -33,10 +33,6 @@ public abstract class Player implements Comparable<Player> {
 
     public int getCapital() {
         return capital;
-    }
-
-    public int getNumberCase() {
-        return numberCase;
     }
 
     public boolean isIsInJail() {
@@ -75,6 +71,10 @@ public abstract class Player implements Comparable<Player> {
     public boolean isInflated() {
         return inflated;
     }
+
+    public Case getPlayer_case() {
+        return player_case;
+    }
     
     
     
@@ -91,8 +91,8 @@ public abstract class Player implements Comparable<Player> {
         this.capital = capital;
     }
 
-    public void setNumberCase(int numberCase) {
-        this.numberCase = numberCase;
+    public void setPlayer_case(Case player_case) {
+        this.player_case = player_case;
     }
 
     public void setIsInJail(boolean isInJail) {
@@ -142,8 +142,8 @@ public abstract class Player implements Comparable<Player> {
         return dice;
     }
     
-    public void putHouse(Avenue avenue,int numberOfHouses){
-        avenue.setHouse(numberOfHouses);
+    public void putHouse(Avenue avenue){
+        avenue.setHouse(avenue.getHouse()+1);
         updateRentOfAvenue(avenue);
         
         
@@ -154,9 +154,13 @@ public abstract class Player implements Comparable<Player> {
         
     }
     
-    public void inJail(){
-        this.numberCase=10; //Case prison
-        this.isInJail=true;
+    public void inJail(ArrayList <Case> board){
+        isInJail=true;
+        Prison prison=null;
+        for(int i=0;i<board.size();i++){
+            if(board.get(i) instanceof Prison) prison=(Prison)(board.get(i));
+        }
+        player_case=prison;
     }
     
     

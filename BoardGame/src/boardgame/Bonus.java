@@ -23,7 +23,7 @@ public class Bonus extends Case{
     public void effect(Player player,ArrayList <Case> board){
         int num_effect=rand.nextInt(4)+1;
         amount=rand.nextInt(200-50+1)+50;
-        int newCase=rand.nextInt(39)+1;
+        Case newCase;
         if(this.getName().equals("Chance")){
             switch(num_effect){
                 case 1://Carte chance = joueur reçoit de l'argent
@@ -35,16 +35,17 @@ public class Bonus extends Case{
                     System.out.println("Dommage, une racaille vous es tombée dessus et vous a volé "+amount+" €");
                     break;
                 case 3://Carte chance = joueur est déplacé sur une autre case
-                    while(newCase==player.getNumberCase()){
-                        newCase=rand.nextInt(40);
-                    }
-                    if(newCase<player.getNumberCase()) player.setCapital(player.getCapital()+200); //Si le joueur passe par la case départ, il touche l'argent
-                    player.setNumberCase(newCase);
-                    System.out.println("Vous êtes à présent sur la case "+board.get(newCase).getName());
+                    do{
+                        newCase=board.get(rand.nextInt(board.size()));
+                    }while(newCase==player.getPlayer_case());
+                    
+                    if(newCase.getCaseNumber()<player.getPlayer_case().getCaseNumber()) player.setCapital(player.getCapital()+200); //Si le joueur passe par la case départ, il touche l'argent
+                    player.setPlayer_case(newCase);
+                    System.out.println("Vous êtes à présent sur la case "+player.getPlayer_case().getName());
                     break;
                 case 4://Carte chance = joueur est emmené en prison
                     System.out.println("Vous allez en prison");
-                    player.inJail();
+                    player.inJail(board);
                     break;    
             }
             
@@ -66,11 +67,10 @@ public class Bonus extends Case{
                     break;
                 case 4://Carte caisse de communauté = joueur est emmené en prison
                     System.out.println("Vous allez en prison");
-                    player.inJail();
+                    player.inJail(board);
                     break;    
             }
             
         }
     }
-    
 }
