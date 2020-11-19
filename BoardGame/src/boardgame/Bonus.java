@@ -32,7 +32,7 @@ public class Bonus extends Case{
                     break;
                 case 2://Carte chance = joueur perd de l'argent
                     player.setCapital(player.getCapital()-amount);
-                    System.out.println("Dommage, une racaille vous es tombée dessus et vous a volé "+amount+" €");
+                    System.out.println("Dommage, une racaille vous est tombée dessus et vous a volé "+amount+" €");
                     break;
                 case 3://Carte chance = joueur est déplacé sur une autre case
                     do{

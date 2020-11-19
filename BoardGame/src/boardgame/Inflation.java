@@ -27,19 +27,19 @@ public class Inflation extends Attack {
     }
     
     @Override
-    public void effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board){
+    public boolean effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board){
         Scanner attacked_player_scanner=new Scanner(System.in);
-        players.remove(attacker);
         System.out.println("Quel joueur voulez-vous attaquer ?");
         for(int i=0;i<players.size();i++){
-            System.out.print(players.get(i));
+            if(!players.get(i).equals(attacker)) System.out.print(players.get(i).getName());
         }
+        System.out.println("");
         String attackedPlayerName=attacked_player_scanner.nextLine();
         Player attackedPlayer=null;
         for(int i=0;i<players.size();i++){
             if(players.get(i).getName().equals(attackedPlayerName)) attackedPlayer=players.get(i);
         }
         payDoubleRent(attackedPlayer);
-        
+        return true;
     }
 }

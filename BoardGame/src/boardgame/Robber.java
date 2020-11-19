@@ -32,8 +32,8 @@ public class Robber extends Attack
                 {
                     case 1:
                         System.out.println("Quel fieffé voleur ! Vous vous êtes emparé du terrain de votre cible");
-                        attackedPlayer.setNumberOfAvenues(attackedPlayer.getNumberOfAvenues() - 1);
-                        robber.setNumberOfAvenues(robber.getNumberOfAvenues() + 1);
+                        attackedPlayer.getAvenues().remove(avenue);
+                        robber.getAvenues().add(avenue);
                         avenue.setAssociatedPlayer(robber);
                         correct = true;
                         break;
@@ -56,29 +56,37 @@ public class Robber extends Attack
     }
     
     @Override
-    public void effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board){
+    public boolean effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board){
         Scanner attacked_player_scanner=new Scanner(System.in);
         Scanner avenue_scanner=new Scanner(System.in);
-        players.remove(attacker);
         System.out.println("Quel joueur voulez-vous attaquer ?");
         for(int i=0;i<players.size();i++){
-            System.out.print(players.get(i));
+            if(!players.get(i).equals(attacker))System.out.print(players.get(i).getName());
         }
+        System.out.println("");
         String attackedPlayerName=attacked_player_scanner.nextLine();
         Player attackedPlayer=null;
         for(int i=0;i<players.size();i++){
             if(players.get(i).getName().equals(attackedPlayerName)) attackedPlayer=players.get(i);
         }
-        System.out.println("Quelle avenue voulez-vous voler ? ");
-        for(int i=0;i<attackedPlayer.getProperties().size();i++){
-            if(attackedPlayer.getProperties().get(i) instanceof Avenue) System.out.println(attackedPlayer.getProperties().get(i).getName());
+        if(attackedPlayer.getProperties().isEmpty()){
+            System.out.println("Ce joueur n'a pas de propriétés");
+            return false;
         }
-        String chosen_avenue_name=avenue_scanner.nextLine();
-        Avenue chosen_avenue=null;
-        for(int i=0;i<attackedPlayer.getProperties().size();i++){
-            if(chosen_avenue_name.equals(attackedPlayer.getProperties().get(i).getName())) chosen_avenue=(Avenue)(attackedPlayer.getProperties().get(i));
+        else{
+            System.out.println("Quelle avenue voulez-vous voler ? ");
+            for(int i=0;i<attackedPlayer.getProperties().size();i++){
+                if(attackedPlayer.getProperties().get(i) instanceof Avenue) System.out.println(attackedPlayer.getProperties().get(i).getName());
+            }
+            String chosen_avenue_name=avenue_scanner.nextLine();
+            Avenue chosen_avenue=null;
+            for(int i=0;i<attackedPlayer.getProperties().size();i++){
+                if(chosen_avenue_name.equals(attackedPlayer.getProperties().get(i).getName())) chosen_avenue=(Avenue)(attackedPlayer.getProperties().get(i));
+            }
+
+            stealAvenue(chosen_avenue,attackedPlayer,attacker);
+            return true;
         }
         
-        stealAvenue(chosen_avenue,attackedPlayer,attacker);
     }
 }

@@ -42,7 +42,7 @@ public abstract class Attack {
         this.effect = effect;
     }
     
-    public abstract void effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board);
+    public abstract boolean effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board);
     
     
     

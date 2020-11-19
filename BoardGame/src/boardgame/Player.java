@@ -15,18 +15,18 @@ import java.util.Random;
 public abstract class Player implements Comparable<Player> {
     
     private String name;
-    private int capital=1000;
+    private int capital=60000;
     private Case player_case;
     private boolean isInJail=false;
     private int playerNumber;
     private int free_card=0;
-    private int numberOfAvenues=0;
+ 
     private int numberOfRailRoads=0;
     private int numberOfCompanies=0;
     private boolean inflated=false;
-    private Citizen figurine;
     private Attack attack_card=null;
     private ArrayList <Property> properties=new ArrayList();
+    private ArrayList <Avenue> avenues=new ArrayList();
     
     public String getName() {
         return name;
@@ -48,9 +48,6 @@ public abstract class Player implements Comparable<Player> {
         return free_card;
     }
     
-    public int getNumberOfAvenues() {
-        return numberOfAvenues;
-    }
 
 
     public int getNumberOfRailRoads() {
@@ -77,8 +74,8 @@ public abstract class Player implements Comparable<Player> {
         return player_case;
     }
 
-    public Citizen getFigurine() {
-        return figurine;
+    public ArrayList<Avenue> getAvenues() {
+        return avenues;
     }
     
     
@@ -104,9 +101,6 @@ public abstract class Player implements Comparable<Player> {
         this.isInJail = isInJail;
     }
 
-    public void setNumberOfAvenues(int numberOfAvenues) {
-        this.numberOfAvenues = numberOfAvenues;
-    }
 
     public void setFree_card(int free_card) {
         this.free_card = free_card;
@@ -131,6 +125,13 @@ public abstract class Player implements Comparable<Player> {
     public void removeProperty(Property prop){
         this.properties.remove(prop);
     }
+    
+    public void addAvenue(Avenue avenue){
+        this.avenues.add(avenue);
+    }
+    public void removeAvenue(Avenue avenue){
+        this.avenues.remove(avenue);
+    }
 
     public void setInflated(boolean inflated) {
         this.inflated = inflated;
@@ -139,10 +140,9 @@ public abstract class Player implements Comparable<Player> {
     
     public ArrayList <Integer> rollsDice(){
         Random rand=new Random();
-        ArrayList <Integer> dice= new ArrayList(){{
-            add(rand.nextInt(6)+1);
-            add(rand.nextInt(6)+1);
-        }};
+        ArrayList <Integer> dice= new ArrayList();
+            dice.add(rand.nextInt(6)+1);
+            dice.add(rand.nextInt(6)+1);
         
         return dice;
     }

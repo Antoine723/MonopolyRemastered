@@ -24,6 +24,7 @@ public class BoardGame{
     static boolean isChoiceCorrect;
     static int randomNum;
     static int i;
+    static int index_player;
     static Scanner scanner = new Scanner(System.in);
     static Scanner prison_choice_scanner = new Scanner(System.in);
     static Scanner turn_choice_scanner=new Scanner(System.in);
@@ -95,13 +96,13 @@ public class BoardGame{
             }
         }
         Collections.sort(players); //Tri de l'arraylist joueurs par leur ordre de jeu
-        
+        board_creation();
         //Attribution des cartes attaques
         for (i=0;i<numberOfPlayers;i++){
             players.get(i).setAttack_card(attacks.get(rand.nextInt(attacks.size())));
+            players.get(i).setPlayer_case(board.get(0));
         }
         players_in_game.addAll(players);
-        board_creation();
         /*Avenue ave= (Avenue) board.get(1);
         ave.setAssociatedPlayer(players.get(0));
         players.get(0).setNumberOfAvenues(players.get(0).getNumberOfAvenues());
@@ -133,19 +134,19 @@ public class BoardGame{
             displayInventory(players.get(i));
         }*/
         //Tant que la partie n'est pas terminée (tant qu'il reste plus d'un joueur en jeu
-        /*while(players_in_game.size()>1){
+        while(players_in_game.size()>1){
             numberOfTurns++;
-            for(i=0;i<players_in_game.size();i++){ //On fait le tour des joueurs encore en jeu
-                if(players_in_game.get(i).isIsInJail()) getOutOfJail(players_in_game.get(i));//On teste d'abord si le joueur est en prison
+            for(index_player=0;index_player<players_in_game.size();index_player++){ //On fait le tour des joueurs encore en jeu
+                if(players_in_game.get(index_player).isIsInJail()) getOutOfJail(players_in_game.get(index_player));//On teste d'abord si le joueur est en prison
                 else{ //S'il ne l'est pas, il joue son tour normalement
-                    displayInventory(players_in_game.get(i));
-                    //choice();
+                    displayInventory(players_in_game.get(index_player));
+                    choice(players_in_game.get(index_player));
                 }
             }
             
             
             
-        }*/
+        }
         
         
         
@@ -224,213 +225,264 @@ public class BoardGame{
     }
     public static void board_creation(){
         
-        
         board.add(new Case("Départ",0));
-        board.add(new Avenue(60,200,"Boulevard de Belleville",1,"Marron",3000));        // AJOUT DE L'HYPOTHEQUE EN DERNIER ARGUMENT + VRAI PRIX DES LOYERS
+        board.add(new Avenue(60,200,"Boulevard de Belleville",1,ColorAvenue.VIOLET,3000));        // AJOUT DE L'HYPOTHEQUE EN DERNIER ARGUMENT + VRAI PRIX DES LOYERS
         board.add(new Bonus("Caisse de communauté",2));
-        board.add(new Avenue(60,400,"Rue Lecourbe",3,"Marron",3000));
+        board.add(new Avenue(60,400,"Rue Lecourbe",3,ColorAvenue.VIOLET,3000));
         board.add(new Taxes("Impôt sur le revenu",4,200));
         board.add(new RailRoad(200,2500,"Gare Montparnasse",5,10000));
-        board.add(new Avenue(100,600,"Rue de Vaugirard",6,"Ciel",5000));
+        board.add(new Avenue(100,600,"Rue de Vaugirard",6,ColorAvenue.CIEL,5000));
         board.add(new Bonus("Chance",7));
-        board.add(new Avenue(100,600,"Rue de Courcelles",8,"Ciel",5000));
-        board.add(new Avenue(120,800,"Avenue de la République",9,"Ciel",6000));
+        board.add(new Avenue(100,600,"Rue de Courcelles",8,ColorAvenue.CIEL,5000));
+        board.add(new Avenue(120,800,"Avenue de la République",9,ColorAvenue.CIEL,6000));
         board.add(new Prison("Prison",10));
-        board.add(new Avenue(140,1000,"Boulevard de la Villette",11,"Rose",7000));
+        board.add(new Avenue(140,1000,"Boulevard de la Villette",11,ColorAvenue.ROSE,7000));
         board.add(new Company(150,"Compagnie de distribution d'électricité",12,7500));
-        board.add(new Avenue(140,1000,"Avenue de Neuilly",13,"Rose",7000));
-        board.add(new Avenue(160,1200,"Rue de Paradis",14,"Rose",8000));
+        board.add(new Avenue(140,1000,"Avenue de Neuilly",13,ColorAvenue.ROSE,7000));
+        board.add(new Avenue(160,1200,"Rue de Paradis",14,ColorAvenue.ROSE,8000));
         board.add(new RailRoad(200,2500,"Gare de Lyon",15,10000));
-        board.add(new Avenue(180,1400,"Avenue Mozart",16,"Orange",9000));
+        board.add(new Avenue(180,1400,"Avenue Mozart",16,ColorAvenue.ORANGE,9000));
         board.add(new Bonus("Caisse de communauté",17));
-        board.add(new Avenue(180,1400,"Boulevard Saint-Michel",18,"Orange",9000));
-        board.add(new Avenue(200,1600,"Place Pigalle",19,"Orange",10000));
+        board.add(new Avenue(180,1400,"Boulevard Saint-Michel",18,ColorAvenue.ORANGE,9000));
+        board.add(new Avenue(200,1600,"Place Pigalle",19,ColorAvenue.ORANGE,10000));
         board.add(new Case("Parc gratuit",20));
-        board.add(new Avenue(220,1800,"Avenue Matignon",21,"Rouge",11000));
+        board.add(new Avenue(220,1800,"Avenue Matignon",21,ColorAvenue.ROUGE,11000));
         board.add(new Bonus("Chance",22));
-        board.add(new Avenue(220,1800,"Boulevard Malesherbes",23,"Rouge",11000));
-        board.add(new Avenue(240,2000,"Avenue Henri-Martin",24,"Rouge",12000));
+        board.add(new Avenue(220,1800,"Boulevard Malesherbes",23,ColorAvenue.ROUGE,11000));
+        board.add(new Avenue(240,2000,"Avenue Henri-Martin",24,ColorAvenue.ROUGE,12000));
         board.add(new RailRoad(200,2500,"Gare du Nord",25,10000));
-        board.add(new Avenue(260,2200,"Faubourg Saint-Honoré",26,"Jaune",13000));
-        board.add(new Avenue(260,2200,"Place de la bourse",27,"Jaune",13000));
+        board.add(new Avenue(260,2200,"Faubourg Saint-Honoré",26,ColorAvenue.JAUNE,13000));
+        board.add(new Avenue(260,2200,"Place de la bourse",27,ColorAvenue.JAUNE,13000));
         board.add(new Company(150,"Compagnie de distribution des eaux",28,7500));
-        board.add(new Avenue(280,2400,"Rue La Fayette",29,"Jaune",14000));
+        board.add(new Avenue(280,2400,"Rue La Fayette",29,ColorAvenue.JAUNE,14000));
         board.add(new Case("Allez en prison",30));
-        board.add(new Avenue(300,2600,"Avenue de Breuteuil",31,"Vert",15000));
-        board.add(new Avenue(300,2600,"Avenue Foch",32,"Vert",15000));
+        board.add(new Avenue(300,2600,"Avenue de Breuteuil",31,ColorAvenue.VERT,15000));
+        board.add(new Avenue(300,2600,"Avenue Foch",32,ColorAvenue.VERT,15000));
         board.add(new Bonus("Caisse de communauté",33));
-        board.add(new Avenue(320,2800,"Boulevard des Capucines",34,"Vert",16000));
+        board.add(new Avenue(320,2800,"Boulevard des Capucines",34,ColorAvenue.VERT,16000));
         board.add(new RailRoad(200,2500,"Gare Saint-Lazare",35,10000));
         board.add(new Bonus("Chance",36));
-        board.add(new Avenue(350,3500,"Avenue des Champs-Elysées",37,"Bleu",17500));
+        board.add(new Avenue(350,3500,"Avenue des Champs-Elysées",37,ColorAvenue.BLEU,17500));
         board.add(new Taxes("Taxe de luxe",38,100));
-        board.add(new Avenue(400,5000,"Rue de la Paix",39,"Bleu",20000));
+        board.add(new Avenue(400,5000,"Rue de la Paix",39,ColorAvenue.BLEU,20000));
     }
 
     public static void choice(Player player){
-        ArrayList <Avenue> player_avenues= new ArrayList();
-        ArrayList <String> group_color=new ArrayList();
+        
+        ArrayList <ColorAvenue> group_color=new ArrayList();
+        ArrayList <Avenue> avenues_where_to_destroy_house= new ArrayList();
         Scanner prop_to_sell_scanner=new Scanner(System.in);
         boolean turn_choice=false;//booléen qui va permettre de savoir si l'utilisateur joue sa carte attaque (et donc ne fait que ça lors de son tour)
         boolean first_turn_choice=false; //booléen qui va permettre de savoir si l'utilisateur a déjà fait un premier choix (vente de propriété ou pose de bâtiment), car il peut faire l'un des 2 + lancer les dés
         boolean sellProp=false; //variables booléennes pour savoir ce qu'on va proposer comme choix au joueur
         boolean putHouseHotel=false;
-        for(i=0;i<player.getProperties().size();i++){ //On va remplir la liste d'avenues du joueur à partir de sa liste de propriétés (pour proposer des choix sur ses avenues par la suite)
-            if(player.getProperties().get(i) instanceof Avenue){
-                player_avenues.add((Avenue)(player.getProperties().get(i))); //On ajoute toutes les avenues appartenant au joueur dans une ArrayList
-            }
-        }
-        if(!player.getProperties().isEmpty()) sellProp=true; //Si le joueur possède des propriétés, on pourra lui propsoer d'en vendre
-        group_color=groupOfAvenues(player,player_avenues);
-        if(!group_color.isEmpty()) putHouseHotel=true; //Si le joueur possède un groupe complet d'avenues (de même couleur), on va pouvoir lui proposer de poser maisons et hôtels
-        System.out.println("Rappel : utiliser votre carte attaque vous fait passer votre tour");
-        System.out.println("Vous pouvez : ");
-        System.out.println("Lancer les dés (entrez \"rollsdice\") ");
-        if(!player.getAttack_card().isItUsed()) System.out.println("Utiliser votre carte attaque (entrez \"attack\") "+player.getAttack_card().getName()+" "+player.getAttack_card().getEffect());
-        if(sellProp) System.out.println("Vendre des propriétés (entrez \"sell\")");
-        if(putHouseHotel) System.out.println("Poser des maisons ou hôtel sur vos avenues (entrez \"putHouse\")");
-        
+        boolean canDestroy=false;
         while(!turn_choice){
-            switch(turn_choice_scanner.nextLine()){
-                case "attack": //Attention prendre en compte si l'utilisateur effectue une action qu'il n'a pas le droit de faire
-                    if(!player.getAttack_card().isItUsed()){
-                        player.getAttack_card().effect(players,player,board);
-                        turn_choice=true;
-                    }
-                    else System.out.println("Vous avez déjà utilisé votre carte");
-                    break;
-                case "sell": //Fini, mais voir pour ajouter while par rapport au choix et optimiser le code (ex : déclaration de variables)
-                    if(sellProp){
-                        if(!first_turn_choice){
-                            System.out.println("Laquelle de vos propriétés souhaitez-vous vendre ?");
-                            displayProperties(player);
-                            String prop_to_sell_name=prop_to_sell_scanner.nextLine();
-                            Property prop_to_sell=null;
-                            for(i=0;i<player.getProperties().size();i++){
-                                if(player.getProperties().get(i).equals(prop_to_sell_name)) prop_to_sell=player.getProperties().get(i);
-                            }
-                            System.out.println("Souhaitez-vous la vendre à un joueur ou à la banque ?");
-                            Scanner who_to_sell_scanner=new Scanner(System.in);
-                            switch(who_to_sell_scanner.nextLine()){
-                                case "Joueur": 
-                                    System.out.println("A qui souhaitez-vous le vendre ?");
-                                    displayPlayers(player);
-                                    Player player_to_sell=null;
-                                    String player_to_sell_name=who_to_sell_scanner.nextLine();
-                                    for(i=0;i<players.size();i++){
-                                        if(players.get(i).equals(player_to_sell_name)) player_to_sell=players.get(i);
-                                    }
-                                    System.out.println(player_to_sell.getName()+", souhaitez-vous acheter "+prop_to_sell+" à "+player.getName()+" ?");
-                                    Scanner answer_from_buyer_scanner= new Scanner(System.in);
-                                    switch(answer_from_buyer_scanner.nextLine()){
-                                        case "Oui":
-                                            prop_to_sell.sellToSomeone(player, player_to_sell);
-                                            break;
-                                        case"Non":
-                                            break;
-                                    }
-                                    
-                                    break;
-                        case "Banque":
-                            prop_to_sell.sell(player);
-                            break;
-                        default:
-                            System.out.println("Indiquez un choix possible");
-                            break;
+            if(!player.getProperties().isEmpty()) sellProp=true; //Si le joueur possède des propriétés, on pourra lui propsoer d'en vendre
+            group_color=groupOfAvenues(player,player.getAvenues());
+            if(!group_color.isEmpty() && !first_turn_choice) putHouseHotel=true; //Si le joueur possède un groupe complet d'avenues (de même couleur), on va pouvoir lui proposer de poser maisons et hôtels
+            System.out.println("Rappel : utiliser votre carte attaque vous fait passer votre tour");
+            System.out.println("Vous pouvez : ");
+            System.out.println("Lancer les dés (rollsdice) ");
+            if(!player.getAttack_card().isItUsed()) System.out.println("Utiliser votre carte attaque (attack) "+player.getAttack_card().getName()+" "+player.getAttack_card().getEffect());
+            if(sellProp && !first_turn_choice) {
+                System.out.println("Vendre des propriétés (sell)");
+                System.out.println("Hypothéquer une propriété (mortgage)");
+            }
+            for(i=0;i<players.size();i++){ //Cette partie ne sert que pour le pion canon
+                if(players.get(i)!=player){
+                    for(int j=0;j<players.get(i).getAvenues().size();j++){
+                        if(players.get(i).getAvenues().get(j).getHouse()>0) {
+                            canDestroy=true;
+                            avenues_where_to_destroy_house.add(players.get(i).getAvenues().get(j));
                         }
-                        first_turn_choice=true;
                     }
-                    else System.out.println("Vous n'avez pas de propriétés à vendre");
-                    break;
-                    }
-                case "putHouse":
-                    if(putHouseHotel){ //Même remarque que pour sellProp
-                        if(!first_turn_choice){
-                            Scanner avenues_put_house_hotel_scanner=new Scanner(System.in);
-                            Scanner choice_house_or_hotel_scanner=new Scanner(System.in);
-                            ArrayList <Avenue> avenues_player_have_all_group=new ArrayList();
-                            for(i=0;i<player.getProperties().size();i++){
-                                if(player.getProperties().get(i) instanceof Avenue && group_color.contains(((Avenue)(player.getProperties().get(i))).getColor())) avenues_player_have_all_group.add((Avenue)(player.getProperties().get(i)));
-                            }
-                            System.out.println("Sur quelle(s) avenue(s) voulez-vous poser une maison ou un hôtel ?");
-                            for(i=0;i<avenues_player_have_all_group.size();i++){
-                                System.out.println(avenues_player_have_all_group.get(i));
-                            }
-                            Avenue avenue_where_put_house=null;
-                            String avenue_where_put_house_name;
-                            do{
-                                avenue_where_put_house_name=avenues_put_house_hotel_scanner.nextLine();
-                                for(i=0;i<avenues_player_have_all_group.size();i++){
-                                    if(avenue_where_put_house_name.equals(avenues_player_have_all_group.get(i).getName())) avenue_where_put_house=avenues_player_have_all_group.get(i);
+                }
+            }
+            if(player instanceof Cannon && canDestroy) System.out.println("Détruire une maison (shoot)");
+
+            if(putHouseHotel && !(player instanceof Mayor)) System.out.println("Poser des maisons ou hôtel sur vos avenues (putHouse)");
+            //if(putHouseHotel && player instanceof Mayor) System.out.println("Poser un hôtel directement car vous êtes le maire (entrez \"putHotel\")");
+                switch(turn_choice_scanner.nextLine()){
+                    case "shoot":
+                        Scanner avenues_where_to_destroy_house_scanner=new Scanner(System.in);
+                        String avenues_where_to_destroy_house_name;
+                        Avenue avenue_where_to_destroy_house=null;
+                        System.out.println("Sur quelle avenue voulez-vous détruire une maison");
+                        for(i=0;i<avenues_where_to_destroy_house.size();i++){
+                            System.out.println(avenues_where_to_destroy_house.get(i));
+                        }
+                        avenues_where_to_destroy_house_name=avenues_where_to_destroy_house_scanner.nextLine();
+                        for(i=0;i<avenues_where_to_destroy_house.size();i++){
+                            if(avenues_where_to_destroy_house.get(i).getName().equals(avenues_where_to_destroy_house_name)) avenue_where_to_destroy_house=(Avenue)(avenues_where_to_destroy_house.get(i));
+                        }
+                        ((Cannon)player).shoot(avenue_where_to_destroy_house);
+                    case "attack": //Attention prendre en compte si l'utilisateur effectue une action qu'il n'a pas le droit de faire
+                        if(!player.getAttack_card().isItUsed()){
+                            turn_choice=player.getAttack_card().effect(players,player,board);
+                        }
+                        else System.out.println("Vous avez déjà utilisé votre carte");
+                        break;
+                    case "sell": //Fini, mais voir pour ajouter while par rapport au choix et optimiser le code (ex : déclaration de variables)
+                        if(sellProp){
+                            if(!first_turn_choice){
+                                System.out.println("Laquelle de vos propriétés souhaitez-vous vendre ?");
+                                displayProperties(player);
+                                String prop_to_sell_name=prop_to_sell_scanner.nextLine();
+                                Property prop_to_sell=null;
+                                for(i=0;i<player.getProperties().size();i++){
+                                    if(player.getProperties().get(i).getName().equals(prop_to_sell_name)) prop_to_sell=player.getProperties().get(i);
                                 }
-                                System.out.println("Voulez-vous mettre un hôtel ou une maison ?");
-                                switch(choice_house_or_hotel_scanner.nextLine()){
-                                    case "hotel":
-                                        boolean able_to_put_hotel=true;
-                                        if(avenue_where_put_house.getHouse()!=4) System.out.println("Vous devez avoir 4 maisons sur votre avenue pour pouvoir mettre un hôtel");
-                                        else{
-                                            for(i=0;i<avenues_player_have_all_group.size();i++){
-                                                if(avenues_player_have_all_group.get(i).getColor().equals(avenue_where_put_house.getColor()) && avenues_player_have_all_group.get(i).getHouse()!=4) able_to_put_hotel=false;
-                                            }
-                                            if(!able_to_put_hotel) System.out.println("Vous devez avoir 4 maisons sur toutes les avenues du groupe pour pouvoir mettre un hôtel sur l'une d'elles");
-                                            else player.putHotel(avenue_where_put_house);
+                                System.out.println("Souhaitez-vous la vendre à un joueur ou à la banque ? (Joueur/Banque)");
+                                Scanner who_to_sell_scanner=new Scanner(System.in);
+                                switch(who_to_sell_scanner.nextLine()){
+                                    case "Joueur": 
+                                        System.out.println("A qui souhaitez-vous le vendre ?");
+                                        displayPlayers(player);
+                                        Player player_to_sell=null;
+                                        String player_to_sell_name=who_to_sell_scanner.nextLine();
+                                        System.out.println(player_to_sell_name);
+                                        for(i=0;i<players.size();i++){
+                                            if(players.get(i).getName().equals(player_to_sell_name)) player_to_sell=players.get(i);
                                         }
-                                        break;
-                                    case "maison":
-                                        boolean able_to_put_house=true;
-                                        for(i=0;i<avenues_player_have_all_group.size();i++){
-                                            if(avenues_player_have_all_group.get(i).getColor().equals(avenue_where_put_house.getColor()) && avenues_player_have_all_group.get(i).getHouse()!=avenue_where_put_house.getHouse()) able_to_put_house=false;
+                                        System.out.println(player_to_sell_name+", souhaitez-vous acheter "+prop_to_sell_name+" à "+player.getName()+" ?");
+                                        Scanner answer_from_buyer_scanner= new Scanner(System.in);
+                                        switch(answer_from_buyer_scanner.nextLine()){
+                                            case "Oui":
+                                                prop_to_sell.sellToSomeone(player, player_to_sell);
+                                                break;
+                                            case"Non":
+                                                break;
                                         }
-                                        if(!able_to_put_house) System.out.println("Vous devez avoir le même nombre de maisons sur chacune des avenues du même groupe pour pouvoir ajouter une maison sur l'une d'elle");
-                                        else player.putHouse(avenue_where_put_house);
+
                                         break;
-                                    default:
-                                        System.out.println("Veuillez choisir un argument valide");
-                                        break;
-                                }
-                                
-                            }while(!avenue_where_put_house_name.equals("Stop"));
+                            case "Banque":
+                                prop_to_sell.sell(player);
+                                break;
+                            default:
+                                System.out.println("Indiquez un choix possible");
+                                break;
+                            }
                             first_turn_choice=true;
                         }
-                        
-                    }
-                    else System.out.println("Vous ne pouvez pas poser de maison ou d'hôtel, il vous faut un groupe complet d'avenues de même couleur pour pouvoir en poser");
-                    break;
-                case "rollsdice":
-                    ArrayList <Integer> result_of_dice=player.rollsDice();
-                    int sum_of_dice=result_of_dice.get(0)+result_of_dice.get(1);
-                    int count_double=0;
-                    do{
-                        if(result_of_dice.get(0).equals(result_of_dice.get(1))) count_double++;
-                        move(sum_of_dice,player);
-                        //Effet de la case départ (rémunération) géré dans move
-                        if(player.getPlayer_case() instanceof Bonus) ((Bonus)(player.getPlayer_case())).effect(player, board); //Effet de cases bonus
-                        if(player.getPlayer_case() instanceof Taxes) player.setCapital(player.getCapital()-((Taxes)(player.getPlayer_case())).getPrice());
-                        if(player.getPlayer_case() instanceof Prison) {
-                            player.inJail(board);
-                            count_double=3; //On met cette condition pour sortir de la boucle et donc pour que le joueur ne puisse pas rejouer même s'il a fait un double
+                        else System.out.println("Vous n'avez pas de propriétés à vendre");
+                        break;
                         }
-                        if(player.getPlayer_case().getName().equals("Parc gratuit") && player instanceof Car) ((Car)(player)).moveTo(board);
-                        if(player.getPlayer_case() instanceof Property && ((Property)(player.getPlayer_case())).isItBought()) player.setCapital(player.getCapital()-((Property)(player.getPlayer_case())).getRent());
-                        else if(player.getPlayer_case() instanceof Property && !((Property)(player.getPlayer_case())).isItBought()){ //Dernier cas à faire : si la propriété n'est pas achetée, on propose au joueur de l'acheter
-                            
+                    case "putHouse":
+                        if(putHouseHotel){ //Même remarque que pour sellProp
+                            if(!first_turn_choice){
+                                Scanner avenues_put_house_hotel_scanner=new Scanner(System.in);
+                                Scanner choice_house_or_hotel_scanner=new Scanner(System.in);
+                                ArrayList <Avenue> avenues_player_have_all_group=new ArrayList();
+                                for(i=0;i<player.getAvenues().size();i++){
+                                    if(group_color.contains((player.getAvenues().get(i)).getColor())) avenues_player_have_all_group.add(player.getAvenues().get(i));
+                                }
+                                System.out.println("Sur quelle(s) avenue(s) voulez-vous poser une maison ou un hôtel ?");
+                                for(i=0;i<avenues_player_have_all_group.size();i++){
+                                    System.out.println(avenues_player_have_all_group.get(i));
+                                }
+                                Avenue avenue_where_put_house=null;
+                                String avenue_where_put_house_name;
+                                do{
+                                    avenue_where_put_house_name=avenues_put_house_hotel_scanner.nextLine();
+                                    for(i=0;i<avenues_player_have_all_group.size();i++){
+                                        if(avenue_where_put_house_name.equals(avenues_player_have_all_group.get(i).getName())) avenue_where_put_house=avenues_player_have_all_group.get(i);
+                                    }
+                                    System.out.println("Voulez-vous mettre un hôtel ou une maison ?");
+                                    switch(choice_house_or_hotel_scanner.nextLine()){
+                                        case "hotel":
+                                            boolean able_to_put_hotel=true;
+                                            if(avenue_where_put_house.getHouse()!=4) System.out.println("Vous devez avoir 4 maisons sur votre avenue pour pouvoir mettre un hôtel");
+                                            else{
+                                                for(i=0;i<avenues_player_have_all_group.size();i++){
+                                                    if(avenues_player_have_all_group.get(i).getColor().equals(avenue_where_put_house.getColor()) && avenues_player_have_all_group.get(i).getHouse()!=4) able_to_put_hotel=false;
+                                                }
+                                                if(!able_to_put_hotel) System.out.println("Vous devez avoir 4 maisons sur toutes les avenues du groupe pour pouvoir mettre un hôtel sur l'une d'elles");
+                                                else player.putHotel(avenue_where_put_house);
+                                            }
+                                            break;
+                                        case "maison":
+                                            boolean able_to_put_house=true;
+                                            for(i=0;i<avenues_player_have_all_group.size();i++){
+                                                if(avenues_player_have_all_group.get(i).getColor().equals(avenue_where_put_house.getColor()) && avenues_player_have_all_group.get(i).getHouse()!=avenue_where_put_house.getHouse()) able_to_put_house=false;
+                                            }
+                                            if(!able_to_put_house) System.out.println("Vous devez avoir le même nombre de maisons sur chacune des avenues du même groupe pour pouvoir ajouter une maison sur l'une d'elle");
+                                            else player.putHouse(avenue_where_put_house);
+                                            break;
+                                        default:
+                                            System.out.println("Veuillez choisir un argument valide");
+                                            break;
+                                    }
+
+                                }while(!avenue_where_put_house_name.equals("Stop"));
+                                first_turn_choice=true;
+                            }
+
                         }
-                    
-                    
-                    }while(result_of_dice.get(0).equals(result_of_dice.get(1)) && count_double<3);
-                    
-                    if(count_double==3) player.inJail(board);
-                    turn_choice=true;
-                    break;
-                
+                        else System.out.println("Vous ne pouvez pas poser de maison ou d'hôtel, il vous faut un groupe complet d'avenues de même couleur pour pouvoir en poser");
+                        break;
+                    case "mortgage":
+                        if(!first_turn_choice){
+                        Scanner prop_to_mortgage_scanner= new Scanner(System.in);
+                        Property prop_to_mortgage=null;
+                        System.out.println("Quelle propriété voulez-vous hypothéquer ?");
+                        displayProperties(player);
+                        String prop_to_mortgage_name=prop_to_mortgage_scanner.nextLine();
+                        for(i=0;i<player.getProperties().size();i++){
+                            if(player.getProperties().get(i).getName().equals(prop_to_mortgage_name)) prop_to_mortgage=(Property)(player.getProperties().get(i));
+                        }
+                            player.putOnMortgage(player, prop_to_mortgage);
+                            first_turn_choice=true;
+                        }
+                    case "rollsdice":
+                        int count_double=0;
+                        ArrayList <Integer> result_of_dice;
+                        do{
+                            result_of_dice=player.rollsDice();
+                            int sum_of_dice=result_of_dice.get(0)+result_of_dice.get(1);
+                            if(result_of_dice.get(0).equals(result_of_dice.get(1))) {
+                                count_double++;
+                                System.out.println("Vous avez fait un double, quel petit veinard !");
+                            }
+                            move(sum_of_dice,player);
+                            //Effet de la case départ (rémunération) géré dans move
+                            if(player.getPlayer_case() instanceof Bonus) ((Bonus)(player.getPlayer_case())).effect(player, board); //Effet de cases bonus
+                            if(player.getPlayer_case() instanceof Taxes) {
+                                player.setCapital(player.getCapital()-((Taxes)(player.getPlayer_case())).getPrice());
+                                System.out.println("Vous avez payé "+((Taxes)(player.getPlayer_case())).getPrice());
+                            }
+                            if(player.getPlayer_case().equals(board.get(30))) {
+                                player.inJail(board);
+                                count_double=3; //On met cette condition pour sortir de la boucle et donc pour que le joueur ne puisse pas rejouer même s'il a fait un double
+                            }
+                            if(player.getPlayer_case().getName().equals("Parc gratuit") && player instanceof Car) ((Car)(player)).moveTo(board);
+                            if(player.getPlayer_case() instanceof Property && ((Property)(player.getPlayer_case())).isItBought() && !((Property)(player.getPlayer_case())).getAssociatedPlayer().equals(player) ){
+                                player.setCapital(player.getCapital()-((Property)(player.getPlayer_case())).getRent());
+                                System.out.println("Vous êtes chez "+((Property)player.getPlayer_case()).getAssociatedPlayer().getName()+ ", vous avez payé "+((Property)player.getPlayer_case()).getRent());
+                            }
+                            else if(player.getPlayer_case() instanceof Property && !((Property)(player.getPlayer_case())).isItBought()){ //Dernier cas à faire : si la propriété n'est pas achetée, on propose au joueur de l'acheter
+                                System.out.println("Voulez-vous acheter "+player.getPlayer_case().getName()+" ? (Oui/Non)");
+                                Scanner want_to_buy_scanner = new Scanner(System.in);
+                                switch(want_to_buy_scanner.nextLine()){
+                                    case "Oui":
+                                        ((Property)(player.getPlayer_case())).buy(player);
+                                        System.out.println("Vous avez acheté "+player.getPlayer_case().getName());
+                                }
+                            }
+                        }while(result_of_dice.get(0).equals(result_of_dice.get(1)) && count_double<3);
+
+                        if(count_double==3) player.inJail(board);
+                        turn_choice=true;
+                        break;
+
+                }
+
             }
-            
+
+
+
+
         }
-        
-        
-        
-        
-    }
         //Possibilité de poser maisons/hôtels sur ses propriétés SI il en a ET qu'il a tout le groupe de couleur (ET qu'il a assez d'argent), il peut lancer les dés ensuite
         //Possibilité de vendre propriétés SI il en possède une OK
         //Possibilité de jouer carte attaque SI il ne l'a pas encore utilisée
@@ -454,11 +506,12 @@ public class BoardGame{
     
     public static void displayProperties(Player player){
         for(i=0;i<player.getProperties().size();i++){
-            System.out.println(player.getProperties().get(i));
+            System.out.println(player.getProperties().get(i).getName());
         }
     }
     
     public static void move(int sum_of_dice, Player player){
+        System.out.println("Vous avez fait "+sum_of_dice);
         int arrival_case_number= (player.getPlayer_case().getCaseNumber()+sum_of_dice)%40;
         Case arrival_case = null;
         boolean start=false;
@@ -466,9 +519,10 @@ public class BoardGame{
             if(board.get(i).getCaseNumber()==arrival_case_number) arrival_case=board.get(i);
         }
         if(arrival_case_number<player.getPlayer_case().getCaseNumber()){
-            player.setCapital(player.getCapital()+2000);
+            player.setCapital(player.getCapital()+20000);
         }
         player.setPlayer_case(arrival_case);
+        System.out.println("Vous êtes sur la case "+arrival_case.getName());
     }
     public static void displayInventory(Player player){
         System.out.println("");
@@ -480,6 +534,7 @@ public class BoardGame{
             if(player.getProperties().get(i) instanceof Avenue){ //Si la propriété est une avenue, on affiche le nombre de maisons/hôtel s'il y en a
                 if( ((Avenue)(player.getProperties().get(i))).getHouse()>0) System.out.println(((Avenue)(player.getProperties().get(i))).getName()+" avec "+((Avenue)(player.getProperties().get(i))).getHouse()+" maison(s) dessus, ");
                 else if(((Avenue)(player.getProperties().get(i))).getHotel()>0) System.out.println(((Avenue)(player.getProperties().get(i))).getName()+" avec "+((Avenue)(player.getProperties().get(i))).getHotel()+" hôtel dessus, ");
+                else System.out.println(((Avenue)(player.getProperties().get(i))).getName());
             }
             else if(player.getProperties().get(i) instanceof RailRoad){
                 System.out.println(((RailRoad)(player.getProperties().get(i))).getName());
@@ -506,10 +561,10 @@ public class BoardGame{
         }    
     }
     
-    public static ArrayList <String> groupOfAvenues(Player player,ArrayList <Avenue> avenues){ //Va regarder si le joueur passé en paramètre possède un groupe complet d'avenues de même couleurs
+    public static ArrayList <ColorAvenue> groupOfAvenues(Player player,ArrayList <Avenue> avenues){ //Va regarder si le joueur passé en paramètre possède un groupe complet d'avenues de même couleurs
         ArrayList <Avenue> all_board_avenues=new ArrayList();
         ArrayList <Avenue> group_board_avenues=new ArrayList();
-        ArrayList <String> color_groups=new ArrayList();
+        ArrayList <ColorAvenue> color_groups=new ArrayList();
         for(i=0;i<board.size();i++){ //On récupère la liste des avenues du plateau de jeu
             if(board.get(i) instanceof Avenue){
                 all_board_avenues.add((Avenue)(board.get(i)));

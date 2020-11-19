@@ -43,7 +43,7 @@ public class Car extends Player implements Citizen{
     @Override
     public void doubleRent(Avenue avenue)
     {
-        if(avenue.getColor().ORANGE.equals(avenue))                                   // SI COULEUR CORRESPOND AU BONUS
+        if(avenue.getColor().equals(ColorAvenue.ORANGE))                                   // SI COULEUR CORRESPOND AU BONUS
         {
             avenue.setRent(avenue.getRent() * 2);                               // ON DOUBLE
         }

@@ -16,7 +16,7 @@ public class Cannon extends Player implements Citizen {
         this.setPlayerNumber(playerNumber);
     }
     
-    public void shoot(Avenue avenue){ //A voir pour caler dans la méthode la boucle for avec le choix du joueur+propriété visée
+    public void shoot(Avenue avenue){
         boolean isHouseDestroyed = false;
         while(isHouseDestroyed == false)
         {
@@ -37,7 +37,7 @@ public class Cannon extends Player implements Citizen {
     @Override
     public void doubleRent(Avenue avenue)
     { 
-        if(avenue.getColor().ROSE.equals(avenue))                               // SI COULEUR CORRESPOND AU BONUS
+        if(avenue.getColor().equals(ColorAvenue.ROSE))                               // SI COULEUR CORRESPOND AU BONUS
         {                                                        
             avenue.setRent(avenue.getRent() * 2);                               // ON DOUBLE
         }

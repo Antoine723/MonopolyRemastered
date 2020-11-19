@@ -69,17 +69,16 @@ public abstract class Property extends Case {
         else price=this.getBoughtPrice();
         
         
-        for (int i=0;i<player.getProperties().size();i++)                       // ON PARCOURT LA LISTE DES PROPRIETES
-        {
-            if(player.getProperties().get(i) instanceof Avenue)
-            {
-                player.getFigurine().doubleRent((Avenue) player.getProperties().get(i));    // ON APLLIQUE DOUBLE RENT
-            }
-        }
-        if(player.getCapital()-price>0){ //A voir si on met la condition ici ou dans le jeu
+        if(player.getCapital()-price>0){
             player.setCapital(player.getCapital()-price);
             this.associatedPlayer=player;
             player.addProperty(this);
+            player.setInflated(false);
+            if(this instanceof Avenue){
+                player.addAvenue((Avenue)(this));
+                checkDoubleRent(player);
+                
+            }
             this.isBought=true;
             return 1; //Si renvoie 1, alors l'achat a été effectué correctement, si -1, alors non
         }
@@ -100,30 +99,19 @@ public abstract class Property extends Case {
                 seller.setCapital(seller.getCapital()+price);
                 this.associatedPlayer=buyer;
                 seller.removeProperty(this);
-                
-                for (int i=0;i<seller.getProperties().size();i++)
-                {
-                    if(seller.getProperties().get(i) instanceof Avenue)
-                    {
-                        seller.getFigurine().doubleRent((Avenue) seller.getProperties().get(i));                   
-                    }
-                }
-                
-                
                 buyer.addProperty(this);
-                for (int i=0;i<buyer.getProperties().size();i++)
-                {
-                    if(buyer.getProperties().get(i) instanceof Avenue)
-                    {
-                        buyer.getFigurine().doubleRent((Avenue) buyer.getProperties().get(i));        // IDEM
+                
+                if(this instanceof Avenue){
+                    seller.removeAvenue((Avenue)(this));
+                    buyer.addAvenue((Avenue)this);
+                    checkDoubleRent(buyer);       
                     }
+                return 1; 
                 }
-                return 1;
-            }
-            else{
-                System.out.println("Vous n'avez pas assez d'argent pour acheter cette propriété");
-                return -1;
-            }
+        else{
+            System.out.println("Vous n'avez pas assez d'argent pour acheter cette propriété");
+            return -1;
+        }
         
         
         
@@ -131,20 +119,13 @@ public abstract class Property extends Case {
     public void sell(Player seller){ //Fonction vendre à la banque
         if(this instanceof Avenue){
             seller.setCapital(seller.getCapital()+((Avenue) (this)).getBoughtPrice()/2 + ((Avenue) (this)).getPriceOfHouseAndHotels()* (int) ((Avenue) (this)).getSoldAvenueCoeff());
+            seller.removeAvenue((Avenue)this);
+            checkDoubleRent(seller);
         }
         else{
             seller.setCapital(seller.getCapital()+this.getBoughtPrice());
         }
         seller.removeProperty(this);
-        
-         for (int i=0;i<seller.getProperties().size();i++)                                  // IDEM QUE BUYER
-                {
-                    if(seller.getProperties().get(i) instanceof Avenue)
-                    {
-                        seller.getFigurine().doubleRent((Avenue) seller.getProperties().get(i));                   
-                    }
-                }
-        
         this.associatedPlayer=null;
         this.isBought=false;
         
@@ -155,5 +136,9 @@ public abstract class Property extends Case {
         return prop.getRent();
     }
         
-    
+    public void checkDoubleRent(Player player){
+        if(player instanceof Car) ((Car)(player)).doubleRent((Avenue)this);
+        else if(player instanceof Cannon) ((Cannon)(player)).doubleRent((Avenue)this);
+        else if(player instanceof Hat) ((Hat)(player)).doubleRent((Avenue)this);
+    }
 }

@@ -17,7 +17,7 @@ public class Mayor extends Player {
     }
     
     public void makeProfits(){
-        this.setCapital(this.getCapital()+100*(this.getNumberOfAvenues()));
+        this.setCapital(this.getCapital()+100*(this.getAvenues().size()));
         
     }
     
