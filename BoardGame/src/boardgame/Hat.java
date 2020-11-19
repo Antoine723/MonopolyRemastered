@@ -24,7 +24,7 @@ public class Hat extends Player implements Citizen {
     @Override
     public void doubleRent(Avenue avenue)
     {
-        if(avenue.getColor().equals("Rouge"))                                   // SI COULEUR CORRESPOND AU BONUS
+        if(avenue.getColor().ROUGE.equals(avenue))                                   // SI COULEUR CORRESPOND AU BONUS
         {
             avenue.setRent(avenue.getRent() * 2);                               // ON DOUBLE
         }
