@@ -184,10 +184,12 @@ public abstract class Player implements Comparable<Player> {
             ((Avenue) prop).setHotel(0);
             ((Avenue) prop).setHouse(0);
             player.setCapital(player.getCapital() + (prop.getMortgage()));
+            prop.setRent(0);
         }
         else
         {
             player.setCapital(player.getCapital() + prop.getMortgage());
+            prop.setRent(0);
         }
     }
     
