@@ -68,15 +68,22 @@ public abstract class Property extends Case {
         if(player.isInflated()) price=2*this.getBoughtPrice();
         else price=this.getBoughtPrice();
         
+        
+        for (int i=0;i<player.getProperties().size();i++)                       // ON PARCOURT LA LISTE DES PROPRIETES
+        {
+            if(player.getProperties().get(i) instanceof Avenue)
+            {
+                player.getFigurine().doubleRent((Avenue) player.getProperties().get(i));    // ON APLLIQUE DOUBLE RENT
+            }
+        }
         if(player.getCapital()-price>0){ //A voir si on met la condition ici ou dans le jeu
             player.setCapital(player.getCapital()-price);
             this.associatedPlayer=player;
             player.addProperty(this);
             this.isBought=true;
-            if(this instanceof Company) player.setNumberOfCompanies(player.getNumberOfCompanies()+1);
-            else if(this instanceof RailRoad) player.setNumberOfRailRoads(player.getNumberOfRailRoads()+1);
             return 1; //Si renvoie 1, alors l'achat a été effectué correctement, si -1, alors non
-        } 
+        }
+        
         else {
             System.out.println("Vous n'avez pas assez d'argent pour acheter cette propriété");
             return -1;
@@ -93,14 +100,23 @@ public abstract class Property extends Case {
                 seller.setCapital(seller.getCapital()+price);
                 this.associatedPlayer=buyer;
                 seller.removeProperty(this);
-                buyer.addProperty(this);
-                if(this instanceof Company){
-                    buyer.setNumberOfCompanies(buyer.getNumberOfCompanies()+1);
-                    seller.setNumberOfCompanies(seller.getNumberOfCompanies()-1);
+                
+                for (int i=0;i<seller.getProperties().size();i++)
+                {
+                    if(seller.getProperties().get(i) instanceof Avenue)
+                    {
+                        seller.getFigurine().doubleRent((Avenue) seller.getProperties().get(i));                   
+                    }
                 }
-                else if(this instanceof RailRoad){
-                    buyer.setNumberOfRailRoads(buyer.getNumberOfRailRoads()+1);
-                    seller.setNumberOfRailRoads(seller.getNumberOfRailRoads()-1);
+                
+                
+                buyer.addProperty(this);
+                for (int i=0;i<buyer.getProperties().size();i++)
+                {
+                    if(buyer.getProperties().get(i) instanceof Avenue)
+                    {
+                        buyer.getFigurine().doubleRent((Avenue) buyer.getProperties().get(i));        // IDEM
+                    }
                 }
                 return 1;
             }
@@ -116,15 +132,19 @@ public abstract class Property extends Case {
         if(this instanceof Avenue){
             seller.setCapital(seller.getCapital()+((Avenue) (this)).getBoughtPrice()/2 + ((Avenue) (this)).getPriceOfHouseAndHotels()* (int) ((Avenue) (this)).getSoldAvenueCoeff());
         }
-        else if(this instanceof Company){
+        else{
             seller.setCapital(seller.getCapital()+this.getBoughtPrice());
-            seller.setNumberOfCompanies(seller.getNumberOfCompanies()-1);
-        }
-        else if(this instanceof RailRoad){
-            seller.setCapital(seller.getCapital()+this.getBoughtPrice());
-            seller.setNumberOfRailRoads(seller.getNumberOfRailRoads()-1);
         }
         seller.removeProperty(this);
+        
+         for (int i=0;i<seller.getProperties().size();i++)                                  // IDEM QUE BUYER
+                {
+                    if(seller.getProperties().get(i) instanceof Avenue)
+                    {
+                        seller.getFigurine().doubleRent((Avenue) seller.getProperties().get(i));                   
+                    }
+                }
+        
         this.associatedPlayer=null;
         this.isBought=false;
         

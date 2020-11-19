@@ -40,9 +40,17 @@ public class Car extends Player implements Citizen{
         this.setPlayer_case(case_choice);
     }
     
-    public void doubleRent(){
-        
-        
+    @Override
+    public void doubleRent(Avenue avenue)
+    {
+        if(avenue.getColor().equals("Orange"))                                   // SI COULEUR CORRESPOND AU BONUS
+        {
+            avenue.setRent(avenue.getRent() * 2);                               // ON DOUBLE
+        }
+        else
+        {
+            avenue.setRent(avenue.getRent());                                   // ON NE CHANGE RIEN
+        }
     }
     
 }

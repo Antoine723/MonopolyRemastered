@@ -35,7 +35,17 @@ public class Cannon extends Player implements Citizen {
     }
     
     @Override
-    public void doubleRent(){}
+    public void doubleRent(Avenue avenue)
+    {
+        if(avenue.getColor().equals("Rose"))                                   // SI COULEUR CORRESPOND AU BONUS
+        {
+            avenue.setRent(avenue.getRent() * 2);                               // ON DOUBLE
+        }
+        else
+        {
+            avenue.setRent(avenue.getRent());                                   // ON NE CHANGE RIEN
+        }
+    }
     
     
 }

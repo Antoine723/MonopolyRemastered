@@ -24,6 +24,7 @@ public abstract class Player implements Comparable<Player> {
     private int numberOfRailRoads=0;
     private int numberOfCompanies=0;
     private boolean inflated=false;
+    private Citizen figurine;
     private Attack attack_card=null;
     private ArrayList <Property> properties=new ArrayList();
     
@@ -74,6 +75,10 @@ public abstract class Player implements Comparable<Player> {
 
     public Case getPlayer_case() {
         return player_case;
+    }
+
+    public Citizen getFigurine() {
+        return figurine;
     }
     
     

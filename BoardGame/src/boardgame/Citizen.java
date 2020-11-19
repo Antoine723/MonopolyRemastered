@@ -11,6 +11,6 @@ package boardgame;
  */
 public interface Citizen {
     
-    public void doubleRent();
+    public void doubleRent(Avenue avenue);
     
 }
