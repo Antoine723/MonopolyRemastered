@@ -5,33 +5,44 @@
  */
 package boardgame;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  *
  * @author Antoine
  */
-public class Cannon extends Player implements Citizen {
+public final class Cannon extends Player implements Citizen {
     
     public Cannon(String name,int playerNumber){
         this.setName(name);
         this.setPlayerNumber(playerNumber);
     }
     
-    public void shoot(Avenue avenue){
+    public void shoot(ArrayList <Avenue> avenues){
+        Scanner avenue_scanner=new Scanner(System.in);
+        String avenue_name;
+        Avenue avenue=null;
         boolean isHouseDestroyed = false;
-        while(isHouseDestroyed == false)
-        {
-            if(avenue.getHouse()>0)
-            {
+        System.out.println("Sur quelle avenue voulez-vous détruire une maison");
+            for(int i=0;i<avenues.size();i++){
+                System.out.println(avenues.get(i).getName());
+            }
+        do{
+            avenue_name=avenue_scanner.nextLine();
+            for(int i=0;i<avenues.size();i++){
+                if(avenues.get(i).getName().equals(avenue_name)) avenue=(Avenue)(avenues.get(i));
+            }
+            if(avenue!=null){
                 avenue.setHouse(avenue.getHouse()-1);
+                avenue.computing(avenue, this);
                 System.out.println("Quel malheur ! Un joueur vient de détruire une maison sur " + avenue.getName());
                 isHouseDestroyed = true;
             }
-            else 
-            {
-                System.out.println("Veuillez sélectionner une propriété qui dispose d'au moins 1 maison");
-                isHouseDestroyed = false;
+            else{
+                System.out.println("Veuillez saisir un nom d'avenue correct");
             }
-        }
+        }while(!isHouseDestroyed);
     }
     
     @Override

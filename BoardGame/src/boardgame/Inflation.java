@@ -12,7 +12,7 @@ import java.util.Scanner;
  *
  * @author Antoine
  */
-public class Inflation extends Attack {
+public final class Inflation extends Attack {
     
     public Inflation(){
         this.setName("Inflation");

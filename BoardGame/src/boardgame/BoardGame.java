@@ -30,14 +30,10 @@ public class BoardGame{
     static Scanner turn_choice_scanner=new Scanner(System.in);
     static Random rand=new Random();
     static boolean useAttack=true;
-    
-    static GiveAway giveAway=new GiveAway();
-    static Inflation inflation=new Inflation();
-    static Robber robber=new Robber();
-    
-    static Covid covid=new Covid();
-    static Earthquake earthquake=new Earthquake();
-    static Strike strike=new Strike();
+    static int activationTurn=0;
+    static int endActivationTurn=0;
+    static int warning=1;
+
     
     
     
@@ -61,15 +57,14 @@ public class BoardGame{
     }};
     
     static ArrayList <Attack> attacks=new ArrayList(){{
-        add(giveAway);
-        add(robber);
-        add(inflation);
+        add(new GiveAway());
+        add(new Robber());
+        add(new Inflation());
     }};
-    static ArrayList <Event> events=new ArrayList(){{
-        add(covid);
-        add(earthquake);
-        add(strike);
-    }};
+
+    static Covid covid=new Covid();
+    static Strike strike = new Strike();
+    static Earthquake earthquake= new Earthquake();
     
     //--------------------------------------------------------------------------
     
@@ -103,41 +98,61 @@ public class BoardGame{
             players.get(i).setPlayer_case(board.get(0));
         }
         players_in_game.addAll(players);
-        /*Avenue ave= (Avenue) board.get(1);
-        ave.setAssociatedPlayer(players.get(0));
-        players.get(0).setNumberOfAvenues(players.get(0).getNumberOfAvenues());
-        ave.setHouse(ave.getHouse()+2);
-        Avenue ave2= (Avenue) board.get(3);
-        ave2.setAssociatedPlayer(players.get(0));
-        players.get(0).setNumberOfAvenues(players.get(0).getNumberOfAvenues());
-        ave2.setHotel(ave2.getHotel()+1);
-        Covid cov=(Covid) (events.get(0));
-        cov.setInAction(true);
-        RailRoad rai= (RailRoad) (board.get(15));
-        rai.setAssociatedPlayer(players.get(0));
-        Company com=(Company) (board.get(12));
-        com.setAssociatedPlayer(players.get(0));*/
         
-        /*players.get(0).addProperty((Avenue)(board.get(1)));
-        players.get(0).addProperty((Avenue)(board.get(3)));
-        players.get(0).addProperty((Avenue)(board.get(6)));
-        players.get(0).addProperty((Avenue)(board.get(9)));
-        ArrayList <Avenue> play_ave = new ArrayList();
-        for(i=0;i<players.get(0).getProperties().size();i++){
-            if(players.get(0).getProperties().get(i) instanceof Avenue) play_ave.add((Avenue)(players.get(0).getProperties().get(i)));
-        }
-        ArrayList <String> test=groupOfAvenues(players.get(0),play_ave);
-        for(i=0;i<test.size();i++){
-            System.out.println(test.get(i));
-        }
-        /*for(i=0;i<numberOfPlayers;i++){
-            displayInventory(players.get(i));
-        }*/
+        ((Property)board.get(16)).buy(players.get(0));
+        ((Property)board.get(18)).buy(players.get(0));
+        ((Property)board.get(19)).buy(players.get(0));
+        //((Property)board.get(1)).buy(players.get(0));
+        /*players.get(1).putHouse((Avenue)board.get(3));
+        players.get(0).putHouse((Avenue)board.get(1));*/
+        
+
+        
         //Tant que la partie n'est pas terminée (tant qu'il reste plus d'un joueur en jeu
         while(players_in_game.size()>1){
+            System.out.println(((Avenue)board.get(16)).getRent());
+            System.out.println(((Avenue)board.get(18)).getRent());
+            System.out.println(((Avenue)board.get(19)).getRent());
+            System.out.println("");
             numberOfTurns++;
+            System.out.println("Tour n°"+numberOfTurns);
+            System.out.println("");
+                if( numberOfTurns%7==0 && numberOfTurns>=10){
+                    if(!earthquake.isDone()) randomNum=rand.nextInt(3)+1;
+                    else randomNum=rand.nextInt(2)+1;
+                    switch(randomNum){
+                        case 1:
+                            warning=covid.closeHotel(players_in_game, warning);
+                            activationTurn=numberOfTurns;
+                            break;
+                        case 2:
+                            endActivationTurn=strike.closeRailRoad(board, numberOfTurns);
+                            activationTurn=numberOfTurns;
+                            break;
+                        case 3:
+                            earthquake.collapse(players_in_game);
+                            break;
+                    }
+                }
+            if(covid.isInAction()){
+                if(numberOfTurns==activationTurn+2 || numberOfTurns==activationTurn+4 ){
+                    warning=covid.closeHotel(players_in_game, warning);
+                }
+                else if(numberOfTurns==activationTurn+6){
+                    covid.setInAction(false);
+                    covid.openHotel(players_in_game);
+                }
+            }
+            if(strike.isInAction() && numberOfTurns==endActivationTurn){
+                strike.setInAction(false);
+                strike.openRailRoad(board);
+            }
+            
             for(index_player=0;index_player<players_in_game.size();index_player++){ //On fait le tour des joueurs encore en jeu
-                if(players_in_game.get(index_player).isIsInJail()) getOutOfJail(players_in_game.get(index_player));//On teste d'abord si le joueur est en prison
+                if(players_in_game.get(index_player).isIsInJail()) {
+                    displayInventory(players_in_game.get(index_player));
+                    getOutOfJail(players_in_game.get(index_player));
+                }//On teste d'abord si le joueur est en prison
                 else{ //S'il ne l'est pas, il joue son tour normalement
                     displayInventory(players_in_game.get(index_player));
                     choice(players_in_game.get(index_player));
@@ -157,7 +172,7 @@ public class BoardGame{
     public static void initialize(){
         
         System.out.println("Bonjour, voici une version du Monopoly remasterisée par Antoine Asset et Thibaut Blasselle");
-        System.out.println("Combien de joueurs vont jouer ? (maximum 3)"); //Max 3 pour l'instant car 3 cartes attaques, sinon possibilité d'avoir plusieurs joeuurs avec la même carte attaque
+        System.out.println("Combien de joueurs vont jouer ? (maximum 3)"); //Max 4 pour l'instant car 4 pions
        
         try{ //Saisie du nombre de joueurs
             numberOfPlayers=scanner.nextInt();
@@ -226,45 +241,45 @@ public class BoardGame{
     public static void board_creation(){
         
         board.add(new Case("Départ",0));
-        board.add(new Avenue(60,200,"Boulevard de Belleville",1,ColorAvenue.VIOLET,3000));        // AJOUT DE L'HYPOTHEQUE EN DERNIER ARGUMENT + VRAI PRIX DES LOYERS
+        board.add(new Avenue(60,200,"Boulevard de Belleville",1,ColorAvenue.VIOLET,5000,3000));        // AJOUT DE L'HYPOTHEQUE EN DERNIER ARGUMENT + VRAI PRIX DES LOYERS
         board.add(new Bonus("Caisse de communauté",2));
-        board.add(new Avenue(60,400,"Rue Lecourbe",3,ColorAvenue.VIOLET,3000));
+        board.add(new Avenue(60,400,"Rue Lecourbe",3,ColorAvenue.VIOLET,5000,3000));
         board.add(new Taxes("Impôt sur le revenu",4,200));
         board.add(new RailRoad(200,2500,"Gare Montparnasse",5,10000));
-        board.add(new Avenue(100,600,"Rue de Vaugirard",6,ColorAvenue.CIEL,5000));
+        board.add(new Avenue(100,600,"Rue de Vaugirard",6,ColorAvenue.CIEL,5000,5000));
         board.add(new Bonus("Chance",7));
-        board.add(new Avenue(100,600,"Rue de Courcelles",8,ColorAvenue.CIEL,5000));
-        board.add(new Avenue(120,800,"Avenue de la République",9,ColorAvenue.CIEL,6000));
+        board.add(new Avenue(100,600,"Rue de Courcelles",8,ColorAvenue.CIEL,5000,5000));
+        board.add(new Avenue(120,800,"Avenue de la République",9,ColorAvenue.CIEL,5000,6000));
         board.add(new Prison("Prison",10));
-        board.add(new Avenue(140,1000,"Boulevard de la Villette",11,ColorAvenue.ROSE,7000));
+        board.add(new Avenue(140,1000,"Boulevard de la Villette",11,ColorAvenue.ROSE,10000,7000));
         board.add(new Company(150,"Compagnie de distribution d'électricité",12,7500));
-        board.add(new Avenue(140,1000,"Avenue de Neuilly",13,ColorAvenue.ROSE,7000));
-        board.add(new Avenue(160,1200,"Rue de Paradis",14,ColorAvenue.ROSE,8000));
+        board.add(new Avenue(140,1000,"Avenue de Neuilly",13,ColorAvenue.ROSE,10000,7000));
+        board.add(new Avenue(160,1200,"Rue de Paradis",14,ColorAvenue.ROSE,10000,8000));
         board.add(new RailRoad(200,2500,"Gare de Lyon",15,10000));
-        board.add(new Avenue(180,1400,"Avenue Mozart",16,ColorAvenue.ORANGE,9000));
+        board.add(new Avenue(180,1400,"Avenue Mozart",16,ColorAvenue.ORANGE,10000,9000));
         board.add(new Bonus("Caisse de communauté",17));
-        board.add(new Avenue(180,1400,"Boulevard Saint-Michel",18,ColorAvenue.ORANGE,9000));
-        board.add(new Avenue(200,1600,"Place Pigalle",19,ColorAvenue.ORANGE,10000));
+        board.add(new Avenue(180,1400,"Boulevard Saint-Michel",18,ColorAvenue.ORANGE,10000,9000));
+        board.add(new Avenue(200,1600,"Place Pigalle",19,ColorAvenue.ORANGE,10000,10000));
         board.add(new Case("Parc gratuit",20));
-        board.add(new Avenue(220,1800,"Avenue Matignon",21,ColorAvenue.ROUGE,11000));
+        board.add(new Avenue(220,1800,"Avenue Matignon",21,ColorAvenue.ROUGE,15000,11000));
         board.add(new Bonus("Chance",22));
-        board.add(new Avenue(220,1800,"Boulevard Malesherbes",23,ColorAvenue.ROUGE,11000));
-        board.add(new Avenue(240,2000,"Avenue Henri-Martin",24,ColorAvenue.ROUGE,12000));
+        board.add(new Avenue(220,1800,"Boulevard Malesherbes",23,ColorAvenue.ROUGE,15000,11000));
+        board.add(new Avenue(240,2000,"Avenue Henri-Martin",24,ColorAvenue.ROUGE,15000,12000));
         board.add(new RailRoad(200,2500,"Gare du Nord",25,10000));
-        board.add(new Avenue(260,2200,"Faubourg Saint-Honoré",26,ColorAvenue.JAUNE,13000));
-        board.add(new Avenue(260,2200,"Place de la bourse",27,ColorAvenue.JAUNE,13000));
+        board.add(new Avenue(260,2200,"Faubourg Saint-Honoré",26,ColorAvenue.JAUNE,15000,13000));
+        board.add(new Avenue(260,2200,"Place de la bourse",27,ColorAvenue.JAUNE,15000,13000));
         board.add(new Company(150,"Compagnie de distribution des eaux",28,7500));
-        board.add(new Avenue(280,2400,"Rue La Fayette",29,ColorAvenue.JAUNE,14000));
+        board.add(new Avenue(280,2400,"Rue La Fayette",29,ColorAvenue.JAUNE,15000,14000));
         board.add(new Case("Allez en prison",30));
-        board.add(new Avenue(300,2600,"Avenue de Breuteuil",31,ColorAvenue.VERT,15000));
-        board.add(new Avenue(300,2600,"Avenue Foch",32,ColorAvenue.VERT,15000));
+        board.add(new Avenue(300,2600,"Avenue de Breuteuil",31,ColorAvenue.VERT,20000,15000));
+        board.add(new Avenue(300,2600,"Avenue Foch",32,ColorAvenue.VERT,20000,15000));
         board.add(new Bonus("Caisse de communauté",33));
-        board.add(new Avenue(320,2800,"Boulevard des Capucines",34,ColorAvenue.VERT,16000));
+        board.add(new Avenue(320,2800,"Boulevard des Capucines",34,ColorAvenue.VERT,20000,16000));
         board.add(new RailRoad(200,2500,"Gare Saint-Lazare",35,10000));
         board.add(new Bonus("Chance",36));
-        board.add(new Avenue(350,3500,"Avenue des Champs-Elysées",37,ColorAvenue.BLEU,17500));
+        board.add(new Avenue(350,3500,"Avenue des Champs-Elysées",37,ColorAvenue.BLEU,20000,17500));
         board.add(new Taxes("Taxe de luxe",38,100));
-        board.add(new Avenue(400,5000,"Rue de la Paix",39,ColorAvenue.BLEU,20000));
+        board.add(new Avenue(400,5000,"Rue de la Paix",39,ColorAvenue.BLEU,20000,20000));
     }
 
     public static void choice(Player player){
@@ -281,10 +296,12 @@ public class BoardGame{
             if(!player.getProperties().isEmpty()) sellProp=true; //Si le joueur possède des propriétés, on pourra lui propsoer d'en vendre
             group_color=groupOfAvenues(player,player.getAvenues());
             if(!group_color.isEmpty() && !first_turn_choice) putHouseHotel=true; //Si le joueur possède un groupe complet d'avenues (de même couleur), on va pouvoir lui proposer de poser maisons et hôtels
-            System.out.println("Rappel : utiliser votre carte attaque vous fait passer votre tour");
             System.out.println("Vous pouvez : ");
             System.out.println("Lancer les dés (rollsdice) ");
-            if(!player.getAttack_card().isItUsed()) System.out.println("Utiliser votre carte attaque (attack) "+player.getAttack_card().getName()+" "+player.getAttack_card().getEffect());
+            if(!player.getAttack_card().isItUsed()) {
+                System.out.println("Utiliser votre carte attaque (attack) "+player.getAttack_card().getName()+" "+player.getAttack_card().getEffect());
+                System.out.println("Rappel : utiliser votre carte attaque vous fait passer votre tour");
+            }
             if(sellProp && !first_turn_choice) {
                 System.out.println("Vendre des propriétés (sell)");
                 System.out.println("Hypothéquer une propriété (mortgage)");
@@ -300,23 +317,13 @@ public class BoardGame{
                 }
             }
             if(player instanceof Cannon && canDestroy) System.out.println("Détruire une maison (shoot)");
-
-            if(putHouseHotel && !(player instanceof Mayor)) System.out.println("Poser des maisons ou hôtel sur vos avenues (putHouse)");
-            //if(putHouseHotel && player instanceof Mayor) System.out.println("Poser un hôtel directement car vous êtes le maire (entrez \"putHotel\")");
+            if(putHouseHotel) System.out.println("Poser des maisons ou hôtel sur vos avenues (putHouse)"); 
+            if(player instanceof Hat && numberOfTurns%2==0 && numberOfTurns>=5) System.out.println("Essayer de récupérer de l'argent en arnaquant les autres joueurs (scam), attention, cela passe votre tour");
                 switch(turn_choice_scanner.nextLine()){
                     case "shoot":
-                        Scanner avenues_where_to_destroy_house_scanner=new Scanner(System.in);
-                        String avenues_where_to_destroy_house_name;
-                        Avenue avenue_where_to_destroy_house=null;
-                        System.out.println("Sur quelle avenue voulez-vous détruire une maison");
-                        for(i=0;i<avenues_where_to_destroy_house.size();i++){
-                            System.out.println(avenues_where_to_destroy_house.get(i));
-                        }
-                        avenues_where_to_destroy_house_name=avenues_where_to_destroy_house_scanner.nextLine();
-                        for(i=0;i<avenues_where_to_destroy_house.size();i++){
-                            if(avenues_where_to_destroy_house.get(i).getName().equals(avenues_where_to_destroy_house_name)) avenue_where_to_destroy_house=(Avenue)(avenues_where_to_destroy_house.get(i));
-                        }
-                        ((Cannon)player).shoot(avenue_where_to_destroy_house);
+                        ((Cannon)player).shoot(avenues_where_to_destroy_house);
+                        turn_choice=true;
+                        break;
                     case "attack": //Attention prendre en compte si l'utilisateur effectue une action qu'il n'a pas le droit de faire
                         if(!player.getAttack_card().isItUsed()){
                             turn_choice=player.getAttack_card().effect(players,player,board);
@@ -341,7 +348,6 @@ public class BoardGame{
                                         displayPlayers(player);
                                         Player player_to_sell=null;
                                         String player_to_sell_name=who_to_sell_scanner.nextLine();
-                                        System.out.println(player_to_sell_name);
                                         for(i=0;i<players.size();i++){
                                             if(players.get(i).getName().equals(player_to_sell_name)) player_to_sell=players.get(i);
                                         }
@@ -351,7 +357,7 @@ public class BoardGame{
                                             case "Oui":
                                                 prop_to_sell.sellToSomeone(player, player_to_sell);
                                                 break;
-                                            case"Non":
+                                            case "Non":
                                                 break;
                                         }
 
@@ -368,6 +374,10 @@ public class BoardGame{
                         else System.out.println("Vous n'avez pas de propriétés à vendre");
                         break;
                         }
+                    case "scam":
+                        ((Hat)player).scam(players_in_game);
+                        turn_choice=true;
+                        break;
                     case "putHouse":
                         if(putHouseHotel){ //Même remarque que pour sellProp
                             if(!first_turn_choice){
@@ -379,35 +389,28 @@ public class BoardGame{
                                 }
                                 System.out.println("Sur quelle(s) avenue(s) voulez-vous poser une maison ou un hôtel ?");
                                 for(i=0;i<avenues_player_have_all_group.size();i++){
-                                    System.out.println(avenues_player_have_all_group.get(i));
+                                    System.out.println(avenues_player_have_all_group.get(i).getName());
                                 }
                                 Avenue avenue_where_put_house=null;
                                 String avenue_where_put_house_name;
                                 do{
+                                    System.out.println("");
+                                    System.out.println("Saisissez le nom de l'avenue");
                                     avenue_where_put_house_name=avenues_put_house_hotel_scanner.nextLine();
                                     for(i=0;i<avenues_player_have_all_group.size();i++){
                                         if(avenue_where_put_house_name.equals(avenues_player_have_all_group.get(i).getName())) avenue_where_put_house=avenues_player_have_all_group.get(i);
                                     }
+                                    if(player instanceof Mayor){
+                                        System.out.println("Vous pouvez mettre un hôtel directement pour la somme de 50 000 Francs");
+                                    }
                                     System.out.println("Voulez-vous mettre un hôtel ou une maison ?");
                                     switch(choice_house_or_hotel_scanner.nextLine()){
                                         case "hotel":
-                                            boolean able_to_put_hotel=true;
-                                            if(avenue_where_put_house.getHouse()!=4) System.out.println("Vous devez avoir 4 maisons sur votre avenue pour pouvoir mettre un hôtel");
-                                            else{
-                                                for(i=0;i<avenues_player_have_all_group.size();i++){
-                                                    if(avenues_player_have_all_group.get(i).getColor().equals(avenue_where_put_house.getColor()) && avenues_player_have_all_group.get(i).getHouse()!=4) able_to_put_hotel=false;
-                                                }
-                                                if(!able_to_put_hotel) System.out.println("Vous devez avoir 4 maisons sur toutes les avenues du groupe pour pouvoir mettre un hôtel sur l'une d'elles");
-                                                else player.putHotel(avenue_where_put_house);
-                                            }
+                                            if(player instanceof Mayor) ((Mayor)player).buildHotel(avenue_where_put_house);
+                                            else player.putHotel(avenue_where_put_house,avenues_player_have_all_group);
                                             break;
                                         case "maison":
-                                            boolean able_to_put_house=true;
-                                            for(i=0;i<avenues_player_have_all_group.size();i++){
-                                                if(avenues_player_have_all_group.get(i).getColor().equals(avenue_where_put_house.getColor()) && avenues_player_have_all_group.get(i).getHouse()!=avenue_where_put_house.getHouse()) able_to_put_house=false;
-                                            }
-                                            if(!able_to_put_house) System.out.println("Vous devez avoir le même nombre de maisons sur chacune des avenues du même groupe pour pouvoir ajouter une maison sur l'une d'elle");
-                                            else player.putHouse(avenue_where_put_house);
+                                            player.putHouse(avenue_where_put_house,avenues_player_have_all_group);
                                             break;
                                         default:
                                             System.out.println("Veuillez choisir un argument valide");
@@ -449,7 +452,7 @@ public class BoardGame{
                             if(player.getPlayer_case() instanceof Bonus) ((Bonus)(player.getPlayer_case())).effect(player, board); //Effet de cases bonus
                             if(player.getPlayer_case() instanceof Taxes) {
                                 player.setCapital(player.getCapital()-((Taxes)(player.getPlayer_case())).getPrice());
-                                System.out.println("Vous avez payé "+((Taxes)(player.getPlayer_case())).getPrice());
+                                System.out.println("Vous avez payé "+((Taxes)(player.getPlayer_case())).getPrice()+" francs");
                             }
                             if(player.getPlayer_case().equals(board.get(30))) {
                                 player.inJail(board);
@@ -471,7 +474,10 @@ public class BoardGame{
                             }
                         }while(result_of_dice.get(0).equals(result_of_dice.get(1)) && count_double<3);
 
-                        if(count_double==3) player.inJail(board);
+                        if(count_double==3){
+                            System.out.println("Vous avez fait 3 doubles de suite, vous allez en prison !");
+                            player.inJail(board);
+                        }
                         turn_choice=true;
                         break;
 
@@ -506,6 +512,9 @@ public class BoardGame{
     
     public static void displayProperties(Player player){
         for(i=0;i<player.getProperties().size();i++){
+            if(player.getProperties().get(i) instanceof Avenue){
+                System.out.println(player.getProperties().get(i).getName()+", de couleur "+((Avenue)player.getProperties().get(i)).getColor());
+            }
             System.out.println(player.getProperties().get(i).getName());
         }
     }
@@ -526,21 +535,25 @@ public class BoardGame{
     }
     public static void displayInventory(Player player){
         System.out.println("");
-        System.out.println(player.getName());
+        if(player.isScamed()){
+            System.out.println("On vous a arnaqué ! Vous avez perdu "+player.getAmountScamed()+" Francs");
+            player.setScamed(false);
+        }
+        System.out.println("Au tour de "+player.getName());
         System.out.println("Vous avez "+player.getCapital()+" €");
         System.out.println("");
         System.out.println("Vous possèdez : ");
         for(i=0;i<player.getProperties().size();i++){
             if(player.getProperties().get(i) instanceof Avenue){ //Si la propriété est une avenue, on affiche le nombre de maisons/hôtel s'il y en a
-                if( ((Avenue)(player.getProperties().get(i))).getHouse()>0) System.out.println(((Avenue)(player.getProperties().get(i))).getName()+" avec "+((Avenue)(player.getProperties().get(i))).getHouse()+" maison(s) dessus, ");
-                else if(((Avenue)(player.getProperties().get(i))).getHotel()>0) System.out.println(((Avenue)(player.getProperties().get(i))).getName()+" avec "+((Avenue)(player.getProperties().get(i))).getHotel()+" hôtel dessus, ");
-                else System.out.println(((Avenue)(player.getProperties().get(i))).getName());
+                if(((Avenue)(player.getProperties().get(i))).getHotel()>0) System.out.println((player.getProperties().get(i)).getName()+", de couleur "+((Avenue)player.getProperties().get(i)).getColor()+" avec "+((Avenue)(player.getProperties().get(i))).getHotel()+" hôtel dessus, ");
+                else if( ((Avenue)(player.getProperties().get(i))).getHouse()>0) System.out.println((player.getProperties().get(i)).getName()+", de couleur "+((Avenue)player.getProperties().get(i)).getColor()+ " avec "+((Avenue)(player.getProperties().get(i))).getHouse()+" maison(s) dessus, ");
+                else System.out.println((player.getProperties().get(i)).getName());
             }
             else if(player.getProperties().get(i) instanceof RailRoad){
-                System.out.println(((RailRoad)(player.getProperties().get(i))).getName());
+                System.out.println(((RailRoad)player.getProperties().get(i)).getName());
             }
             else if(player.getProperties().get(i) instanceof Company){
-                System.out.println( ((Company)(player.getProperties().get(i))).getName() );
+                System.out.println( ((Company)player.getProperties().get(i)).getName() );
             } //Si la case est une propriété, on caste la case pour pouvoir utiliser les méthodes propres à la classe Property
             
         }
@@ -551,14 +564,14 @@ public class BoardGame{
             useAttack=true;
         }
         else useAttack=false;
-        
         System.out.println("");
         if(covid.isInAction()){
             System.out.println("Le covid circule actuellement");//Ajouter affichage du niveau d'alerte
         }
         if(strike.isInAction()){
             System.out.println("Il y a actuellement une grève des trains");
-        }    
+        }
+        System.out.println("Vous êtes actuellement sur la case n° "+player.getPlayer_case().getCaseNumber()+", "+player.getPlayer_case().getName());
     }
     
     public static ArrayList <ColorAvenue> groupOfAvenues(Player player,ArrayList <Avenue> avenues){ //Va regarder si le joueur passé en paramètre possède un groupe complet d'avenues de même couleurs
@@ -589,8 +602,10 @@ public class BoardGame{
     
     public static void getOutOfJail(Player player)
     {
+        boolean tryDone=false;
         System.out.println("Pour sortir, faites votre choix : freecard si vous avec une carte de libération, pay si vous voulez payer (50€), ou roll si vous voulez tenter votre chance avec un double");
-        switch(prison_choice_scanner.nextLine())                           // on lit la réponse du joueur
+        do {
+            switch(prison_choice_scanner.nextLine())                           // on lit la réponse du joueur
             {
                 case "freecard":                
 
@@ -599,7 +614,10 @@ public class BoardGame{
                         player.setIsInJail(false);
                         player.setFree_card(player.getFree_card() - 1);     // on actualise le nombre de cartes
                         System.out.println("Il vous reste à présent " + player.getFree_card() + " cartes pour sortir de prison");
+                        tryDone=true;
                     }
+                    else System.out.println("Vous n'avez pas de cartes pour sortir de prison");
+                        
                     break;
 
                 case "pay":
@@ -609,11 +627,15 @@ public class BoardGame{
                         player.setIsInJail(false);
                         player.setCapital(player.getCapital() - 50);        // on actualise le capital
                         System.out.println("Vous disposez à présent de " + player.getCapital() + " euros");
+                        tryDone=true;
                     }
                     break;
 
                 case "roll":
-                    if (player.rollsDice().get(0)==player.rollsDice().get(1) )    // si le joueur a fait un double
+                    int firstDice=player.rollsDice().get(0);
+                    int secondDice=player.rollsDice().get(1);
+                    System.out.println("Vous avez fait "+firstDice+" et "+secondDice);
+                    if (firstDice==secondDice)    // si le joueur a fait un double
                     {
                         player.setIsInJail(false);
                         System.out.println("Félicitations ! Votre double vous permet de sortir de prison");
@@ -623,7 +645,12 @@ public class BoardGame{
                         System.out.println("Dommage ! Vous restez en prison");
                         player.setIsInJail(true);
                     }
+                    tryDone=true;
                     break;
-            }
-    }
+                default:
+                    System.out.println("Veuillez saisir une commande valide");
+                    break;
+           }
+    }while(!tryDone);
+}
 }

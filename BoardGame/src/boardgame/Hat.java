@@ -5,11 +5,14 @@
  */
 package boardgame;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 /**
  *
  * @author Antoine
  */
-public class Hat extends Player implements Citizen {
+public final class Hat extends Player implements Citizen {
     
     public Hat(String name,int playerNumber){
         this.setName(name);
@@ -17,15 +20,28 @@ public class Hat extends Player implements Citizen {
     }
     
     
-    public void reduc(Avenue avenue){
-        avenue.setBoughtPrice((int)(avenue.getBoughtPrice()*0.8)); //Attention, ne pas oublier de remettre le prix de base pour les autres joueurs
+    public void scam(ArrayList <Player> players){
+        int totalAmount=0;
+        int amountPerPlayer=0;
+        Random rand=new Random();
+        for(int i=0;i<players.size();i++){
+            if(players.get(i)!=this){
+                amountPerPlayer=rand.nextInt(2000);
+                totalAmount+=amountPerPlayer;
+                players.get(i).setCapital(players.get(i).getCapital()-amountPerPlayer);
+                players.get(i).setScamed(true);
+                players.get(i).setAmountScamed(amountPerPlayer);
+            }
+        }
+        this.setCapital(this.getCapital()+totalAmount);
+        System.out.println("Vous avez réussi à amasser "+totalAmount+" Francs en arnaquant les autres joueurs");
     }
     
     @Override
     public void doubleRent(Avenue avenue)
     {
-        if(avenue.getColor().ROUGE.equals(avenue))                                   // SI COULEUR CORRESPOND AU BONUS
-        {
+        if(avenue.getColor().equals(ColorAvenue.ROUGE))                                   // SI COULEUR CORRESPOND AU BONUS
+        {  
             avenue.setRent(avenue.getRent() * 2);                               // ON DOUBLE
         }
         else

@@ -9,7 +9,7 @@ package boardgame;
  *
  * @author Antoine
  */
-public class Taxes extends Case {
+public final class Taxes extends Case {
     
     private int price;
     

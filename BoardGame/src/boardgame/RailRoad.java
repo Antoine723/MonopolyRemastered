@@ -9,7 +9,7 @@ package boardgame;
  *
  * @author Antoine
  */
-public class RailRoad extends Property {
+public final class RailRoad extends Property {
     
     private int number=0;
     
@@ -30,20 +30,35 @@ public class RailRoad extends Property {
     @Override
     public int computing(Property prop,Player player)
     {
-        switch(prop.getAssociatedPlayer().getNumberOfRailRoads())
-            {
-                case 2:
-                    prop.setRent(5000);                                         // valeurs indiquées sur les cartes
-                    break;
+        if(player!=null){
+            System.out.println("Nombre de gares du joueur= "+prop.getAssociatedPlayer().getNumberOfRailRoads());
+            for(int i=0; i<player.getProperties().size();i++){
+                if(player.getProperties().get(i) instanceof RailRoad){
+                    switch(prop.getAssociatedPlayer().getNumberOfRailRoads())
+                    {
+                        case 1:
+                            player.getProperties().get(i).setRent(2500);                                         // valeurs indiquées sur les cartes
+                            break;
+                        case 2:
+                            player.getProperties().get(i).setRent(5000);                                         // valeurs indiquées sur les cartes
+                            break;
 
-                case 3:
-                    prop.setRent(10000);
-                    break;
+                        case 3:
+                            player.getProperties().get(i).setRent(10000);
+                            break;
 
-                case 4:
-                    prop.setRent(20000);
-                    break;
+                        case 4:
+                            player.getProperties().get(i).setRent(20000);
+                            break;
+                    }
+                }
+
             }
+        }
+        else{
+            prop.setRent(2500);
+        }
+        
         return prop.getRent();                                                  // s' il n'y a qu'une gare on renvoie juste le loyer
     }
 }

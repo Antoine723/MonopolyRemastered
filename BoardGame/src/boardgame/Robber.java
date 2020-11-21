@@ -12,7 +12,7 @@ import java.util.Scanner;
  *
  * @author thibb
  */
-public class Robber extends Attack
+public final class Robber extends Attack
 {
     Random rand = new Random();
     

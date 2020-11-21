@@ -79,6 +79,13 @@ public abstract class Property extends Case {
                 checkDoubleRent(player);
                 
             }
+            else if(this instanceof RailRoad){
+                player.setNumberOfRailRoads(player.getNumberOfRailRoads()+1);
+            }
+            else if(this instanceof Company){
+                player.setNumberOfCompanies(player.getNumberOfCompanies()+1);
+            }
+            this.computing(this, player);
             this.isBought=true;
             return 1; //Si renvoie 1, alors l'achat a été effectué correctement, si -1, alors non
         }
@@ -106,8 +113,17 @@ public abstract class Property extends Case {
                     buyer.addAvenue((Avenue)this);
                     checkDoubleRent(buyer);       
                     }
-                return 1; 
+                else if(this instanceof RailRoad){
+                    buyer.setNumberOfRailRoads(buyer.getNumberOfRailRoads()+1);
+                    seller.setNumberOfRailRoads(seller.getNumberOfRailRoads()-1);
                 }
+                else if(this instanceof Company){
+                    buyer.setNumberOfCompanies(buyer.getNumberOfCompanies()+1);
+                    seller.setNumberOfCompanies(seller.getNumberOfCompanies()-1);
+                }
+                this.computing(this, buyer);
+                return 1; 
+        }
         else{
             System.out.println("Vous n'avez pas assez d'argent pour acheter cette propriété");
             return -1;
@@ -122,19 +138,23 @@ public abstract class Property extends Case {
             seller.removeAvenue((Avenue)this);
             checkDoubleRent(seller);
         }
-        else{
+        
+        else if(this instanceof RailRoad){
+            seller.setNumberOfRailRoads(seller.getNumberOfRailRoads()-1);
             seller.setCapital(seller.getCapital()+this.getBoughtPrice());
         }
+        else if(this instanceof Company){
+            seller.setNumberOfCompanies(seller.getNumberOfCompanies()-1);
+            seller.setCapital(seller.getCapital()+this.getBoughtPrice());
+        }
+        
         seller.removeProperty(this);
         this.associatedPlayer=null;
         this.isBought=false;
         
     }
     
-    public int computing(Property prop,Player player)                           
-    {
-        return prop.getRent();
-    }
+    public abstract int computing(Property prop,Player player);
         
     public void checkDoubleRent(Player player){
         if(player instanceof Car) ((Car)(player)).doubleRent((Avenue)this);

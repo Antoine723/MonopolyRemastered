@@ -9,20 +9,24 @@ package boardgame;
  *
  * @author Antoine
  */
-public class Mayor extends Player {
+public final class Mayor extends Player {
     
     public Mayor(String name,int playerNumber){
         this.setName(name);
         this.setPlayerNumber(playerNumber);
     }
     
-    public void makeProfits(){
-        this.setCapital(this.getCapital()+100*(this.getAvenues().size()));
-        
-    }
     
     public void buildHotel(Avenue avenue){
-        avenue.setHotel(1);
+        if(avenue.getHotel()==1){
+            System.out.println("Vous ne pouvez pas mettre plus d'un hôtel sur votre propriété");
+        }
+        else{
+            avenue.setHotel(1);
+            avenue.computing(avenue, this);
+            this.setCapital(this.getCapital()-avenue.getPriceOfHouseAndHotels()*4);
+            System.out.println("Vous avez posé 1 hôtel sur "+avenue.getName()+" pour la modique somme de "+ avenue.getPriceOfHouseAndHotels()*4+" Francs");
+        }
         
     }
     

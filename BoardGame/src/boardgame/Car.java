@@ -12,7 +12,7 @@ import java.util.Scanner;
  *
  * @author Antoine
  */
-public class Car extends Player implements Citizen{
+public final class Car extends Player implements Citizen{
     
     public Car(String name,int playerNumber){
         this.setName(name);

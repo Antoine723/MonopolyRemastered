@@ -12,7 +12,7 @@ import java.util.Random;
  *
  * @author Antoine
  */
-public class Bonus extends Case{
+public final class Bonus extends Case{
     private int amount;
     Random rand=new Random();
     public Bonus(String caseName, int numCase){
@@ -28,7 +28,7 @@ public class Bonus extends Case{
             switch(num_effect){
                 case 1://Carte chance = joueur reçoit de l'argent
                     player.setCapital(player.getCapital()+amount);
-                    System.out.println("Félicitations ! Vous trouvez "+amount+" € lors d'un banale promenade avec Medor");
+                    System.out.println("Félicitations ! Vous trouvez "+amount+" € lors d'une banale promenade avec Medor");
                     break;
                 case 2://Carte chance = joueur perd de l'argent
                     player.setCapital(player.getCapital()-amount);
@@ -41,7 +41,7 @@ public class Bonus extends Case{
                     
                     if(newCase.getCaseNumber()<player.getPlayer_case().getCaseNumber()) player.setCapital(player.getCapital()+200); //Si le joueur passe par la case départ, il touche l'argent
                     player.setPlayer_case(newCase);
-                    System.out.println("Vous êtes à présent sur la case "+player.getPlayer_case().getName());
+                    System.out.println("Vous avez été déplacé, vous êtes à présent sur la case "+player.getPlayer_case().getName());
                     break;
                 case 4://Carte chance = joueur est emmené en prison
                     System.out.println("Vous allez en prison");

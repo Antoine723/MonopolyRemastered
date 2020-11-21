@@ -24,6 +24,9 @@ public abstract class Player implements Comparable<Player> {
     private int numberOfRailRoads=0;
     private int numberOfCompanies=0;
     private boolean inflated=false;
+    private boolean scamed=false;
+    private int amountScamed=0;
+    
     private Attack attack_card=null;
     private ArrayList <Property> properties=new ArrayList();
     private ArrayList <Avenue> avenues=new ArrayList();
@@ -76,6 +79,14 @@ public abstract class Player implements Comparable<Player> {
 
     public ArrayList<Avenue> getAvenues() {
         return avenues;
+    }
+
+    public boolean isScamed() {
+        return scamed;
+    }
+
+    public int getAmountScamed() {
+        return amountScamed;
     }
     
     
@@ -136,6 +147,14 @@ public abstract class Player implements Comparable<Player> {
     public void setInflated(boolean inflated) {
         this.inflated = inflated;
     }
+
+    public void setScamed(boolean scamed) {
+        this.scamed = scamed;
+    }
+
+    public void setAmountScamed(int amountScamed) {
+        this.amountScamed = amountScamed;
+    }
     
     
     public ArrayList <Integer> rollsDice(){
@@ -147,16 +166,45 @@ public abstract class Player implements Comparable<Player> {
         return dice;
     }
     
-    public void putHouse(Avenue avenue){
-        avenue.setHouse(avenue.getHouse()+1);
-        updateRentOfAvenue(avenue);
+    public void putHouse(Avenue avenue, ArrayList <Avenue> group_avenues){
+        boolean isPutHouse=true;
+        if(avenue.getHouse()==4){
+            System.out.println("Vous ne pouvez pas mettre plus de 4 maisons sur votre propriété. Cependant, vous pouvez mettre un hôtel");
+            isPutHouse=false;
+        }
+        else{
+            for(int i=0;i<group_avenues.size();i++){
+                if(group_avenues.get(i).getColor().equals(avenue.getColor()) && (group_avenues.get(i).getHouse()<avenue.getHouse() && group_avenues.get(i).getHotel()==0 )) isPutHouse=false;
+            }
+            if(!isPutHouse) System.out.println("Vous devez avoir le même nombre de maisons sur chacune des avenues du même groupe pour pouvoir ajouter une maison sur l'une d'elle");
+            else {
+                avenue.setHouse(avenue.getHouse()+1);
+                avenue.computing(avenue, this);
+                this.capital=this.capital-avenue.getPriceOfHouseAndHotels();
+                System.out.println("Vous avez posé 1 maison sur "+avenue.getName()+" pour la somme de "+avenue.getPriceOfHouseAndHotels()+" Francs");
+            }   
+        }
         
-        
+
     }
-    public void putHotel(Avenue avenue){
-        avenue.setHotel(1);
-        updateRentOfAvenue(avenue);
-        
+    public void putHotel(Avenue avenue, ArrayList <Avenue> group_avenues ){
+        boolean isPutHotel=true;
+        if(avenue.getHotel()==1){
+            System.out.println("Vous ne pouvez pas mettre plus d'un hôtel sur votre propriété");
+            isPutHotel=false;
+        }
+        else{
+            for(int i=0;i<group_avenues.size();i++){
+                if(group_avenues.get(i).getColor().equals(avenue.getColor()) && group_avenues.get(i).getHouse()!=4) isPutHotel=false;
+            }
+            if(!isPutHotel) System.out.println("Vous devez avoir 4 maisons sur toutes les avenues du groupe pour pouvoir mettre un hôtel sur l'une d'elles");
+            else {
+                avenue.setHotel(1);
+                avenue.computing(avenue, this);
+                this.capital=this.capital-avenue.getPriceOfHouseAndHotels();
+                System.out.println("Vous avez posé 1 hôtel sur "+avenue.getName()+" pour la somme de "+avenue.getPriceOfHouseAndHotels()+" Francs");
+            }
+        }
     }
     
     public void inJail(ArrayList <Case> board){
@@ -194,7 +242,7 @@ public abstract class Player implements Comparable<Player> {
     }
     
     
-    public void updateRentOfAvenue(Avenue avenue)                 // AJOUT D'UNE FONCTION QUI DETERMINE LOYER APRES LA PAUSE D'UN HOTEL OU MAISON                                           
+    /*public void updateRentOfAvenue(Avenue avenue)                 // AJOUT D'UNE FONCTION QUI DETERMINE LOYER APRES LA PAUSE D'UN HOTEL OU MAISON                                           
     {
         float houseCoefficient;
         float hotelCoefficient;
@@ -487,5 +535,5 @@ public abstract class Player implements Comparable<Player> {
                 }
                 break;
         }
-    }  
+    }  */
 }

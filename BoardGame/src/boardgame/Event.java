@@ -5,6 +5,8 @@
  */
 package boardgame;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Antoine

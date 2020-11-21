@@ -5,13 +5,12 @@
  */
 package boardgame;
 
-import java.util.Scanner;
 
 /**
  *
  * @author Antoine
  */
-public class Prison extends Case {
+public final class Prison extends Case {
     
     private Player player=null;
 
