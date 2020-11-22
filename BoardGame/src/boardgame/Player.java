@@ -12,6 +12,33 @@ import java.util.Random;
  *
  * @author Antoine
  */
+
+/**
+ * La classe Player correspond aux différents joueurs d'une partie
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * Le paramètre name qui indique le nom du joueur
+ * Le paramètre capital qui indique le capitale du joueur
+ * Le paramètre playerCase qui indique la case sur laquelle se trouve le joueur
+ * Le paramètre isInJail indiquant si le joueur est en prison
+ * Le paramètre playerNumber qui indique le numéro du joueur
+ * Le paramètre freeCard qui indique si le nombre de cartes "libéré de prison" que possède un joueur
+ * Le paramètre numberOfRailRoads qui correspond au nombre de gare que possède un joueur
+ * Le paramètre numberOfCompanies qui correspond au nombre de compagnie que possède un joueur
+ * Le paramètre inflated qui indique si le joueur a été attaqué avec une carte Inflation
+ * Le paramètre scamed qui indique si le joueur a été attaqué avec une carte Robber
+ * Le paramètre amountScamed qui précise le montant que le joueur a perdu suite à l'utilisation de la carte Robber
+ * Le paramètre attackCard qui précise la carte attaque que possède le joueur
+ * Le paramètre properties qui représente la liste de propriété que possède un joueur
+ * Le paramètre avenues qui représente la liste d'avenues que possède un joueur
+ * On retrouve dans cette classe les fonctions permettant de récupérer et modifier les précédents paramètres
+ * On retrouve aussi la fonction permettant d'ajuster le loyer des propriétés ainsi que les fonctions pour acheter et vendre des propriétés
+ * @author thibb
+ * @author thibb
+ */
 public abstract class Player implements Comparable<Player> {
     
     private String name;

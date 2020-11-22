@@ -10,18 +10,48 @@ import java.util.Random;
  *
  * @author Antoine
  */
+
+/**
+ * La classe Strike permet d'implémenter l'évènement Earthquake
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * Le boolean done permet de vérifier si l'évènement a eu lieu ou non
+ * <br>
+ * On retrouve la fonction permettant de détruire les maisons
+ * On retrouve aussi les fonctions permettant de récupérer le booléen done
+ * @author thibb
+ */
 public final class Earthquake extends Event {
     Random rand=new Random();
     
+    
+     /**
+     * <b> Constructeur de Earthquake </b>
+     * <br>
+     * On attribut un nom à l'évènement
+     */
     public Earthquake(){
         this.setName("Earthquake");
     }
     private boolean done=false;
-
+    
+    
+   /**
+     * Cette méthode permet de savoir si l'évènement a eu lieu ou non
+     * @return  Cette méthode retourne le paramètre done
+     */
     public boolean isDone() {
         return done;
     }
     
+    /**
+     * Cette méthode permet de détruire plus ou moins de maisons selon la magnitude du séisme
+     * @param players
+     *      Le paramètre correspond à la liste des joueurs
+     */
     public void collapse(ArrayList <Player> players)            // gérer la notion de tour
     {
         boolean hasEffect=false;

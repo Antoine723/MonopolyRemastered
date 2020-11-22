@@ -10,19 +10,59 @@ import java.util.Random;
  *
  * @author Antoine
  */
+
+/**
+ * La classe Strike permet d'implémenter l'évènement Strike
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * Le boolean inAction permet de vérifier si l'évènement est toujours en cours
+ * <br>
+ * On retrouve les fonctions permettant de de fermer et ouvrir l'ensemble des gares
+ * On retrouve aussi les fonctions permettant de récupérer le booléen inAction et de le modifier
+ * @author thibb
+ */
 public final class Strike extends Event {
+    
     Random rand = new Random();
     private boolean inAction=false;
+    
+    
+    /**
+     * <b> Constructeur de Strike </b>
+     * <br>
+     * On attribut un nom à l'évènement
+     */
     public Strike(){
         this.setName("Strike");
     }
+    
+    /**
+     * Cette méthode permet de savoir si l'évènement est toujours en cours
+     * @return  Cette méthode retourne le paramètre inAction
+     */
     public boolean isInAction() {
         return inAction;
     }
 
+    /**
+     * @param inAction
+     *      Ce paramètre permet d'indiquer si l'évènement Strike est toujours en cours
+     */
     public void setInAction(boolean inAction) {
         this.inAction = inAction;
     }
+    
+    /**
+     * Cette méthode permet de fermer l'ensemble des gares en modifiant leurs loyers à 0
+     * @param board
+     *      Le paramètre correspond au plateau de jeu
+     * @param activation_turn
+     *      Le paramètre correspond au tour pendant lequel l'évènement a eu lieu
+     * @return  Cette méthode retourne le nombre de tours pendant lequel l'évènement se produit
+     */
     public int closeRailRoad(ArrayList <Case> board,int activation_turn)              
     {
         this.inAction=true;
@@ -37,6 +77,12 @@ public final class Strike extends Event {
         }
         return strike+activation_turn;
     }
+    
+    /**
+     * Cette méthode permet d'ouvrir l'ensemble des gares en remettant le loyer des gares avant cet évènement
+     * @param board
+     *      Le paramètre correspond au plateau de jeu
+     */
     public void openRailRoad(ArrayList <Case> board){
         this.inAction=false;
         System.out.println("Il pleut demain, les gares sont de nouveau ouvertes");

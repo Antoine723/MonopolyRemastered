@@ -12,14 +12,45 @@ import java.util.Random;
  *
  * @author Antoine
  */
+
+/**
+ * La classe Bonus permet de différencier les cases bonus des autres
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * L'entier amount qui correspond au montant que le joueur peut gagner ou perdre
+ * <br>
+ * On retrouve la fonction permettant de produire les différents effet des cartes chances et caisse de communauté
+ * @author thibb
+ */
 public final class Bonus extends Case{
     private int amount;
     Random rand=new Random();
+    
+    /**
+     * <b> Constructeur de Bonus </b>
+     * <br>
+     * On attribut un nom à la case ainsi qu'un numéro de case
+     * @param caseName
+     *      Le paramètre correspond au nom de la case
+     * @param numCase 
+     *      Le paramètre correspond au numéro de la case
+     */
     public Bonus(String caseName, int numCase){
         this.setCaseNumber(numCase);
         this.setName(caseName);
     }
     
+    
+    /**
+     * Cette méthode permet de produire les différents effets des cartes chance et caisse de communauté
+     * @param player
+     *      Le paramètre correspond à la liste des joueurs
+     * @param board
+     *      Le paramètre correspond au plateau de jeu
+     */
     public void effect(Player player,ArrayList <Case> board){
         int num_effect=rand.nextInt(4)+1;
         amount=rand.nextInt(200-50+1)+50;

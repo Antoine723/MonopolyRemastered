@@ -25,7 +25,8 @@ import java.util.Scanner;
 public final class GiveAway extends Attack {
     Scanner scanner = new Scanner(System.in);
     
-    /**<b> Constructeur de GiveAway </b>
+    /**
+     * <b> Constructeur de GiveAway </b>
      * <br>
      * On attribut un nom à la carte attaque et on indique son effet à l'utilisateur
      *
@@ -55,7 +56,7 @@ public final class GiveAway extends Attack {
     }
     
     /**
-     *Cette méthode permet de gérer l'interaction avec l'utilisateur lorsque celui-ci utilise la carte attaque GiveAway
+     * Cette méthode permet de gérer l'interaction avec l'utilisateur lorsque celui-ci utilise la carte attaque GiveAway
      * @param players
      *      Le paramètre correspond à une liste de joueurs pour ainsi accéder à l'ensemble de leurs propriétés
      * @param attacker

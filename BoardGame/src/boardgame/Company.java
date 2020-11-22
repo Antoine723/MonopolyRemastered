@@ -9,9 +9,31 @@ package boardgame;
  *
  * @author Antoine
  */
+
+/**
+ * La classe Company correspond aux cases compagnies du plateau de jeu
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * On retrouve les fonctions permettant d'ajuster le loyer des compagnies
+ * @author thibb
+ */
 public final class Company extends Property{
-    //A ajouter loyer=4*montant des dés si une compagnie, si les 2 *10
-    
+ 
+    /**
+     * <b> Constructeur de Compagny </b>
+     * <br>
+     * @param price
+     *      Le paramètre correspond au prix d'achat de la compagnie
+     * @param name
+     *      Le paramètre correspond au nom de la compagnie
+     * @param caseNumber
+     *      Le paramètre correspond au numéro de case de la compagnie
+     * @param mortgage 
+     *      Le paramètre correspond à l'hypothèque de la compagnie
+     */
     public Company(int price, String name, int caseNumber,int mortgage){                //      AJOUT DE MORTGAGE
         this.setName(name);
         this.setCaseNumber(caseNumber);
@@ -21,7 +43,14 @@ public final class Company extends Property{
     }
 
     
-   
+  /**
+     * Cette méthode permet d'ajuster les loyers des compagnies en fonction du nombre de compagnie que possède chaque joueur
+     * @param prop
+     *      Le paramètre correspond à la propriété étudiée, ici une compagnie
+     * @param player
+     *      Le paramètre correspond à la liste des joueurs
+     * @return  Cette méthode retourne le loyer des différentes compagnies
+     */
    @Override
    public int computing(Property prop,Player player)
    {

@@ -9,6 +9,25 @@ package boardgame;
  *
  * @author Antoine
  */
+
+/**
+ * La classe Property correspond aux différentes propriétés présentes sur le plateau soit gares, compagnies et avenues
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * Le paramètre isBought qui indique si la propriété est achetée ou non
+ * Le paramètre boughtPrice qui indique le prix d'achat d'une propriété
+ * Le paramètre rent qui indique le loyer d'une propriété
+ * Le paramètre associatedPlayer  indiquant le joueur associé à la propriété
+ * Le paramètre mortgage qui correspond au montant de l'hypothèque d'une propriété
+ * Le paramètre mortgaged qui indique si la propriété est hypothéquée ou non
+ * On retrouve dans cette classe les fonctions permettant de récupérer et modifier les précédents paramètres
+ * On retrouve aussi la fonction permettant d'ajuster le loyer des propriétés ainsi que les fonctions pour acheter et vendre des propriétés
+ * @author thibb
+ */
+
 public abstract class Property extends Case {
     private boolean isBought;
     private int boughtPrice;
@@ -17,56 +36,112 @@ public abstract class Property extends Case {
     private int mortgage;
     private boolean mortgaged=false;
     
-            
+    
+    /**
+     * @return  Cette méthode indique si la propriété est achetée
+     */
     public boolean isItBought() {
         return isBought;
     }
-
+    
+    /**
+     * @return Cette méthode retourne le prix d'achat d'une propriété
+     */
     public int getBoughtPrice() {
         return boughtPrice;
     }
-
+    
+    /**
+     * @return Cette méthode retourne le loyer d'une propriété
+     */
     public int getRent() {
         return rent;
     }
-
+    
+    /**
+     * @return Cette méthode retourne le montant de l'hypothèque d'une propriété
+     */
     public int getMortgage() {                                                  // AJOUT DE GETTER ET SETTER POUR MORTGAGE
         return mortgage;
     }
-
+    
+    /**
+     * @return  Cette méthode indique si la propriété est hypothéquée ou non
+     */
     public boolean isMortgaged() {
         return mortgaged;
     }
 
-
+    /**
+     * @return  Cette méthode retourne le joueur associé à la propriété
+     */
     public Player getAssociatedPlayer() {
         return associatedPlayer;
     }
-
+    
+    /**
+     * Cette méthode modifie l'état de la propriété (achetée ou non)
+     * @param isBought
+     *      Le paramètre indique si la propriété est achetée ou non
+     */
     public void setIsBought(boolean isBought) {
         this.isBought = isBought;
     }
-
+    
+    
+    /**
+     * Cette méthode modifie le prix d'achat d'une propriété
+     * @param boughtPrice
+     *      Le paramètre indique le prix d'achat d'une propriété
+     */
     public void setBoughtPrice(int boughtPrice) {
         this.boughtPrice = boughtPrice;
     }
-
+    
+    
+    /**
+     * Cette méthode modifie le loyer d'une propriété
+     * @param rent
+     *      Le paramètre rent le loyer d'une propriété
+     */
     public void setRent(int rent) {
         this.rent = rent;
     }
-
+    
+    
+    /**
+     * Cette méthode modifie le joueur associé à la propriété
+     * @param associatedPlayer
+     *      Le paramètre associatedPlayer indique le joueur associé à la propriété
+     */
     public void setAssociatedPlayer(Player associatedPlayer) {
         this.associatedPlayer = associatedPlayer;
     }
     
+    /**
+     * Cette méthode modifie le montant de l'hypothèque d'une propriété
+     * @param mortgage
+     *      Le paramètre correspond au montant de l'hypothèque d'une propriété
+     */
     public void setMortgage(int mortgage) {
         this.mortgage = mortgage;
     }
-
+    
+    
+    /**
+     * Cette méthode modifie l'état de la propriété (hypothéquée ou non)
+     * @param mortgaged 
+     */
     public void setMortgaged(boolean mortgaged) {
         this.mortgaged = mortgaged;
     }
     
+    /**
+     * Cette méthode permet d'acheter une propriété
+     * @param player
+     *      Le paramètre indique le joueur qui achète la propriété
+     * @return  Cette méthode retourne 1 si l'achat s'est bien passé -1 sinon
+     */
     public int buy(Player player){
         int price;
         if(player.isInflated()) price=2*this.getBoughtPrice();
@@ -103,6 +178,15 @@ public abstract class Property extends Case {
             return -1;
         }
     }
+    
+    /**
+     * Cette méthode permet à un joueur de vendre une propriété à un autre joueur
+     * @param seller
+     *      Le paramètre indique le joueur qui vend la propriété
+     * @param buyer
+     *       Le paramètre indique le joueur qui achète la propriété
+     * @return  Cette méthode retourne 1 si la vente s'est bien passé -1 sinon
+     */
     public int sellToSomeone(Player seller, Player buyer){
         int price;
         if(this instanceof Avenue) price = ((Avenue) (this)).getBoughtPrice()/2 + ((Avenue) (this)).getPriceOfHouseAndHotels()* (int) ((Avenue) (this)).getSoldAvenueCoeff();
@@ -141,9 +225,22 @@ public abstract class Property extends Case {
         
     }
    
-    
+    /**
+     * Cette méthode permet d'ajuster les loyers des propriétés en appelant cette méthode dans les classes filles de property
+     * @param prop
+     *      Le paramètre correspond à la propriété étudiée
+     * @param player
+     *      Le paramètre correspond au joueur qui possède la propriété
+     * @return  Cette méthode retourne les loyers modifiés des différentes propriétés
+     */
     public abstract int computing(Property prop,Player player);
-        
+    
+    
+    /**
+     * Cette méthode permet d'attribuer un bonus de loyer pour chaque pion
+     * @param player
+     *      Le paramètre correspond au pion du joueur
+     */
     public void checkDoubleRent(Player player){
         if(player instanceof Car) ((Car)(player)).doubleRent((Avenue)this);
         else if(player instanceof Cannon) ((Cannon)(player)).doubleRent((Avenue)this);

@@ -12,13 +12,39 @@ import java.util.Scanner;
  *
  * @author Antoine
  */
+
+/**
+ * La classe Cannon correspond au pouvoir Cannon permettant de détruire la maison d'un autre joueur
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * On retrouve dans cette classe les fonctions permettant de détruire les maisons et de bénéficier du bonus de couleur d'avenue
+ * @author thibb
+ */
 public final class Cannon extends Player implements Citizen {
     
+    
+    /**
+     * <b> Constructeur de Cannon </b>
+     * <br>
+     * @param name
+     *       Le paramètre indique le nom du joueur qui a choisi le pouvoir Cannon
+     * @param playerNumber 
+     *       Le paramètre indique le numéro du joueur qui a choisi le pouvoir Cannon
+     */
     public Cannon(String name,int playerNumber){
         this.setName(name);
         this.setPlayerNumber(playerNumber);
     }
     
+    
+    /**
+     * Cette méthode permet d'utiliser le pouvoir du pion cannon soit de détruire des maisons
+     * @param avenues
+     *      Le paramètre correspond à la liste des avenues du plateau de jeu
+     */
     public void shoot(ArrayList <Avenue> avenues){
         Scanner avenue_scanner=new Scanner(System.in);
         String avenue_name;
@@ -45,6 +71,12 @@ public final class Cannon extends Player implements Citizen {
         }while(!isHouseDestroyed);
     }
     
+    
+    /**
+     Cette méthode permet de doubler le loyer des avenues dont la couleur correspond au bonus du pouvoir
+     * @param avenue
+     *      Le paramètre permet de doubler le loyer de l'avenue si celle-ci est d'une couleur identique à celle du bonus
+     */
     @Override
     public void doubleRent(Avenue avenue)
     { 

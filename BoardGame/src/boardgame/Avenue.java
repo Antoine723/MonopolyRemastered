@@ -15,6 +15,25 @@ import java.io.IOException;
  *
  * @author Antoine
  */
+
+/**
+ * La classe Avenue correspond aux différentes avenues présentes sur le plateau
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * Le paramètre house qui indique le nombre de maison sur une avenue
+ * Le paramètre hotel qui indique le nombre d'hôtel sur une avenue
+ * Le paramètre color qui indique la couleur d'une avenue
+ * Le paramètre priceOfHouseAndHotels  indiquant le prix des maisons et des hôtels
+ * Le paramètre soldAvenueCoeff qui correspond à un coefficient lors de la vente d'une avenue
+ * Le paramètre basedRent qui correspond au prix de base de l'avenue
+ * On retrouve dans cette classe les fonctions permettant de récupérer et modifier les précédents paramètres
+ * On retrouve aussi la fonction permettant d'ajuster le loyer des avenues selon le nombre de maisons et d'hôtels
+ * @author thibb
+ */
+
 public final class Avenue extends Property{
     
     private int house=0;
@@ -24,6 +43,25 @@ public final class Avenue extends Property{
     private float soldAvenueCoeff = 0 ;
     private int basedRent;
     //Coefficient multiplicateur nombre de maison/hotel avec loyer
+    
+    /**
+     * <b> Constructeur de Avenue </b>
+     * <br>
+     * @param price
+     *      Le paramètre correspond au prix d'achat de l'avenue
+     * @param basedRent
+     *      Le paramètre correspond au loyer sur terrain nu de l'avenue
+     * @param name
+     *      Le paramètre correspond au nom de l'avenue
+     * @param caseNumber
+     *      Le paramètre correspond au numéro de case de l'avenue
+     * @param color
+     *      Le paramètre correspond à la couleur de l'avenue
+     * @param priceOfHouseAndHotels
+     *      Le paramètre correspond aux prix des maisons et des hôtels sur l'avenue
+     * @param mortgage 
+     *      Le paramètre correspond à l'hypothèque de l'avenue
+     */
     public Avenue(int price,int basedRent, String name, int caseNumber, ColorAvenue color, int priceOfHouseAndHotels, int mortgage){      // AJOUT DE MORTGAGE
         this.setName(name);
         this.setCaseNumber(caseNumber);
@@ -34,48 +72,88 @@ public final class Avenue extends Property{
         this.setMortgage(mortgage);
         this.color=color;
     }
-
+    
+    
+    /**
+     * @return  Cette méthode retourne le nombre de maison sur une avenue
+     */
     public int getHouse() {
         return house;
     }
-
+    
+    
+    /**
+     * @return  Cette méthode retourne le nombre d'hôtel sur une avenue
+     */
     public int getHotel() {
         return hotel;
     }
-
+    
+    /**
+     * @return  Cette méthode retourne le prix des maisons et hôtels sur une avenue
+     */
     public int getPriceOfHouseAndHotels() {
         return priceOfHouseAndHotels;
     }
-
+    
+    /**
+     * @return  Cette méthode retourne la couleur d'une avenue
+     */
     public ColorAvenue getColor() {
         return color;
     }
-
+    
+    /**
+     * @return Cette méthode retourne le loyer sur terrain nu d'une avenue
+     */
     public int getBasedRent() {
         return basedRent;
     }
 
-
+       /**
+     * @return Cette méthode retourne le coefficient lors de la vente d'une avenue
+     */
     public float getSoldAvenueCoeff() {
         return soldAvenueCoeff;
     }
-
+    
+    /**
+     * Cette méthode modifie le coefficient lors de la vente d'une avenue
+     * @param soldAvenueCoeff
+     *      Le paramètre correpond au coefficient lors de la vente d'une avenue
+     */
     public void setSoldAvenueCoeff(float soldAvenueCoeff) {
         this.soldAvenueCoeff = soldAvenueCoeff;
     }
     
+    /**
+     * Cette méthode modifie le nombre de maison sur une avenue
+     * @param house
+     *      Le paramètre correpond au nombre de maison sur une avenue
+     */
     public void setHouse(int house) {
         this.house = house;
     }
-
+    
+     /**
+     * Cette méthode modifie le nombre d'hôtel sur une avenue
+     * @param hotel
+     *      Le paramètre correpond au nombre d'hôtel sur une avenue
+     */
     public void setHotel(int hotel) {
         this.hotel = hotel;
     }
-
+    
+    /**
+     * Cette méthode modifie le loyer sur terrain nu d'une avenue
+     * @param basedRent 
+     *       Le paramètre correpond au loyer sur terrain nu d'une avenue
+     */
     public void setBasedRent(int basedRent) {
         this.basedRent = basedRent;
     }
 
+    
     
     @Override
     public int computing(Property prop,Player player)

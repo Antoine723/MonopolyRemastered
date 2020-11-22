@@ -12,16 +12,42 @@ import java.util.Scanner;
  *
  * @author thibb
  */
+
+/**
+ * La classe Robber correspond à la carte attaque robber qui permet de voler l'avenue d'un joueur
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * On retrouve les fonctions permettant de déclencher l'effet de la carte et celle permettant d'utiliser cette carte
+ * @author thibb
+ */
 public final class Robber extends Attack
 {
     Random rand = new Random();
     
+    
+    /**
+     * <b> Constructeur de Robber </b>
+     * <br>
+     * On attribut un nom à la carte attaque et on indique son effet à l'utilisateur
+     */
     public Robber()
     {
         this.setName("Robber");
         this.setEffect("Vous pouvez voler une rue d'un autre joueur");   
     }
     
+    /**
+     * Cette méthode permet de voler l'avenue d'un autre joueur
+     * @param avenue
+     *      Le paramètre correspond à l'avenue que le voleur souhaite voler
+     * @param attackedPlayer
+     *      Le paramètre correspond au joueur attaqué
+     * @param robber
+     *      Le paramètre correspond au joueur qui lance l'attaque
+     */
     public void stealAvenue(Avenue avenue, Player attackedPlayer,Player robber)
     {
         boolean correct = false;
@@ -55,6 +81,18 @@ public final class Robber extends Attack
             
     }
     
+    
+    /**
+     * Cette méthode permet de gérer l'interaction avec l'utilisateur lorsque celui-ci utilise la carte attaque Robber
+     * @param players
+     *      Le paramètre correspond à une liste de joueurs pour ainsi accéder à l'ensemble de leurs propriétés
+     * @param attacker
+     *      Le paramètre correspond au joueur initiateur de l'attaque
+     * @param board
+     *      Le paramètre correspond au plateau de jeu pour pouvoir accéder aux différentes cases
+     * @return
+     *      La méthode retourne vrai si l'opération s'est bien passée sinon elle retourne faux dans le cas où l'attaquant s'est trompé dans l'utilisation de la carte 
+     */
     @Override
     public boolean effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board){
         Scanner attacked_player_scanner=new Scanner(System.in);

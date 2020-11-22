@@ -42,8 +42,7 @@ public final class Covid extends Event{
     }
 
     /**
-     *Cette méthode permet de savoir si l'évènement est toujours en cours
-     * 
+     * Cette méthode permet de savoir si l'évènement est toujours en cours
      * @return
      *      Cette méthode retourne le paramètre inAction
      */
@@ -52,7 +51,6 @@ public final class Covid extends Event{
     }
 
     /**
-     *
      * @param inAction
      *      Ce paramètre permet d'indiquer si l'évènement Covid est toujours en cours
      */
