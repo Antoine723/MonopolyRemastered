@@ -14,7 +14,9 @@ public final class RailRoad extends Property {
     private int number=0;
     
     public RailRoad(int price,int rent, String name, int caseNumber,int mortgage){          // AJOUT DE MORTGAGE
-        super(name,caseNumber,mortgage);
+        this.setName(name);
+        this.setCaseNumber(caseNumber);
+        this.setMortgage(mortgage);
         this.setBoughtPrice(price);
         this.setRent(rent);
     }

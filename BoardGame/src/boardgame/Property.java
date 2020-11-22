@@ -15,12 +15,8 @@ public abstract class Property extends Case {
     private int rent;
     private Player associatedPlayer;
     private int mortgage;
+    private boolean mortgaged=false;
     
-    public Property(String name, int caseNumber,int mortgage){                  // AJOUT DE MORTGAGE
-        this.setName(name);
-        this.setCaseNumber(caseNumber);
-        
-    }
             
     public boolean isItBought() {
         return isBought;
@@ -38,9 +34,10 @@ public abstract class Property extends Case {
         return mortgage;
     }
 
-    public void setMortgage(int mortgage) {
-        this.mortgage = mortgage;
+    public boolean isMortgaged() {
+        return mortgaged;
     }
+
 
     public Player getAssociatedPlayer() {
         return associatedPlayer;
@@ -62,15 +59,26 @@ public abstract class Property extends Case {
         this.associatedPlayer = associatedPlayer;
     }
     
+    public void setMortgage(int mortgage) {
+        this.mortgage = mortgage;
+    }
+
+    public void setMortgaged(boolean mortgaged) {
+        this.mortgaged = mortgaged;
+    }
     
     public int buy(Player player){
         int price;
         if(player.isInflated()) price=2*this.getBoughtPrice();
         else price=this.getBoughtPrice();
-        
-        
+        if(this.mortgaged) price+=this.mortgage;
         if(player.getCapital()-price>0){
             player.setCapital(player.getCapital()-price);
+            if(this.mortgaged) {
+                this.setMortgaged(false);
+                this.associatedPlayer.removeAvenue((Avenue)this);
+                this.associatedPlayer.removeProperty(this);
+            }
             this.associatedPlayer=player;
             player.addProperty(this);
             player.setInflated(false);
@@ -132,27 +140,7 @@ public abstract class Property extends Case {
         
         
     }
-    public void sell(Player seller){ //Fonction vendre à la banque
-        if(this instanceof Avenue){
-            seller.setCapital(seller.getCapital()+((Avenue) (this)).getBoughtPrice()/2 + ((Avenue) (this)).getPriceOfHouseAndHotels()* (int) ((Avenue) (this)).getSoldAvenueCoeff());
-            seller.removeAvenue((Avenue)this);
-            checkDoubleRent(seller);
-        }
-        
-        else if(this instanceof RailRoad){
-            seller.setNumberOfRailRoads(seller.getNumberOfRailRoads()-1);
-            seller.setCapital(seller.getCapital()+this.getBoughtPrice());
-        }
-        else if(this instanceof Company){
-            seller.setNumberOfCompanies(seller.getNumberOfCompanies()-1);
-            seller.setCapital(seller.getCapital()+this.getBoughtPrice());
-        }
-        
-        seller.removeProperty(this);
-        this.associatedPlayer=null;
-        this.isBought=false;
-        
-    }
+   
     
     public abstract int computing(Property prop,Player player);
         

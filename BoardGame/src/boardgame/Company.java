@@ -10,22 +10,16 @@ package boardgame;
  * @author Antoine
  */
 public final class Company extends Property{
-    
-    private int number=0;
     //A ajouter loyer=4*montant des dés si une compagnie, si les 2 *10
+    
     public Company(int price, String name, int caseNumber,int mortgage){                //      AJOUT DE MORTGAGE
-        super(name,caseNumber,mortgage);
+        this.setName(name);
+        this.setCaseNumber(caseNumber);
+        this.setMortgage(mortgage);
         this.setBoughtPrice(price);
         
     }
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
     
    
    @Override
