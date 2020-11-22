@@ -20,8 +20,11 @@ import java.util.ArrayList;
  * <br>
  * <br>
  * Le paramètre name qui correspond au nom de la carte attaque
+ * <br>
  * Le paramètre effect qui correspond à l'effet de la carte
+ * <br>
  * Le paramètre isUsed pour savoir si la carte a été utilisée ou non
+ * <br>
  * On retrouve dans cette classe les fonctions permettant de récupérer nom effet et usage de la carte ainsi que les fonctions permettant de mofifier ces trois attributs
  * @author thibb
  */

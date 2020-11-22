@@ -18,12 +18,19 @@ package boardgame;
  * <br>
  * <br>
  * Le paramètre isBought qui indique si la propriété est achetée ou non
+ * <br>
  * Le paramètre boughtPrice qui indique le prix d'achat d'une propriété
+ * <br>
  * Le paramètre rent qui indique le loyer d'une propriété
+ * <br>
  * Le paramètre associatedPlayer  indiquant le joueur associé à la propriété
+ * <br>
  * Le paramètre mortgage qui correspond au montant de l'hypothèque d'une propriété
+ * <br>
  * Le paramètre mortgaged qui indique si la propriété est hypothéquée ou non
+ * <br>
  * On retrouve dans cette classe les fonctions permettant de récupérer et modifier les précédents paramètres
+ * <br>
  * On retrouve aussi la fonction permettant d'ajuster le loyer des propriétés ainsi que les fonctions pour acheter et vendre des propriétés
  * @author thibb
  */
