@@ -29,8 +29,15 @@ public class BoardGame{
     static int randomNum;
     static int i;
     static int index_player;
-    static Scanner scanner = new Scanner(System.in);
-    static Scanner prison_choice_scanner = new Scanner(System.in);
+    static String line;
+    static boolean tryDone=false;
+    static int deposit=50;
+    static int firstDice;
+    static int secondDice;
+    static int arrivalCaseNumber;
+    
+    static Scanner numberPlayerScanner = new Scanner(System.in);
+    static Scanner stringScanner= new Scanner(System.in);
     static Scanner turn_choice_scanner=new Scanner(System.in);
     static Scanner wantToBuyScanner = new Scanner(System.in);
     static Random rand=new Random();
@@ -49,6 +56,9 @@ public class BoardGame{
     static ArrayList <Player> players = new ArrayList();
     static ArrayList <Player> players_in_game=new ArrayList();
     static ArrayList <Case> board=new ArrayList();
+    static ArrayList <Avenue> allBoardAvenues=new ArrayList();
+    static ArrayList <Avenue> groupBoardAvenues=new ArrayList();
+    static ArrayList <ColorAvenue> colorGroups=new ArrayList();
     static ArrayList <String> pieces= new ArrayList() {{
         add("Hat");
         add("Cannon");
@@ -71,6 +81,7 @@ public class BoardGame{
     static Covid covid=new Covid();
     static Strike strike = new Strike();
     static Earthquake earthquake= new Earthquake();
+    static Case arrivalCase;
     
     //--------------------------------------------------------------------------
     
@@ -81,21 +92,6 @@ public class BoardGame{
     public static void main(String[] args) {
         initialize();
         //Instanciation des pions dans le main selon l'initialisation de la partie (choix des joueurs)
-        for(i=0;i<numberOfPlayers;i++){
-            if(players.get(i).equals("Hat")){
-                Hat hat=(Hat) (players.get(i));
-            }
-            else if(players.get(i).equals("Cannon")){
-                Cannon cannon=(Cannon) (players.get(i));
-            }
-            else if(players.get(i).equals("Car")){
-                Car car=(Car) (players.get(i));
-            }
-            else if(players.get(i).equals("Mayor")){
-                Mayor mayor=(Mayor) (players.get(i));
-                
-            }
-        }
         Collections.sort(players); //Tri de l'arraylist joueurs par leur ordre de jeu*/
         board_creation("board.txt");
         //Attribution des cartes attaques
@@ -179,23 +175,24 @@ public class BoardGame{
         
         System.out.println("Bonjour, voici une version du Monopoly remasterisée par Antoine Asset et Thibaut Blasselle");
         System.out.println("Combien de joueurs vont jouer ? (maximum 3)"); //Max 4 pour l'instant car 4 pions
-       
-        try{ //Saisie du nombre de joueurs
-            numberOfPlayers=scanner.nextInt();
-            
+        while(!choiceDone){
+            try{ //Saisie du nombre de joueurs
+            numberOfPlayers=numberPlayerScanner.nextInt();
+            choiceDone=true;
+            }
+            catch(InputMismatchException e){
+                System.out.println("Veuillez saisir un entier");
+                numberPlayerScanner.nextLine();
+            }
         }
-        catch(InputMismatchException e){
-            System.out.println("Veuillez saisir un entier");
-
-        }
+        choiceDone=false;
         
         for(i=0;i<numberOfPlayers;i++){
             isChoiceCorrect=false;
             System.out.println("Entrez le nom du joueur");
-            names.add(scanner.next());//Saisie du nom des joueurs et ajout de ceux-ci dans une arrayList de noms
+            names.add(numberPlayerScanner.next());//Saisie du nom des joueurs et ajout de ceux-ci dans une arrayList de noms
             
-            //Génération aléatoire de l'ordre
-            Random rand=new Random(); 
+            //Génération aléatoire de l'ordre 
             if(i==0) order.add(rand.nextInt(numberOfPlayers)+1);
             else{
                 randomNum=rand.nextInt(numberOfPlayers)+1;
@@ -214,7 +211,7 @@ public class BoardGame{
             }
             
             while(!isChoiceCorrect){
-                String choice=scanner.next();
+                String choice=stringScanner.next();
                 
                 if(pieces.contains(choice)){ //Voir pour gérer la casse
                     isChoiceCorrect=true;
@@ -245,7 +242,6 @@ public class BoardGame{
         
     }
     public static void board_creation(String pathName){
-        String line;
         try (BufferedReader reader = new BufferedReader(new FileReader(pathName))) {
             while( (line=reader.readLine())!=null){
                 String [] splitted=line.split("\t"); //On split la ligne récupéré au niveau des tabulations et on la stocke dans un tableau
@@ -550,17 +546,19 @@ public class BoardGame{
     
     public static void move(int sum_of_dice, Player player){
         System.out.println("Vous avez fait "+sum_of_dice);
-        int arrival_case_number= (player.getPlayer_case().getCaseNumber()+sum_of_dice)%40;
-        Case arrival_case = null;
-        boolean start=false;
+        arrivalCaseNumber= (player.getPlayer_case().getCaseNumber()+sum_of_dice)%40;
+        arrivalCase = null;
         for(i=0;i<board.size();i++){
-            if(board.get(i).getCaseNumber()==arrival_case_number) arrival_case=board.get(i);
+            if(board.get(i).getCaseNumber()==arrivalCaseNumber) arrivalCase=board.get(i);
         }
-        if(arrival_case_number<player.getPlayer_case().getCaseNumber()){
+        if(arrivalCaseNumber<player.getPlayer_case().getCaseNumber()){
             player.setCapital(player.getCapital()+20000);
         }
-        player.setPlayer_case(arrival_case);
-        System.out.println("Vous êtes sur la case "+arrival_case.getName());
+        if(arrivalCase!=null){ //Juste pour éviter des warnings, mais normalement arrivalCase ne devrait jamais être null
+            player.setPlayer_case(arrivalCase);
+            System.out.println("Vous êtes sur la case "+arrivalCase.getName());
+        }
+        else System.out.println("Cette erreur ne devrait pas arriver");
     }
     public static void displayInventory(Player player){
         System.out.println("");
@@ -574,8 +572,8 @@ public class BoardGame{
         System.out.println("Vous possèdez : ");
         for(i=0;i<player.getProperties().size();i++){
             if(player.getProperties().get(i) instanceof Avenue){ //Si la propriété est une avenue, on affiche le nombre de maisons/hôtel s'il y en a
-                if(((Avenue)(player.getProperties().get(i))).getHotel()>0) System.out.println((player.getProperties().get(i)).getName()+", de couleur "+((Avenue)player.getProperties().get(i)).getColor()+" avec "+((Avenue)(player.getProperties().get(i))).getHotel()+" hôtel dessus, ");
-                else if( ((Avenue)(player.getProperties().get(i))).getHouse()>0) System.out.println((player.getProperties().get(i)).getName()+", de couleur "+((Avenue)player.getProperties().get(i)).getColor()+ " avec "+((Avenue)(player.getProperties().get(i))).getHouse()+" maison(s) dessus, ");
+                if(((Avenue)player.getProperties().get(i)).getHotel()>0) System.out.println((player.getProperties().get(i)).getName()+", de couleur "+((Avenue)player.getProperties().get(i)).getColor()+" avec "+((Avenue)(player.getProperties().get(i))).getHotel()+" hôtel dessus, ");
+                else if( ((Avenue)player.getProperties().get(i)).getHouse()>0) System.out.println((player.getProperties().get(i)).getName()+", de couleur "+((Avenue)player.getProperties().get(i)).getColor()+ " avec "+((Avenue)(player.getProperties().get(i))).getHouse()+" maison(s) dessus, ");
                 else System.out.println((player.getProperties().get(i)).getName());
             }
             else if(player.getProperties().get(i) instanceof RailRoad){
@@ -604,37 +602,37 @@ public class BoardGame{
     }
     
     public static ArrayList <ColorAvenue> groupOfAvenues(Player player,ArrayList <Avenue> avenues){ //Va regarder si le joueur passé en paramètre possède un groupe complet d'avenues de même couleurs
-        ArrayList <Avenue> all_board_avenues=new ArrayList();
-        ArrayList <Avenue> group_board_avenues=new ArrayList();
-        ArrayList <ColorAvenue> color_groups=new ArrayList();
+        colorGroups.clear();
+        groupBoardAvenues.clear();
+        allBoardAvenues.clear();
         for(i=0;i<board.size();i++){ //On récupère la liste des avenues du plateau de jeu
             if(board.get(i) instanceof Avenue){
-                all_board_avenues.add((Avenue)(board.get(i)));
+                allBoardAvenues.add((Avenue)(board.get(i)));
             }
         }
-        for(i=0;i<all_board_avenues.size();i++){ //On parcourt cette liste
-            if(!group_board_avenues.isEmpty() && all_board_avenues.get(i).getColor().equals(group_board_avenues.get(0).getColor())) group_board_avenues.add(all_board_avenues.get(i)); //group_board_avenues est une liste qui va contenir les avenues qui sont de même couleur
-            else if(!group_board_avenues.isEmpty() && !all_board_avenues.get(i).getColor().equals(group_board_avenues.get(0).getColor())){
-                if(avenues.containsAll(group_board_avenues)) color_groups.add(group_board_avenues.get(0).getColor());
-                group_board_avenues.clear();
-                group_board_avenues.add(all_board_avenues.get(i));
+        for(i=0;i<allBoardAvenues.size();i++){ //On parcourt cette liste
+            if(!groupBoardAvenues.isEmpty() && allBoardAvenues.get(i).getColor().equals(groupBoardAvenues.get(0).getColor())) groupBoardAvenues.add(allBoardAvenues.get(i)); //group_board_avenues est une liste qui va contenir les avenues qui sont de même couleur
+            else if(!groupBoardAvenues.isEmpty() && !allBoardAvenues.get(i).getColor().equals(groupBoardAvenues.get(0).getColor())){
+                if(avenues.containsAll(groupBoardAvenues)) colorGroups.add(groupBoardAvenues.get(0).getColor());
+                groupBoardAvenues.clear();
+                groupBoardAvenues.add(allBoardAvenues.get(i));
             }
             else{
-                group_board_avenues.add(all_board_avenues.get(i));
+                groupBoardAvenues.add(allBoardAvenues.get(i));
             }
             
         }
-        return color_groups; //On va, au fur et à mesure, insérer dans une liste (group_board_avenues) les avenues de même couleur, puis comparer avec celles possédées du joueur pour savoir s'il a le groupe en question, si c'est le cas, on ajotue à notre liste "color_group" la couleur du groupe qu'il possède
+        return colorGroups; //On va, au fur et à mesure, insérer dans une liste (group_board_avenues) les avenues de même couleur, puis comparer avec celles possédées du joueur pour savoir s'il a le groupe en question, si c'est le cas, on ajotue à notre liste "color_group" la couleur du groupe qu'il possède
     }
    
     
     
     public static void getOutOfJail(Player player)
     {
-        boolean tryDone=false;
-        System.out.println("Pour sortir, faites votre choix : freecard si vous avec une carte de libération, pay si vous voulez payer (50€), ou roll si vous voulez tenter votre chance avec un double");
+        tryDone=false;
+        System.out.println("Pour sortir, faites votre choix : freecard si vous avec une carte de libération, pay si vous voulez payer ("+deposit+" Francs), ou roll si vous voulez tenter votre chance avec un double");
         do {
-            switch(prison_choice_scanner.nextLine())                           // on lit la réponse du joueur
+            switch(stringScanner.nextLine())                           // on lit la réponse du joueur
             {
                 case "freecard":                
 
@@ -651,18 +649,18 @@ public class BoardGame{
 
                 case "pay":
 
-                    if(player.getCapital() >= 50)                           // si le joueur souhaite payer la caution
+                    if(player.getCapital() >= deposit)                           // si le joueur souhaite payer la caution
                     {
                         player.setIsInJail(false);
-                        player.setCapital(player.getCapital() - 50);        // on actualise le capital
-                        System.out.println("Vous disposez à présent de " + player.getCapital() + " euros");
+                        player.setCapital(player.getCapital() - deposit);        // on actualise le capital
+                        System.out.println("Vous disposez à présent de " + player.getCapital() + " Francs");
                         tryDone=true;
                     }
                     break;
 
                 case "roll":
-                    int firstDice=player.rollsDice().get(0);
-                    int secondDice=player.rollsDice().get(1);
+                    firstDice=player.rollsDice().get(0);
+                    secondDice=player.rollsDice().get(1);
                     System.out.println("Vous avez fait "+firstDice+" et "+secondDice);
                     if (firstDice==secondDice)    // si le joueur a fait un double
                     {
@@ -672,7 +670,6 @@ public class BoardGame{
                     else
                     {
                         System.out.println("Dommage ! Vous restez en prison");
-                        player.setIsInJail(true);
                     }
                     tryDone=true;
                     break;

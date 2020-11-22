@@ -361,8 +361,8 @@ public abstract class Player implements Comparable<Player> {
      */
     public void putHouse(Avenue avenue, ArrayList <Avenue> group_avenues){
         boolean isPutHouse=true;
-        if(avenue.getHouse()==4){
-            System.out.println("Vous ne pouvez pas mettre plus de 4 maisons sur votre propriété. Cependant, vous pouvez mettre un hôtel");
+        if(avenue.getHouse()==4 || avenue.getHotel()==1){
+            System.out.println("Vous ne pouvez pas mettre plus de 4 maisons sur votre propriété, ni mettre des maisons si vous avez un hôtel. Si vous n'avez pas d'hôtels, vous pouvez en poser un.");
             isPutHouse=false;
         }
         else{
