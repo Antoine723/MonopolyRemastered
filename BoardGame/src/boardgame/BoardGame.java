@@ -25,51 +25,79 @@ public class BoardGame{
     //DECLARATION DES VARIABLES
     static int numberOfPlayers=0;
     static int numberOfTurns=0;
-    static boolean isChoiceCorrect;
+    static int activationTurn=0;
+    static int endActivationTurn=0;
+    static int warning=1;
+    static int sumOfDice;
     static int randomNum;
     static int i;
     static int index_player;
-    static String line;
-    static boolean tryDone=false;
+    static int countDouble;
     static int deposit=50;
     static int firstDice;
     static int secondDice;
     static int arrivalCaseNumber;
     
+    static String propToSellName;
+    static String playerToSellName;
+    static String avenuePutHouseName;
+    static String propToMortgageName;
+    static String line;
+    
     static Scanner numberPlayerScanner = new Scanner(System.in);
     static Scanner stringScanner= new Scanner(System.in);
-    static Scanner turn_choice_scanner=new Scanner(System.in);
-    static Scanner wantToBuyScanner = new Scanner(System.in);
+    
     static Random rand=new Random();
+    
     static boolean useAttack=true;
-    static int activationTurn=0;
-    static int endActivationTurn=0;
-    static int warning=1;
+    static boolean tryDone=false;
     static boolean choiceDone=false;
+    static boolean turnChoice;
+    static boolean firstTurnChoice;
+    static boolean sellProp; 
+    static boolean putHouseHotel;
+    static boolean canDestroy;
+    static boolean canSell;
+    static boolean putAgain;
+    static boolean canMortgage;
+    static boolean isChoiceCorrect;
+    
+    static Case arrivalCase;
+    static Property propToSell;
+    static Property propToMortgage;
+    static Avenue avenuePutHouse;
+    
+    static Player playerToSell;
 
-    
-    
+    static Covid covid=new Covid();
+    static Strike strike = new Strike();
+    static Earthquake earthquake= new Earthquake();
+
     
     static ArrayList <String> names= new ArrayList();
     static ArrayList <Integer> order= new ArrayList();
     static ArrayList <String> choices= new ArrayList();
     static ArrayList <Player> players = new ArrayList();
-    static ArrayList <Player> players_in_game=new ArrayList();
+    static ArrayList <Player> playersInGame=new ArrayList();
     static ArrayList <Case> board=new ArrayList();
+    static ArrayList <ColorAvenue> groupColor=new ArrayList();
     static ArrayList <Avenue> allBoardAvenues=new ArrayList();
     static ArrayList <Avenue> groupBoardAvenues=new ArrayList();
     static ArrayList <ColorAvenue> colorGroups=new ArrayList();
+    static ArrayList <Avenue> avenuesWhereDestroyHouse= new ArrayList();
+    static ArrayList <Avenue> avenuesPlayerCanPut=new ArrayList();
+    static ArrayList <Integer> resultOfDice;
     static ArrayList <String> pieces= new ArrayList() {{
         add("Hat");
         add("Cannon");
         add("Car");
         add("Mayor");
     }};
-    static ArrayList desc_pieces= new ArrayList() {{
-        add("Hat, capacité = réduction de 20% sur les propriétés de couleurs bleue et verte (les plus chers) + loyer doublé pour les propriétés de couleur rouge 1 tour sur 4");
-        add("Cannon, capacité = retirer une maison du joueur souhaité (mais passe son tour) + loyer doublé pour les propriétés de couleur rose 1 tour sur 4");
-        add("Car, capacité = déplacement sur la case de son choix dès lors que le pion se trouve sur la  case \"Parc Gratuit\" +loyer doublé pour les propriétés de couleur orange 1 tour sur 4 ");
-        add("Mayor, capacité = possibilité de poser un hôtel directement + somme touchée en passant sur la case départ est proportionnelle au nombre de propriétés");
+    static ArrayList descPieces= new ArrayList() {{
+        add("Hat, capacité = 1 fois tous les 2 tours à partir du 5ème tour de jeu, possibilité de récupérer de l'argent des autres joueurs en les arnaquant (mais passe son tour) + loyer doublé pour les propriétés de couleur rouge");
+        add("Cannon, capacité = retirer une maison du joueur souhaité (mais passe son tour) + loyer doublé pour les propriétés de couleur rose");
+        add("Car, capacité = déplacement sur la case de son choix dès lors que le pion se trouve sur la  case \"Parc Gratuit\" +loyer doublé pour les propriétés de couleur orange");
+        add("Mayor, capacité = possibilité de poser un hôtel directement");
     }};
     
     static ArrayList <Attack> attacks=new ArrayList(){{
@@ -77,17 +105,9 @@ public class BoardGame{
         add(new Robber());
         add(new Inflation());
     }};
-
-    static Covid covid=new Covid();
-    static Strike strike = new Strike();
-    static Earthquake earthquake= new Earthquake();
-    static Case arrivalCase;
     
     //--------------------------------------------------------------------------
-    
-    
-    
-    
+
     
     public static void main(String[] args) {
         initialize();
@@ -99,23 +119,10 @@ public class BoardGame{
             players.get(i).setAttack_card(attacks.get(rand.nextInt(attacks.size())));
             players.get(i).setPlayer_case(board.get(0));
         }
-        players_in_game.addAll(players);
-        
-        ((Property)board.get(16)).buy(players.get(0));
-        ((Property)board.get(18)).buy(players.get(0));
-        ((Property)board.get(19)).buy(players.get(0));
-        //((Property)board.get(1)).buy(players.get(0));
-        /*players.get(1).putHouse((Avenue)board.get(3));
-        players.get(0).putHouse((Avenue)board.get(1));*/
-        
-
+        playersInGame.addAll(players);
         
         //Tant que la partie n'est pas terminée (tant qu'il reste plus d'un joueur en jeu
-        while(players_in_game.size()>1){
-            System.out.println(((Avenue)board.get(16)).getRent());
-            System.out.println(((Avenue)board.get(18)).getRent());
-            System.out.println(((Avenue)board.get(19)).getRent());
-            System.out.println("");
+        while(playersInGame.size()>1){
             numberOfTurns++;
             System.out.println("Tour n°"+numberOfTurns);
             System.out.println("");
@@ -124,7 +131,7 @@ public class BoardGame{
                     else randomNum=rand.nextInt(2)+1;
                     switch(randomNum){
                         case 1:
-                            warning=covid.closeHotel(players_in_game, warning);
+                            warning=covid.closeHotel(playersInGame, warning);
                             activationTurn=numberOfTurns;
                             break;
                         case 2:
@@ -132,17 +139,17 @@ public class BoardGame{
                             activationTurn=numberOfTurns;
                             break;
                         case 3:
-                            earthquake.collapse(players_in_game);
+                            earthquake.collapse(playersInGame);
                             break;
                     }
                 }
             if(covid.isInAction()){
                 if(numberOfTurns==activationTurn+2 || numberOfTurns==activationTurn+4 ){
-                    warning=covid.closeHotel(players_in_game, warning);
+                    warning=covid.closeHotel(playersInGame, warning);
                 }
                 else if(numberOfTurns==activationTurn+6){
                     covid.setInAction(false);
-                    covid.openHotel(players_in_game);
+                    covid.openHotel(playersInGame);
                 }
             }
             if(strike.isInAction() && numberOfTurns==endActivationTurn){
@@ -150,24 +157,20 @@ public class BoardGame{
                 strike.openRailRoad(board);
             }
             
-            for(index_player=0;index_player<players_in_game.size();index_player++){ //On fait le tour des joueurs encore en jeu
-                if(players_in_game.get(index_player).isIsInJail()) {
-                    displayInventory(players_in_game.get(index_player));
-                    getOutOfJail(players_in_game.get(index_player));
+            for(index_player=0;index_player<playersInGame.size();index_player++){ //On fait le tour des joueurs encore en jeu
+                if(playersInGame.get(index_player).isIsInJail()) {
+                    displayInventory(playersInGame.get(index_player));
+                    getOutOfJail(playersInGame.get(index_player));
                 }//On teste d'abord si le joueur est en prison
                 else{ //S'il ne l'est pas, il joue son tour normalement
-                    displayInventory(players_in_game.get(index_player));
-                    choice(players_in_game.get(index_player));
+                    displayInventory(playersInGame.get(index_player));
+                    choice(playersInGame.get(index_player));
                 }
             }
             
             
             
         }
-        
-        
-        
-    
         
     }
     
@@ -206,8 +209,8 @@ public class BoardGame{
             //Choix du pion
             
             System.out.println("Choisissez votre pion :");
-            for(int j=0;j<desc_pieces.size();j++){
-                System.out.println(desc_pieces.get(j));
+            for(int j=0;j<descPieces.size();j++){
+                System.out.println(descPieces.get(j));
             }
             
             while(!isChoiceCorrect){
@@ -275,26 +278,23 @@ public class BoardGame{
     }
 
     public static void choice(Player player){
-        
-        ArrayList <ColorAvenue> group_color=new ArrayList();
-        ArrayList <Avenue> avenues_where_to_destroy_house= new ArrayList();
-        Scanner prop_to_sell_scanner=new Scanner(System.in);
-        boolean turn_choice=false;//booléen qui va permettre de savoir si l'utilisateur joue sa carte attaque (et donc ne fait que ça lors de son tour)
-        boolean first_turn_choice=false; //booléen qui va permettre de savoir si l'utilisateur a déjà fait un premier choix (vente de propriété ou pose de bâtiment), car il peut faire l'un des 2 + lancer les dés
-        boolean sellProp=false; //variables booléennes pour savoir ce qu'on va proposer comme choix au joueur
-        boolean putHouseHotel=false;
-        boolean canDestroy=false;
-        while(!turn_choice){
+        avenuesWhereDestroyHouse.clear();
+        turnChoice=false;//booléen qui va permettre de savoir si l'utilisateur joue sa carte attaque (et donc ne fait que ça lors de son tour)
+        firstTurnChoice=false; //booléen qui va permettre de savoir si l'utilisateur a déjà fait un premier choix (vente de propriété ou pose de bâtiment), car il peut faire l'un des 2 + lancer les dés
+        sellProp=false; //variables booléennes pour savoir ce qu'on va proposer comme choix au joueur
+        putHouseHotel=false;
+        canDestroy=false;
+        while(!turnChoice){
             if(!player.getProperties().isEmpty()) sellProp=true; //Si le joueur possède des propriétés, on pourra lui propsoer d'en vendre
-            group_color=groupOfAvenues(player,player.getAvenues());
-            if(!group_color.isEmpty() && !first_turn_choice) putHouseHotel=true; //Si le joueur possède un groupe complet d'avenues (de même couleur), on va pouvoir lui proposer de poser maisons et hôtels
+            groupColor=groupOfAvenues(player,player.getAvenues());
+            if(!groupColor.isEmpty() && !firstTurnChoice) putHouseHotel=true; //Si le joueur possède un groupe complet d'avenues (de même couleur), on va pouvoir lui proposer de poser maisons et hôtels
             System.out.println("Vous pouvez : ");
             System.out.println("Lancer les dés (rollsdice) ");
-            if(!player.getAttack_card().isItUsed() && !first_turn_choice) {
+            if(!player.getAttack_card().isItUsed() && !firstTurnChoice) {
                 System.out.println("Utiliser votre carte attaque (attack) "+player.getAttack_card().getName()+" "+player.getAttack_card().getEffect());
                 System.out.println("Rappel : utiliser votre carte attaque vous fait passer votre tour");
             }
-            if(sellProp && !first_turn_choice) {
+            if(sellProp && !firstTurnChoice) {
                 System.out.println("Vendre des propriétés (sell)");
                 System.out.println("Hypothéquer une propriété (mortgage)");
             }
@@ -303,48 +303,56 @@ public class BoardGame{
                     for(int j=0;j<players.get(i).getAvenues().size();j++){
                         if(players.get(i).getAvenues().get(j).getHouse()>0) {
                             canDestroy=true;
-                            avenues_where_to_destroy_house.add(players.get(i).getAvenues().get(j));
+                            avenuesWhereDestroyHouse.add(players.get(i).getAvenues().get(j));
                         }
                     }
                 }
             }
             if(player instanceof Cannon && canDestroy) System.out.println("Détruire une maison (shoot)");
-            if(putHouseHotel && !first_turn_choice) System.out.println("Poser des maisons ou hôtel sur vos avenues (putHouse)"); 
+            if(putHouseHotel && !firstTurnChoice) System.out.println("Poser des maisons ou hôtel sur vos avenues (putHouse)"); 
             if(player instanceof Hat && numberOfTurns%2==0 && numberOfTurns>=5) System.out.println("Essayer de récupérer de l'argent en arnaquant les autres joueurs (scam), attention, cela passe votre tour");
-                switch(turn_choice_scanner.nextLine()){
+            choiceDone=false;
+            while(!choiceDone){
+                switch(stringScanner.next()){
                     case "shoot":
-                        ((Cannon)player).shoot(avenues_where_to_destroy_house);
-                        turn_choice=true;
+                        ((Cannon)player).shoot(avenuesWhereDestroyHouse);
+                        turnChoice=true;
+                        choiceDone=true;
                         break;
                     case "attack": //Attention prendre en compte si l'utilisateur effectue une action qu'il n'a pas le droit de faire
                         if(!player.getAttack_card().isItUsed()){
-                            turn_choice=player.getAttack_card().effect(players,player,board);
+                            turnChoice=player.getAttack_card().effect(players,player,board);
                         }
                         else System.out.println("Vous avez déjà utilisé votre carte");
+                        choiceDone=true;
                         break;
                     case "sell": //Fini, mais voir pour ajouter while par rapport au choix et optimiser le code (ex : déclaration de variables)
                         if(sellProp){
-                            if(!first_turn_choice){
-                                boolean canSell=true;
+                            if(!firstTurnChoice){
+                                canSell=true;
+                                propToSell=null;
                                 System.out.println("Laquelle de vos propriétés souhaitez-vous vendre ?");
                                 displayProperties(player);
-                                String prop_to_sell_name=prop_to_sell_scanner.nextLine();
-                                Property prop_to_sell=null;
-                                for(i=0;i<player.getProperties().size();i++){
-                                    if(player.getProperties().get(i).getName().equals(prop_to_sell_name)) prop_to_sell=player.getProperties().get(i);
+                                stringScanner.nextLine();
+                                while(propToSell==null){
+                                    propToSellName=stringScanner.nextLine();
+                                    for(i=0;i<player.getProperties().size();i++){
+                                        if(player.getProperties().get(i).getName().equals(propToSellName)) propToSell=player.getProperties().get(i);
+                                    }
+                                    if(propToSell==null) System.out.println("Veuillez saisir une propriété valide");
                                 }
-                                if(prop_to_sell.isMortgaged()){
-                                    System.out.println("Vous avez hypothéqué cette propriété. Pour pouvoir la vendre, vous devez payer le prix de l'hypothèque qui est de "+prop_to_sell.getMortgage()+" Francs");
+                                if(propToSell.isMortgaged()){
+                                    System.out.println("Vous avez hypothéqué cette propriété. Pour pouvoir la vendre, vous devez payer le prix de l'hypothèque qui est de "+propToSell.getMortgage()+" Francs");
                                     System.out.println("Voulez-vous payer ce prix pour la vendre ?");
                                     choiceDone=false;
                                     do{
-                                        switch(wantToBuyScanner.nextLine()){
-                                        case "Oui":
-                                            player.setCapital(player.getCapital()-prop_to_sell.getMortgage());
-                                            prop_to_sell.setMortgaged(false);
+                                        switch(stringScanner.nextLine()){
+                                        case "Oui":case"oui":case"OUI":
+                                            player.setCapital(player.getCapital()-propToSell.getMortgage());
+                                            propToSell.setMortgaged(false);
                                             choiceDone=true;
                                             break;
-                                        case "Non":
+                                        case "Non":case"non":case"NON":
                                             canSell=false;
                                             choiceDone=true;
                                             System.out.println("Vous n'avez pas payé le prix de l'hypothèque, vous ne pouvez donc pas vendre cette propriété");
@@ -354,134 +362,194 @@ public class BoardGame{
                                             break;
                                     }
                                     }while(!choiceDone);
-                                    
                                 }
                                 if(canSell){
-                                    Scanner who_to_sell_scanner=new Scanner(System.in);
-                                    System.out.println("A qui souhaitez-vous le vendre ?");
+                                    System.out.println("A qui souhaitez-vous la vendre ?");
                                     displayPlayers(player);
-                                    Player player_to_sell=null;
-                                    String player_to_sell_name=who_to_sell_scanner.nextLine();
-                                    for(i=0;i<players.size();i++){
-                                        if(players.get(i).getName().equals(player_to_sell_name)) player_to_sell=players.get(i);
+                                    playerToSell=null;
+                                    while(playerToSell==null){
+                                        playerToSellName=stringScanner.nextLine();
+                                        for(i=0;i<players.size();i++){
+                                            if(players.get(i).getName().equals(playerToSellName)) playerToSell=players.get(i);
+                                        }
+                                        if(playerToSell==null) System.out.println("Veuillez saisir un joueur valide");
                                     }
-                                    System.out.println(player_to_sell_name+", souhaitez-vous acheter "+prop_to_sell_name+" à "+player.getName()+" ?");
-                                    Scanner answer_from_buyer_scanner= new Scanner(System.in);
-                                    switch(answer_from_buyer_scanner.nextLine()){
-                                        case "Oui":
-                                            prop_to_sell.sellToSomeone(player, player_to_sell);
-                                            break;
-                                        case "Non":
-                                            break;
+                                    System.out.println(playerToSellName+", souhaitez-vous acheter "+propToSellName+" à "+player.getName()+" ?");
+                                    isChoiceCorrect=false;
+                                    while(!isChoiceCorrect){
+                                        switch(stringScanner.nextLine()){
+                                            case "Oui":
+                                                propToSell.sellToSomeone(player, playerToSell);
+                                                System.out.println(player.getName()+" a bien vendu "+propToSell.getName()+" à "+playerToSell.getName());
+                                                isChoiceCorrect=true;
+                                                break;
+                                            case "Non":
+                                                isChoiceCorrect=true;
+                                                System.out.println(player.getName()+" n'a pas vendu "+propToSell.getName()+" à "+playerToSell.getName());
+                                                break;
+                                            default:
+                                                System.out.println("Veuillez saisir une réponse valide (Oui/Non)");
+                                                break;
+                                        }
                                     }
-                                    first_turn_choice=true;
+                                    
+                                    firstTurnChoice=true;
                                 }
                         }
                         else System.out.println("Vous n'avez pas de propriétés à vendre");
+                        choiceDone=true;
                         break;
                         }
                     case "scam":
-                        ((Hat)player).scam(players_in_game);
-                        turn_choice=true;
+                        ((Hat)player).scam(playersInGame);
+                        turnChoice=true;
+                        choiceDone=true;
                         break;
-                    case "putHouse":
+                    case "putHouse":case"puthouse":
                         if(putHouseHotel){ //Même remarque que pour sellProp
-                            if(!first_turn_choice){
-                                Scanner avenues_put_house_hotel_scanner=new Scanner(System.in);
-                                Scanner choice_house_or_hotel_scanner=new Scanner(System.in);
-                                ArrayList <Avenue> avenues_player_have_all_group=new ArrayList();
+                            if(!firstTurnChoice){
+                                //Scanner avenues_put_house_hotel_scanner=new Scanner(System.in);
+                                //Scanner choice_house_or_hotel_scanner=new Scanner(System.in);
+                                avenuesPlayerCanPut.clear();
                                 for(i=0;i<player.getAvenues().size();i++){
-                                    if(group_color.contains((player.getAvenues().get(i)).getColor())) avenues_player_have_all_group.add(player.getAvenues().get(i));
+                                    if(groupColor.contains((player.getAvenues().get(i)).getColor())) avenuesPlayerCanPut.add(player.getAvenues().get(i));
                                 }
-                                System.out.println("Sur quelle(s) avenue(s) voulez-vous poser une maison ou un hôtel ?");
-                                for(i=0;i<avenues_player_have_all_group.size();i++){
-                                    System.out.println(avenues_player_have_all_group.get(i).getName());
-                                }
-                                Avenue avenue_where_put_house=null;
-                                String avenue_where_put_house_name;
-                                do{
+                                putAgain=true;
+                                while(putAgain){
+                                    System.out.println("Sur quelle(s) avenue(s) voulez-vous poser une maison ou un hôtel ?");
+                                    for(i=0;i<avenuesPlayerCanPut.size();i++){
+                                        System.out.println(avenuesPlayerCanPut.get(i).getName());
+                                    }
+
                                     System.out.println("");
                                     System.out.println("Saisissez le nom de l'avenue");
-                                    avenue_where_put_house_name=avenues_put_house_hotel_scanner.nextLine();
-                                    for(i=0;i<avenues_player_have_all_group.size();i++){
-                                        if(avenue_where_put_house_name.equals(avenues_player_have_all_group.get(i).getName())) avenue_where_put_house=avenues_player_have_all_group.get(i);
+                                    avenuePutHouse=null;
+                                    stringScanner.nextLine();
+                                    while(avenuePutHouse==null){
+                                        avenuePutHouseName=stringScanner.nextLine();
+                                        for(i=0;i<avenuesPlayerCanPut.size();i++){
+                                            if(avenuePutHouseName.equals(avenuesPlayerCanPut.get(i).getName())) avenuePutHouse=avenuesPlayerCanPut.get(i);
+                                        }
+                                        if(avenuePutHouse==null) System.out.println("Veuillez saisir une avenue valide");
                                     }
                                     if(player instanceof Mayor){
                                         System.out.println("Vous pouvez mettre un hôtel directement pour la somme de 50 000 Francs");
                                     }
                                     System.out.println("Voulez-vous mettre un hôtel ou une maison ?");
-                                    switch(choice_house_or_hotel_scanner.nextLine()){
-                                        case "hotel":
-                                            if(player instanceof Mayor) ((Mayor)player).buildHotel(avenue_where_put_house);
-                                            else player.putHotel(avenue_where_put_house,avenues_player_have_all_group);
-                                            break;
-                                        case "maison":
-                                            player.putHouse(avenue_where_put_house,avenues_player_have_all_group);
-                                            break;
-                                        default:
-                                            System.out.println("Veuillez choisir un argument valide");
-                                            break;
+                                    isChoiceCorrect=false;
+                                    while(!isChoiceCorrect){
+                                        switch(stringScanner.nextLine()){
+                                           case "hotel":case"Hotel":case"HOTEL":case"hôtel":case"Hôtel":case"HÔTEL":
+                                               if(player instanceof Mayor) ((Mayor)player).buildHotel(avenuePutHouse);
+                                               else player.putHotel(avenuePutHouse,avenuesPlayerCanPut);
+                                               isChoiceCorrect=true;
+                                               break;
+                                           case "maison":case"Maison":case"MAISON":
+                                               player.putHouse(avenuePutHouse,avenuesPlayerCanPut);
+                                               isChoiceCorrect=true;
+                                               break;
+                                           case "stop":case"STOP":case"Stop":
+                                               isChoiceCorrect=true;
+                                               break;
+                                           default:
+                                               System.out.println("Veuillez choisir un argument valide (hotel/maison/stop)");
+                                               break;
+                                       }   
                                     }
-
-                                }while(!avenue_where_put_house_name.equals("Stop"));
-                                first_turn_choice=true;
+                                    isChoiceCorrect=false;
+                                    System.out.println("Voulez-vous poser une autre maison ou un autre hôtel ?");
+                                    while(!isChoiceCorrect){
+                                        switch(stringScanner.nextLine()){
+                                            case "Oui":case"oui":case"OUI":
+                                                isChoiceCorrect=true;
+                                                break;
+                                            case "Non":case"non":case"NON":
+                                                isChoiceCorrect=true;
+                                                putAgain=false;
+                                                break;
+                                            default:
+                                                System.out.println("Veuillez choisir un argument valide (Oui/Non)");
+                                                break;
+                                        }
+                                    }
                             }
 
-                        }
+                                }
+                                firstTurnChoice=true;
+                            }
                         else System.out.println("Vous ne pouvez pas poser de maison ou d'hôtel, il vous faut un groupe complet d'avenues de même couleur pour pouvoir en poser");
+                        choiceDone=true;
                         break;
                     case "mortgage":
-                        if(!first_turn_choice){
-                            boolean canMortgage=false;
-                            do{
-                                Scanner prop_to_mortgage_scanner= new Scanner(System.in);
-                                Property prop_to_mortgage=null;
+                        if(!firstTurnChoice){
+                            canMortgage=false;
+                            while(!canMortgage){
+                                //Scanner prop_to_mortgage_scanner= new Scanner(System.in);
+                                propToMortgage=null;
                                 System.out.println("Quelle propriété voulez-vous hypothéquer ?");
                                 displayProperties(player);
-                                String prop_to_mortgage_name=prop_to_mortgage_scanner.nextLine();
-                                for(i=0;i<player.getProperties().size();i++){
-                                    if(player.getProperties().get(i).getName().equals(prop_to_mortgage_name)) prop_to_mortgage=(Property)(player.getProperties().get(i));
+                                stringScanner.nextLine();
+                                while(propToMortgage==null){
+                                    propToMortgageName=stringScanner.nextLine();
+                                    for(i=0;i<player.getProperties().size();i++){
+                                        if(player.getProperties().get(i).getName().equals(propToMortgageName)) propToMortgage=(Property)(player.getProperties().get(i));
+                                    }
+                                    if(propToMortgage==null) System.out.println("Veuillez saisir une propriété valide");
                                 }
-                                if(prop_to_mortgage.isMortgaged()) System.out.println("Vous avez déjà hypothéqué cette maison, veuillez en choisir une autre");
+                                
+                                if(propToMortgage.isMortgaged()) System.out.println("Vous avez déjà hypothéqué cette maison, veuillez en choisir une autre");
                                 else{
-                                    player.putOnMortgage(player, prop_to_mortgage);
+                                    player.putOnMortgage(player, propToMortgage);
+                                    System.out.println("Vous avez bien hypothéqué "+propToMortgage.getName());
                                     canMortgage=true;
                                 }
-                            }while(!canMortgage);
-                            first_turn_choice=true;
+                            }
+                            firstTurnChoice=true;
+                            choiceDone=true;
                         }
                         break;
                     case "rollsdice":
-                        int count_double=0;
-                        ArrayList <Integer> result_of_dice;
+                        countDouble=0;
                         do{
-                            result_of_dice=player.rollsDice();
-                            int sum_of_dice=result_of_dice.get(0)+result_of_dice.get(1);
-                            if(result_of_dice.get(0).equals(result_of_dice.get(1))) {
-                                count_double++;
+                            resultOfDice=player.rollsDice();
+                            sumOfDice=resultOfDice.get(0)+resultOfDice.get(1);
+                            if(resultOfDice.get(0).equals(resultOfDice.get(1))) {
+                                countDouble++;
                                 System.out.println("Vous avez fait un double, quel petit veinard !");
                             }
-                            move(sum_of_dice,player);
-                            //Effet de la case départ (rémunération) géré dans move
-                            if(player.getPlayer_case() instanceof Bonus) ((Bonus)(player.getPlayer_case())).effect(player, board); //Effet de cases bonus
+                            move(sumOfDice,player); //Effet de la case départ (rémunération) géré dans move
+                            if(player.getPlayer_case() instanceof Bonus) ((Bonus)player.getPlayer_case()).effect(player, board); //Effet de cases bonus
                             if(player.getPlayer_case() instanceof Taxes) {
-                                player.setCapital(player.getCapital()-((Taxes)(player.getPlayer_case())).getPrice());
-                                System.out.println("Vous avez payé "+((Taxes)(player.getPlayer_case())).getPrice()+" francs");
+                                player.setCapital(player.getCapital()-((Taxes)player.getPlayer_case()).getPrice());
+                                System.out.println("Vous avez payé "+((Taxes)player.getPlayer_case()).getPrice()+" francs");
                             }
                             if(player.getPlayer_case().equals(board.get(30))) {
                                 player.inJail(board);
-                                count_double=3; //On met cette condition pour sortir de la boucle et donc pour que le joueur ne puisse pas rejouer même s'il a fait un double
+                                countDouble=3; //On met cette condition pour sortir de la boucle et donc pour que le joueur ne puisse pas rejouer même s'il a fait un double
                             }
-                            if(player.getPlayer_case().getName().equals("Parc gratuit") && player instanceof Car) ((Car)(player)).moveTo(board);
-                            if(player.getPlayer_case() instanceof Property && ((Property)(player.getPlayer_case())).isItBought() && !((Property)(player.getPlayer_case())).getAssociatedPlayer().equals(player) ){
+                            if(player.getPlayer_case().getName().equals("Parc gratuit") && player instanceof Car) ((Car)player).moveTo(board);
+                            if(player.getPlayer_case() instanceof Property && ((Property)player.getPlayer_case()).isItBought() && !((Property)player.getPlayer_case()).getAssociatedPlayer().equals(player)){
                                 Property prop=(Property)player.getPlayer_case();
-                                if( prop.isMortgaged()){
+                                if(prop.isMortgaged()){
                                     System.out.println("Cette propriété a été hypothéquée, voulez-vous la racheter au prix de "+(prop.getBoughtPrice()+prop.getMortgage())+" Francs ?");
-                                    switch(wantToBuyScanner.nextLine()){
-                                        case "Oui":
-                                            prop.buy(player);
-                                            break;
+                                    isChoiceCorrect=false;
+                                    while(!isChoiceCorrect){
+                                        switch(stringScanner.nextLine()){
+                                            case "Oui":case"oui":case"OUI":
+                                                prop.buy(player);
+                                                isChoiceCorrect=true;
+                                                System.out.println("Vous avez racheté la propriété hypothéquée");
+                                                break;
+                                            case "Non":case"non":case"NON":
+                                                isChoiceCorrect=true;
+                                                break;
+                                            default:
+                                                System.out.println("Veuillez saisir une réponse valide (Oui/Non)");
+                                                break;
+
+                                        }
                                     }
+                                    
                                 }
                                 else{
                                     player.setCapital(player.getCapital()-(prop.getRent()));
@@ -489,43 +557,47 @@ public class BoardGame{
 
                                 }
                             }
-                            else if(player.getPlayer_case() instanceof Property && !((Property)(player.getPlayer_case())).isItBought()){ //Dernier cas à faire : si la propriété n'est pas achetée, on propose au joueur de l'acheter
+                            else if(player.getPlayer_case() instanceof Property && !((Property)player.getPlayer_case()).isItBought()){ //Dernier cas à faire : si la propriété n'est pas achetée, on propose au joueur de l'acheter
                                 System.out.println("Voulez-vous acheter "+player.getPlayer_case().getName()+" ? (Oui/Non)");
-                                Scanner want_to_buy_scanner = new Scanner(System.in);
-                                switch(want_to_buy_scanner.nextLine()){
-                                    case "Oui":
-                                        ((Property)(player.getPlayer_case())).buy(player);
-                                        System.out.println("Vous avez acheté "+player.getPlayer_case().getName());
+                                isChoiceCorrect=false;
+                                while(!isChoiceCorrect){
+                                    switch(stringScanner.next()){
+                                       case "Oui":case"oui":case"OUI":
+                                           ((Property)player.getPlayer_case()).buy(player);
+                                           System.out.println("Vous avez acheté "+player.getPlayer_case().getName());
+                                           isChoiceCorrect=true;
+                                           break;
+                                       case "Non":case"non":case"NON":
+                                           isChoiceCorrect=true;
+                                           break;
+                                       default:
+                                           System.out.println("Veuillez saisir une réponse valide (Oui/Non)");
+                                           break;
+
+                                   }   
                                 }
                             }
-                        }while(result_of_dice.get(0).equals(result_of_dice.get(1)) && count_double<3);
+                        }while(resultOfDice.get(0).equals(resultOfDice.get(1)) && countDouble<3);
 
-                        if(count_double==3){
+                        if(countDouble==3){
                             System.out.println("Vous avez fait 3 doubles de suite, vous allez en prison !");
                             player.inJail(board);
                         }
-                        turn_choice=true;
+                        turnChoice=true;
+                        choiceDone=true;
                         break;
-
+                    default:
+                        System.out.println("Veuillez saisir un argument valide");
+                        break;
                 }
-
             }
+
+        }
 
 
 
 
         }
-        //Possibilité de poser maisons/hôtels sur ses propriétés SI il en a ET qu'il a tout le groupe de couleur (ET qu'il a assez d'argent), il peut lancer les dés ensuite
-        //Possibilité de vendre propriétés SI il en possède une OK
-        //Possibilité de jouer carte attaque SI il ne l'a pas encore utilisée
-        //Possibilité de lancer les dés --> Affiche le nombre qu'il a fait, déplace le joueur et affiche la case sur laquelle il est : 
-        //      SI propriété --> SI appartient à un autre joueur, affiche montant à payer et paye le joueur en question
-        //                   --> SI n'appartient à personne, affiche qu'il peut l'acheter + montant à payer + attente du choix, SI oui alors attribue la prop au joueur + réduit son capital
-        //      SI pas propriété --> effectue l'effet s'il en a un
-        
-        //ATTENTION TOUJOURS PRENDRE EN COMPTE EVENEMENT
-        
-        //AJOUTER EFFET DU PION
 
     
     public static void displayPlayers(Player player){
