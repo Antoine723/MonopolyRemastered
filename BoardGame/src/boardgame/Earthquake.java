@@ -20,6 +20,8 @@ import java.util.Random;
  * <br>
  * Le boolean done permet de vérifier si l'évènement a eu lieu ou non
  * <br>
+ * <br>
+ * Le random rand qui rend aléatoire la magnitude du séisme compris entre 1 et 9
  * On retrouve la fonction permettant de détruire les maisons
  * On retrouve aussi les fonctions permettant de récupérer le booléen done
  * @author thibb

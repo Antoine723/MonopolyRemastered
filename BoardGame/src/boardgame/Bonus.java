@@ -22,6 +22,8 @@ import java.util.Random;
  * <br>
  * L'entier amount qui correspond au montant que le joueur peut gagner ou perdre
  * <br>
+ * <br>
+ * Le random rand pour générer un effet aléatoire parmi les effets possibles des cartes
  * On retrouve la fonction permettant de produire les différents effet des cartes chances et caisse de communauté
  * @author thibb
  */

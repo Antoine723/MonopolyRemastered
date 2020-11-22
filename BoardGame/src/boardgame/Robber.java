@@ -19,6 +19,7 @@ import java.util.Scanner;
  * <br>
  * Cette classe est caractérisée par les informations suivantes :
  * <br>
+ * Le random rand qui permet de génerer un entier aléatoire compris entre 0 et 1 pour que la carte Robber fonctionne une fois sur deux
  * <br>
  * On retrouve les fonctions permettant de déclencher l'effet de la carte et celle permettant d'utiliser cette carte
  * @author thibb

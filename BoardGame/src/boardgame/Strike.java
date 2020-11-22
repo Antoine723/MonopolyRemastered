@@ -20,6 +20,8 @@ import java.util.Random;
  * <br>
  * Le boolean inAction permet de vérifier si l'évènement est toujours en cours
  * <br>
+ * Le random rand qui génère un nombre aléatoire entre 1 et 6 pour savoir combien pendant combien de tours va durer l'évènement Srike
+ * <br>
  * On retrouve les fonctions permettant de de fermer et ouvrir l'ensemble des gares
  * On retrouve aussi les fonctions permettant de récupérer le booléen inAction et de le modifier
  * @author thibb

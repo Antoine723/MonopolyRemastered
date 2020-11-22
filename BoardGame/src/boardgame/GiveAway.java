@@ -23,7 +23,6 @@ import java.util.Scanner;
  * @author thibb
  */
 public final class GiveAway extends Attack {
-    Scanner scanner = new Scanner(System.in);
     
     /**
      * <b> Constructeur de GiveAway </b>
