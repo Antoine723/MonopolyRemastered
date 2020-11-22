@@ -39,7 +39,7 @@ public final class Car extends Player implements Citizen{
         this.setPlayerNumber(playerNumber);
     }
     
-    Scanner case_choice_scanner = new Scanner(System.in);
+    Scanner caseChoiceScanner = new Scanner(System.in);
     
     
     /**
@@ -49,20 +49,20 @@ public final class Car extends Player implements Citizen{
      */
     public void moveTo(ArrayList <Case> board){
         boolean isChoiceCorrect=false;
-        String case_choice_name;
-        boolean correct_move=false;
-        Case case_choice=null;
+        String caseChoiceName;
+        boolean correctMove=false;
+        Case caseChoice=null;
         System.out.println("Choisissez la case sur laquelle vous souhaitez aller");
         do{
-            case_choice_name=case_choice_scanner.nextLine();
+            caseChoiceName=caseChoiceScanner.nextLine();
             for(int i=0;i<board.size();i++){
-                if(board.get(i).getName().equals(case_choice_name)) case_choice=board.get(i);
+                if(board.get(i).getName().equals(caseChoiceName)) caseChoice=board.get(i);
             }
-            if(case_choice==this.getPlayer_case())System.out.println("Veuillez saisir une autre case que celle sur laquelle vous êtes actuellement");
-            else correct_move=true;
-        }while(!correct_move);
+            if(caseChoice==this.getPlayerCase())System.out.println("Veuillez saisir une autre case que celle sur laquelle vous êtes actuellement");
+            else correctMove=true;
+        }while(!correctMove);
         
-        this.setPlayer_case(case_choice);
+        this.setPlayerCase(caseChoice);
     }
     
     

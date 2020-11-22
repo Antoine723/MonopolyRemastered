@@ -19,6 +19,7 @@ import java.util.Scanner;
  * <br>
  * Cette classe est caractérisée par les informations suivantes :
  * <br>
+ * <br>
  * Le random rand qui permet de génerer un entier aléatoire compris entre 0 et 1 pour que la carte Robber fonctionne une fois sur deux
  * <br>
  * On retrouve les fonctions permettant de déclencher l'effet de la carte et celle permettant d'utiliser cette carte
@@ -96,14 +97,14 @@ public final class Robber extends Attack
      */
     @Override
     public boolean effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board){
-        Scanner attacked_player_scanner=new Scanner(System.in);
-        Scanner avenue_scanner=new Scanner(System.in);
+        Scanner attackedPlayerScanner=new Scanner(System.in);
+        Scanner avenueScanner=new Scanner(System.in);
         System.out.println("Quel joueur voulez-vous attaquer ?");
         for(int i=0;i<players.size();i++){
             if(!players.get(i).equals(attacker))System.out.print(players.get(i).getName());
         }
         System.out.println("");
-        String attackedPlayerName=attacked_player_scanner.nextLine();
+        String attackedPlayerName=attackedPlayerScanner.nextLine();
         Player attackedPlayer=null;
         for(int i=0;i<players.size();i++){
             if(players.get(i).getName().equals(attackedPlayerName)) attackedPlayer=players.get(i);
@@ -117,13 +118,13 @@ public final class Robber extends Attack
             for(int i=0;i<attackedPlayer.getProperties().size();i++){
                 if(attackedPlayer.getProperties().get(i) instanceof Avenue) System.out.println(attackedPlayer.getProperties().get(i).getName());
             }
-            String chosen_avenue_name=avenue_scanner.nextLine();
-            Avenue chosen_avenue=null;
+            String chosenAvenueName=avenueScanner.nextLine();
+            Avenue chosenAvenue=null;
             for(int i=0;i<attackedPlayer.getProperties().size();i++){
-                if(chosen_avenue_name.equals(attackedPlayer.getProperties().get(i).getName())) chosen_avenue=(Avenue)(attackedPlayer.getProperties().get(i));
+                if(chosenAvenueName.equals(attackedPlayer.getProperties().get(i).getName())) chosenAvenue=(Avenue)(attackedPlayer.getProperties().get(i));
             }
 
-            stealAvenue(chosen_avenue,attackedPlayer,attacker);
+            stealAvenue(chosenAvenue,attackedPlayer,attacker);
             return true;
         }
         

@@ -109,7 +109,7 @@ public abstract class Property extends Case {
     /**
      * Cette méthode modifie le loyer d'une propriété
      * @param rent
-     *      Le paramètre rent le loyer d'une propriété
+     *      Le paramètre indique le loyer d'une propriété
      */
     public void setRent(int rent) {
         this.rent = rent;
@@ -119,7 +119,7 @@ public abstract class Property extends Case {
     /**
      * Cette méthode modifie le joueur associé à la propriété
      * @param associatedPlayer
-     *      Le paramètre associatedPlayer indique le joueur associé à la propriété
+     *      Le paramètre indique le joueur associé à la propriété
      */
     public void setAssociatedPlayer(Player associatedPlayer) {
         this.associatedPlayer = associatedPlayer;
@@ -137,7 +137,8 @@ public abstract class Property extends Case {
     
     /**
      * Cette méthode modifie l'état de la propriété (hypothéquée ou non)
-     * @param mortgaged 
+     * @param mortgaged
+     *      Ce paramètre indique si la propriété est hypothéquée ou non
      */
     public void setMortgaged(boolean mortgaged) {
         this.mortgaged = mortgaged;

@@ -18,8 +18,10 @@ package boardgame;
  * <br>
  * <br>
  * Le paramètre name qui correspond au nom de la case
+ * <br>
  * Le paramètre caseNumber qui correspond au numéro de la case
- * On retrouve dans cette classe les fonctions permettant de récupérer nom et numéro de case ainsi que les fonctions permettant de mofifier ces deux attributs
+ * <br>
+ * On retrouve dans cette classe les fonctions permettant de récupérer nom et numéro de case ainsi que les fonctions permettant de modifier ces deux attributs
  * @author thibb
  */
 public class Case {
@@ -75,7 +77,7 @@ public class Case {
     }
     
     /**
-     * Cette méthode permet de récupérer le nom de la case
+     * Cette méthode permet de modifier le nom de la case
      * @param caseNumber
      *      Le paramètre correspond au numéro de la case
      */

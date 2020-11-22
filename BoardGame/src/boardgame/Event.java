@@ -18,6 +18,7 @@ package boardgame;
  * <br>
  * <br>
  * La chaîne de caractères name qui indique le nom de l'évènement
+ * <br>
  * On retrouve dans cette classe la fonction permettant de récupérer le nom de l'évènement et celle permettant de le modifier
  * @author thibb
  */

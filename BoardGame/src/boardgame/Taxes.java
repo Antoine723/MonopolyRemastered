@@ -18,7 +18,8 @@ package boardgame;
  * <br>
  * <br>
  * L'entier price qui indique le tarif à payer une fois arrivé sur la case
- * On retrouve dans cette classe les fonctions permettant de récupérer le tarif 
+ * <br>
+ * On retrouve dans cette classe la fonction permettant de récupérer le tarif 
  */
 public final class Taxes extends Case {
     

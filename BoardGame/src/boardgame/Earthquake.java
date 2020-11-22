@@ -12,7 +12,7 @@ import java.util.Random;
  */
 
 /**
- * La classe Strike permet d'implémenter l'évènement Earthquake
+ * La classe Earthquake permet d'implémenter l'évènement Earthquake
  * <br>
  * <br>
  * Cette classe est caractérisée par les informations suivantes :
@@ -22,8 +22,10 @@ import java.util.Random;
  * <br>
  * <br>
  * Le random rand qui rend aléatoire la magnitude du séisme compris entre 1 et 9
+ * <br>
  * On retrouve la fonction permettant de détruire les maisons
- * On retrouve aussi les fonctions permettant de récupérer le booléen done
+ * <br>
+ * On retrouve aussi la fonction permettant de récupérer le booléen done
  * @author thibb
  */
 public final class Earthquake extends Event {

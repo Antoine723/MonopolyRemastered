@@ -20,6 +20,7 @@ package boardgame;
  * Le paramètre number qui précise le nombre de gares que possède un joueur
  * <br>
  * On retrouve les fonctions permettant d'ajuster le loyer des gares
+ * <br>
  * On retrouve aussi les fonctions permettant de récupérer et modifier le nombre de gares possédées par un joueur
  * @author thibb
  */
@@ -52,14 +53,14 @@ public final class RailRoad extends Property {
     
     /**
      * Cette méthode permet de récupérer le nombre de gares que possède un joueur
-     * @return  Cette méthode retourne le nombre de gare possédé par un joueur
+     * @return  Cette méthode retourne le nombre de gares possédé par un joueur
      */
     public int getNumber() {
         return number;
     }
     
     /**
-     * Cette méthode permet de modifier le nombre de gare que possède un joueur
+     * Cette méthode permet de modifier le nombre de gares que possède un joueur
      * @param number
      *      Le paramètre correspond au nombre de gares que possède un joueur
      */

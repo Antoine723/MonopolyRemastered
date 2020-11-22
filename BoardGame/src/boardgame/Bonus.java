@@ -24,7 +24,8 @@ import java.util.Random;
  * <br>
  * <br>
  * Le random rand pour générer un effet aléatoire parmi les effets possibles des cartes
- * On retrouve la fonction permettant de produire les différents effet des cartes chances et caisse de communauté
+ * <br>
+ * On retrouve la fonction permettant de produire les différents effets des cartes chances et caisse de communauté
  * @author thibb
  */
 public final class Bonus extends Case{
@@ -54,11 +55,11 @@ public final class Bonus extends Case{
      *      Le paramètre correspond au plateau de jeu
      */
     public void effect(Player player,ArrayList <Case> board){
-        int num_effect=rand.nextInt(4)+1;
+        int numEffect=rand.nextInt(4)+1;
         amount=rand.nextInt(200-50+1)+50;
         Case newCase;
         if(this.getName().equals("Chance")){
-            switch(num_effect){
+            switch(numEffect){
                 case 1://Carte chance = joueur reçoit de l'argent
                     player.setCapital(player.getCapital()+amount);
                     System.out.println("Félicitations ! Vous trouvez "+amount+" € lors d'une banale promenade avec Medor");
@@ -70,11 +71,11 @@ public final class Bonus extends Case{
                 case 3://Carte chance = joueur est déplacé sur une autre case
                     do{
                         newCase=board.get(rand.nextInt(board.size()));
-                    }while(newCase==player.getPlayer_case());
+                    }while(newCase==player.getPlayerCase());
                     
-                    if(newCase.getCaseNumber()<player.getPlayer_case().getCaseNumber()) player.setCapital(player.getCapital()+200); //Si le joueur passe par la case départ, il touche l'argent
-                    player.setPlayer_case(newCase);
-                    System.out.println("Vous avez été déplacé, vous êtes à présent sur la case "+player.getPlayer_case().getName());
+                    if(newCase.getCaseNumber()<player.getPlayerCase().getCaseNumber()) player.setCapital(player.getCapital()+200); //Si le joueur passe par la case départ, il touche l'argent
+                    player.setPlayerCase(newCase);
+                    System.out.println("Vous avez été déplacé, vous êtes à présent sur la case "+player.getPlayerCase().getName());
                     break;
                 case 4://Carte chance = joueur est emmené en prison
                     System.out.println("Vous allez en prison");
@@ -85,7 +86,7 @@ public final class Bonus extends Case{
             
         }
         else if(this.getName().equals("Caisse de communauté")){
-            switch(num_effect){
+            switch(numEffect){
                 case 1://Carte caisse de communauté = joueur reçoit de l'argent
                     player.setCapital(player.getCapital()+amount);
                     System.out.println("Félicitations ! Votre hospitalité vous fait gagner "+amount+" € !");
@@ -96,7 +97,7 @@ public final class Bonus extends Case{
                     break;
                 case 3://Carte caisse de communauté = joueur est libéré de prison
                     System.out.println("Vous disposez d'une carte vous libérant de prison");
-                    player.setFree_card(player.getFree_card()+1);
+                    player.setFreeCard(player.getFreeCard()+1);
                     break;
                 case 4://Carte caisse de communauté = joueur est emmené en prison
                     System.out.println("Vous allez en prison");

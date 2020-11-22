@@ -30,11 +30,11 @@ import java.util.Random;
  * <br>
  * Le paramètre playerNumber qui indique le numéro du joueur
  * <br>
- * Le paramètre freeCard qui indique si le nombre de cartes "libéré de prison" que possède un joueur
+ * Le paramètre freeCard qui indique le nombre de cartes "libéré de prison" que possède un joueur
  * <br>
- * Le paramètre numberOfRailRoads qui correspond au nombre de gare que possède un joueur
+ * Le paramètre numberOfRailRoads qui correspond au nombre de gares que possède un joueur
  * <br>
- * Le paramètre numberOfCompanies qui correspond au nombre de compagnie que possède un joueur
+ * Le paramètre numberOfCompanies qui correspond au nombre de compagnies que possède un joueur
  * <br>
  * Le paramètre inflated qui indique si le joueur a été attaqué avec une carte Inflation
  * <br>
@@ -54,18 +54,17 @@ import java.util.Random;
  * <br>
  * De plus on retrouve la fonction permettant d'hypothéquer une propriété et de savoir si le joueur est en prison
  * <br>
- * Enfin une dernière fonction permet de classer les jouerus par leurs ordres de jeu
- * @author thibb
+ * Enfin une dernière fonction permet de classer les joueurs par leurs ordres de jeu
  * @author thibb
  */
 public abstract class Player implements Comparable<Player> {
     
     private String name;
     private int capital=60000;
-    private Case player_case;
+    private Case playerCase;
     private boolean isInJail=false;
     private int playerNumber;
-    private int free_card=0;
+    private int freeCard=0;
  
     private int numberOfRailRoads=0;
     private int numberOfCompanies=0;
@@ -73,7 +72,7 @@ public abstract class Player implements Comparable<Player> {
     private boolean scamed=false;
     private int amountScamed=0;
     
-    private Attack attack_card=null;
+    private Attack attackCard=null;
     private ArrayList <Property> properties=new ArrayList();
     private ArrayList <Avenue> avenues=new ArrayList();
     
@@ -108,13 +107,13 @@ public abstract class Player implements Comparable<Player> {
     /**
      * @return  Cette méthode retourne le nombre de carte "Libéré de prison"
      */
-    public int getFree_card() {
-        return free_card;
+    public int getFreeCard() {
+        return freeCard;
     }
     
 
     /**
-     * @return  Cette méthode retourne le nombre de gare possédé par un joueur
+     * @return  Cette méthode retourne le nombre de gare possédées par un joueur
      */
     public int getNumberOfRailRoads() {
         return numberOfRailRoads;
@@ -122,7 +121,7 @@ public abstract class Player implements Comparable<Player> {
     
     
     /**
-     * @return  Cette méthode retourne le nombre de compagnie possédé par un joueur
+     * @return  Cette méthode retourne le nombre de compagnie possédées par un joueur
      */
     public int getNumberOfCompanies() {
         return numberOfCompanies;
@@ -132,8 +131,8 @@ public abstract class Player implements Comparable<Player> {
     /**
      * @return  Cette méthode le nom de la carte attaque que possède le joueur
      */
-    public Attack getAttack_card() {
-        return attack_card;
+    public Attack getAttackCard() {
+        return attackCard;
     }
     
     
@@ -156,8 +155,8 @@ public abstract class Player implements Comparable<Player> {
     /**
      * @return  Cette méthode retourne la case sur laquelle se trouve le joueur
      */
-    public Case getPlayer_case() {
-        return player_case;
+    public Case getPlayerCase() {
+        return playerCase;
     }
     
     
@@ -217,11 +216,11 @@ public abstract class Player implements Comparable<Player> {
     
     /**
      * Cette méthode modifie la case sur laquelle se trouve le joueur
-     * @param player_case 
+     * @param playerCase 
      *      Le paramètre indique la case sur laquelle se trouve le joueur
      */
-    public void setPlayer_case(Case player_case) {
-        this.player_case = player_case;
+    public void setPlayerCase(Case playerCase) {
+        this.playerCase = playerCase;
     }
     
     
@@ -236,11 +235,11 @@ public abstract class Player implements Comparable<Player> {
 
     /**
      * Cette méthode modifie le nombre de cartes "Libéré de prison" du joueur
-     * @param free_card 
+     * @param freeCard 
      *      Le paramètre indique le nombre de cartes "Libéré de prison" du joueur
      */
-    public void setFree_card(int free_card) {
-        this.free_card = free_card;
+    public void setFreeCard(int freeCard) {
+        this.freeCard = freeCard;
     }
 
     /**
@@ -265,11 +264,11 @@ public abstract class Player implements Comparable<Player> {
     
     /**
      * Cette méthode modifie la carte attaque que possède le joueur
-     * @param attack_card
+     * @param attackCard
      *      Le paramètre indique la carte attaque que possède le joueur
      */
-    public void setAttack_card(Attack attack_card) {
-        this.attack_card = attack_card;
+    public void setAttackCard(Attack attackCard) {
+        this.attackCard = attackCard;
     }
     
     
@@ -339,7 +338,7 @@ public abstract class Player implements Comparable<Player> {
     }
     
     /**
-     * Cette méthodee implémente le lancer de dés
+     * Cette méthode implémente le lancer de dés
      * @return  Cette méthode retourne la somme des deux dés lancés
      */
     public ArrayList <Integer> rollsDice(){
@@ -353,21 +352,21 @@ public abstract class Player implements Comparable<Player> {
     
     
     /**
-     * Cette méthde permet de construire une maison
+     * Cette méthode permet de construire une maison
      * @param avenue
      *      Le paramètre correspond à l'avenue sur laquelle une maison est construite
-     * @param group_avenues
+     * @param groupAvenues
      *      Le paramètre correspond à l'ensemble des avenues possédés par le joueur et de même couleur
      */
-    public void putHouse(Avenue avenue, ArrayList <Avenue> group_avenues){
+    public void putHouse(Avenue avenue, ArrayList <Avenue> groupAvenues){
         boolean isPutHouse=true;
         if(avenue.getHouse()==4 || avenue.getHotel()==1){
             System.out.println("Vous ne pouvez pas mettre plus de 4 maisons sur votre propriété, ni mettre des maisons si vous avez un hôtel. Si vous n'avez pas d'hôtels, vous pouvez en poser un.");
             isPutHouse=false;
         }
         else{
-            for(int i=0;i<group_avenues.size();i++){
-                if(group_avenues.get(i).getColor().equals(avenue.getColor()) && (group_avenues.get(i).getHouse()<avenue.getHouse() && group_avenues.get(i).getHotel()==0 )) isPutHouse=false;
+            for(int i=0;i<groupAvenues.size();i++){
+                if(groupAvenues.get(i).getColor().equals(avenue.getColor()) && (groupAvenues.get(i).getHouse()<avenue.getHouse() && groupAvenues.get(i).getHotel()==0 )) isPutHouse=false;
             }
             if(!isPutHouse) System.out.println("Vous devez avoir le même nombre de maisons sur chacune des avenues du même groupe pour pouvoir ajouter une maison sur l'une d'elle");
             else {
@@ -382,21 +381,21 @@ public abstract class Player implements Comparable<Player> {
     }
     
      /**
-     * Cette méthde permet de construire un hôtel
+     * Cette méthode permet de construire un hôtel
      * @param avenue
      *      Le paramètre correspond à l'avenue sur laquelle un hôtel est construit
-     * @param group_avenues
+     * @param groupAvenues
      *      Le paramètre correspond à l'ensemble des avenues possédés par le joueur et de même couleur
      */
-    public void putHotel(Avenue avenue, ArrayList <Avenue> group_avenues ){
+    public void putHotel(Avenue avenue, ArrayList <Avenue> groupAvenues ){
         boolean isPutHotel=true;
         if(avenue.getHotel()==1){
             System.out.println("Vous ne pouvez pas mettre plus d'un hôtel sur votre propriété");
             isPutHotel=false;
         }
         else{
-            for(int i=0;i<group_avenues.size();i++){
-                if(group_avenues.get(i).getColor().equals(avenue.getColor()) && group_avenues.get(i).getHouse()!=4) isPutHotel=false;
+            for(int i=0;i<groupAvenues.size();i++){
+                if(groupAvenues.get(i).getColor().equals(avenue.getColor()) && groupAvenues.get(i).getHouse()!=4) isPutHotel=false;
             }
             if(!isPutHotel) System.out.println("Vous devez avoir 4 maisons sur toutes les avenues du groupe pour pouvoir mettre un hôtel sur l'une d'elles");
             else {
@@ -417,7 +416,7 @@ public abstract class Player implements Comparable<Player> {
     public void inJail(ArrayList <Case> board){
         isInJail=true;
         for(int i=0;i<board.size();i++){
-            if(board.get(i).getName().equals("Prison")) player_case=board.get(i);
+            if(board.get(i).getName().equals("Prison")) playerCase=board.get(i);
         }
     }
     

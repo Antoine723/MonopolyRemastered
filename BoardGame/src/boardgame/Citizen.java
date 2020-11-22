@@ -10,7 +10,7 @@ package boardgame;
  * @author Antoine
  */
 /**
- * Cet interface permet d'implémenter les différents pouvoirs des pions
+ * Cette interface permet d'implémenter les différents pouvoirs des pions
  * @author thibb
  */
 public interface Citizen {

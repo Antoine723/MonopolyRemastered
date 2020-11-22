@@ -19,6 +19,95 @@ import java.util.Scanner;
  *
  * @author Antoine
  */
+
+
+ /**
+ * La classe BoardGame correspond au plateau de jeu
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * Le paramètre numberOfPlayers qui indique le nombre de joueurs
+ * <br>
+ * Le paramètre numberOfTurns qui indique le nombre de tours
+ * <br>
+ * Le paramètre isChoiceCorrect qui vérifie si la réponse entrée par l'utilisateur est correcte
+ * <br>
+ * Le paramètre randomNum qui génère un nombre aléatoire pour éviter que le premier joueur renseigné soit le premier à jouer
+ * <br>
+ * Le paramètre i ,valeur itérative, qui permet d'éviter tout conflit entre variable lors de l'utilisation de boucles for
+ * <br>
+ * Le paramètre index_player ,valeur itérative, qui permet de gérer le nombre de tours
+ * <br>
+ * Le paramètre line qui permet de réaliser la lecture de fichier texte
+ * <br>
+ * Le paramètre tryDone qui permet d'éviter de passer le tour d'un joueur si la réponse fournie est incorrecte
+ * <br>
+ * Le paramètre firstDice qui indique le montant réalisé par le premier dé
+ * <br>
+ * Le paramètre secondDice qui indique le montant réalisé par le deuxième dé
+ * <br>
+ * Le paramètre arrivalCaseNumber qui précise le numéro de la case sur laquelle un joueur arrive suite à un déplacement 
+ * <br>
+ * Le paramètre useAttack qui vérifie si le joueur a utilisé sa carte attaque
+ * <br>
+ * Le paramètre activationTurn qui indique le numéro du tour pendant lequel un évènement s'est produit
+ * <br>
+ * Le paramètre endActivationTurn qui indique le numéro du tour où l'évènement sera fini
+ * <br>
+ * Le paramètre warning qui indique le niveau d'alerte de l'évènement Covid (entre 1 et 3)
+ * <br>
+ * Le paramètre choiceDone qui empêche une erreur lorsque le joueur doit choisir son pion
+ * <br>
+ * Le paramètre names qui contient l'ensemble des noms des joueurs
+ * <br>
+ * Le paramètre order qui contient l'ensemble des numéros des joueurs
+ * <br>
+ * Le paramètre choiceDone qui empêche une erreur lorsque le joueur doit choisir son pion
+ * <br>
+ * Le paramètre choices qui contient les noms des pions
+ * <br>
+ * Le paramètre players qui contient l'ensemble des joueurs  
+ * <br>
+ * Le paramètre players_in_game qui contient l'ensemble des joueurs en jeu
+ * <br>
+ * Le paramètre board qui contient l'ensemble des cases du jeu
+ * <br>
+ * Le paramètre allBoardAvenues qui contient l'ensemble des avenues du jeu
+ * <br>
+ * Le paramètre groupBoardAvenues qui contient l'ensemble des avenues de même couleur du jeu
+ * <br>
+ * Le paramètre colorGroups     ATTENTION
+ * <br>
+ * Le paramètre pieces              ATTENTION
+ * <br>
+ * Le paramètre desc_pieces              ATTENTION
+ * <br>
+ * 
+ *  AJOUTER SCANNER ET RANDOM
+ * 
+ * 
+ * 
+ * 
+ * <br>
+ * Le paramètre attacks qui contient l'ensemble des cartes attaques
+ * <br>
+ * Le paramètre covid qui correspond à l'évènement Covid
+ * <br>
+ * Le paramètre strike qui correspond à l'évènement Strike              
+ * <br>
+ * Le paramètre earthquake qui correspond à l'évènement Earthquake              
+ * <br>
+ * Le paramètre arrivalCase qui précise la case sur laquelle un joueur arrive suite à un déplacement     
+ * <br>
+ * On retrouve dans cette classe les fonction permettant d'initialiser le jeu et de créer le plateau ainsi que d'afficher les inventaires des joueurs
+ * <br>
+ * On retrouve également les fonctions permettant de se déplacer sur une autre case, d'afficher les joueurs et les propriétés
+ * <br>
+ * Enfin on retrouve les fonctions pour regrouper les avenues par couleur et la fonction permettant de gérer le choix d'un joueur en prison
+ * @author thibb
+ */
 public class BoardGame{
     
     //--------------------------------------------------------------------------
@@ -174,6 +263,9 @@ public class BoardGame{
         
     }
     
+    /**
+     * Cette méthode permet d'initialiser notre jeu notamment en demandant le nom des joueurs, le nombre de joueur ainsi que leurs pions
+     */
     public static void initialize(){
         
         System.out.println("Bonjour, voici une version du Monopoly remasterisée par Antoine Asset et Thibaut Blasselle");
@@ -244,6 +336,12 @@ public class BoardGame{
         
         
     }
+    
+    /**
+     * Cette méthode permet de créer le plateau de jeu en parcourant nos fichiers texte qui contiennent l'ensemble des cases
+     * @param pathName
+     *      Le paramètre correspond au nom du chemin où est enregistré le fichier texte
+     */
     public static void board_creation(String pathName){
         try (BufferedReader reader = new BufferedReader(new FileReader(pathName))) {
             while( (line=reader.readLine())!=null){
@@ -600,6 +698,12 @@ public class BoardGame{
         }
 
     
+    
+    /**
+     * Cette méthode permet d'afficher les noms des différents joueurs
+     * @param player
+     *      Le paramètre correspond au joueur dont on affiche le nom
+     */
     public static void displayPlayers(Player player){
         for(i=0;i<players.size();i++){
             if(!players.get(i).equals(player)){
@@ -608,6 +712,12 @@ public class BoardGame{
         }
     }
     
+    
+    /**
+     * Cette méthode permet d'afficher l'ensemble des propriétés détenues par un joueur
+     * @param player
+     *      Le paramètre correspond au joueur dont on affiche les propriétés
+     */
     public static void displayProperties(Player player){
         for(i=0;i<player.getProperties().size();i++){
             if(player.getProperties().get(i) instanceof Avenue){
@@ -616,6 +726,14 @@ public class BoardGame{
         }
     }
     
+    
+    /**
+     * Cette méthode permet de déplacer un joueur suite à un lancer de dés
+     * @param sum_of_dice
+     *      Le paramètre correspond au montant affiché par les deux dés
+     * @param player
+     *      Le paramètre correspond au joueur qui a lancé les dés
+     */
     public static void move(int sum_of_dice, Player player){
         System.out.println("Vous avez fait "+sum_of_dice);
         arrivalCaseNumber= (player.getPlayer_case().getCaseNumber()+sum_of_dice)%40;
@@ -632,6 +750,12 @@ public class BoardGame{
         }
         else System.out.println("Cette erreur ne devrait pas arriver");
     }
+    
+    /**
+     * Cette méthode permet d'afficher l'ensemble des objets que possède un joueur (propriétés, cartes attaques)
+     * @param player
+     *      Le paramètre correspond au joueur dont on affiche l'inventaire
+     */
     public static void displayInventory(Player player){
         System.out.println("");
         if(player.isScamed()){
@@ -673,6 +797,15 @@ public class BoardGame{
         System.out.println("Vous êtes actuellement sur la case n° "+player.getPlayer_case().getCaseNumber()+", "+player.getPlayer_case().getName());
     }
     
+    
+    /**
+     * Cette méthode DESCRIPTION FONCTION
+     * @param player
+     *      Le paramètre correspond au joueur qui possède les avenues
+     * @param avenues
+     *      Le paramètre correspond à la liste des avenues que possède le joueur
+     * @return  cette méthode renvoit ATTENTION
+     */
     public static ArrayList <ColorAvenue> groupOfAvenues(Player player,ArrayList <Avenue> avenues){ //Va regarder si le joueur passé en paramètre possède un groupe complet d'avenues de même couleurs
         colorGroups.clear();
         groupBoardAvenues.clear();
@@ -698,7 +831,11 @@ public class BoardGame{
     }
    
     
-    
+    /**
+     * Cette méthode permet au joueur d'interagir avec le jeu lorsqu'il est en prison
+     * @param player
+     *      Le paramètre correspond au joueur qui est en prison
+     */
     public static void getOutOfJail(Player player)
     {
         tryDone=false;

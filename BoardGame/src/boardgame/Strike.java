@@ -20,9 +20,10 @@ import java.util.Random;
  * <br>
  * Le boolean inAction permet de vérifier si l'évènement est toujours en cours
  * <br>
- * Le random rand qui génère un nombre aléatoire entre 1 et 6 pour savoir combien pendant combien de tours va durer l'évènement Srike
+ * Le random rand qui génère un nombre aléatoire entre 1 et 6 pour savoir pendant combien de tours va durer l'évènement Srike
  * <br>
- * On retrouve les fonctions permettant de de fermer et ouvrir l'ensemble des gares
+ * On retrouve les fonctions permettant de fermer et ouvrir l'ensemble des gares
+ * <br>
  * On retrouve aussi les fonctions permettant de récupérer le booléen inAction et de le modifier
  * @author thibb
  */
@@ -50,6 +51,7 @@ public final class Strike extends Event {
     }
 
     /**
+     * Cette méthode permet de modifier le paramètre inAction
      * @param inAction
      *      Ce paramètre permet d'indiquer si l'évènement Strike est toujours en cours
      */
@@ -61,11 +63,11 @@ public final class Strike extends Event {
      * Cette méthode permet de fermer l'ensemble des gares en modifiant leurs loyers à 0
      * @param board
      *      Le paramètre correspond au plateau de jeu
-     * @param activation_turn
+     * @param activationTurn
      *      Le paramètre correspond au tour pendant lequel l'évènement a eu lieu
      * @return  Cette méthode retourne le nombre de tours pendant lequel l'évènement se produit
      */
-    public int closeRailRoad(ArrayList <Case> board,int activation_turn)              
+    public int closeRailRoad(ArrayList <Case> board,int activationTurn)              
     {
         this.inAction=true;
         int strike =rand.nextInt(6)+1;
@@ -77,11 +79,11 @@ public final class Strike extends Event {
                 
             }
         }
-        return strike+activation_turn;
+        return strike+activationTurn;
     }
     
     /**
-     * Cette méthode permet d'ouvrir l'ensemble des gares en remettant le loyer des gares avant cet évènement
+     * Cette méthode permet d'ouvrir l'ensemble des gares (loyers remis aux montants précédants)
      * @param board
      *      Le paramètre correspond au plateau de jeu
      */

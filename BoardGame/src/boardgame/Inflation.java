@@ -14,13 +14,13 @@ import java.util.Scanner;
  */
 
 /**
- * La classe Inflation permet d'appliquer l'efeft de la carte attaque Inflation
+ * La classe Inflation permet d'appliquer l'effet de la carte attaque Inflation
  * <br>
  * <br>
  * Cette classe est caractérisée par les informations suivantes :
  * <br>
  * <br>
- * On retrouve les fonctions permettant de déclencher l'effet de la carte et de pouvoir utiliser cette carte
+ * On retrouve les fonctions permettant de déclencher l'effet de la carte et les fonctions permettant d'utiliser cette carte
  * @author thibb
  */
 
@@ -64,13 +64,13 @@ public final class Inflation extends Attack {
     
     @Override
     public boolean effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board){
-        Scanner attacked_player_scanner=new Scanner(System.in);
+        Scanner attackedPlayerScanner=new Scanner(System.in);
         System.out.println("Quel joueur voulez-vous attaquer ?");
         for(int i=0;i<players.size();i++){
             if(!players.get(i).equals(attacker)) System.out.print(players.get(i).getName());
         }
         System.out.println("");
-        String attackedPlayerName=attacked_player_scanner.nextLine();
+        String attackedPlayerName=attackedPlayerScanner.nextLine();
         Player attackedPlayer=null;
         for(int i=0;i<players.size();i++){
             if(players.get(i).getName().equals(attackedPlayerName)) attackedPlayer=players.get(i);

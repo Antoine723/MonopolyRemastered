@@ -25,7 +25,7 @@ import java.io.IOException;
  * <br>
  * Le paramètre house qui indique le nombre de maison sur une avenue
  * <br>
- * Le paramètre hotel qui indique le nombre d'hôtel sur une avenue
+ * Le paramètre hotel qui indique le nombre d'hôtels sur une avenue
  * <br>
  * Le paramètre color qui indique la couleur d'une avenue
  * <br>
@@ -82,7 +82,7 @@ public final class Avenue extends Property{
     
     
     /**
-     * @return  Cette méthode retourne le nombre de maison sur une avenue
+     * @return  Cette méthode retourne le nombre de maisons sur une avenue
      */
     public int getHouse() {
         return house;
@@ -90,7 +90,7 @@ public final class Avenue extends Property{
     
     
     /**
-     * @return  Cette méthode retourne le nombre d'hôtel sur une avenue
+     * @return  Cette méthode retourne le nombre d'hôtels sur une avenue
      */
     public int getHotel() {
         return hotel;
@@ -134,18 +134,18 @@ public final class Avenue extends Property{
     }
     
     /**
-     * Cette méthode modifie le nombre de maison sur une avenue
+     * Cette méthode modifie le nombre de maisons sur une avenue
      * @param house
-     *      Le paramètre correpond au nombre de maison sur une avenue
+     *      Le paramètre correpond au nombre de maisons sur une avenue
      */
     public void setHouse(int house) {
         this.house = house;
     }
     
      /**
-     * Cette méthode modifie le nombre d'hôtel sur une avenue
+     * Cette méthode modifie le nombre d'hôtels sur une avenue
      * @param hotel
-     *      Le paramètre correpond au nombre d'hôtel sur une avenue
+     *      Le paramètre correpond au nombre d'hôtels sur une avenue
      */
     public void setHotel(int hotel) {
         this.hotel = hotel;

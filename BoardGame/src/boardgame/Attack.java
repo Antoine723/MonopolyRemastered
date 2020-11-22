@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * <br>
  * Le paramètre isUsed pour savoir si la carte a été utilisée ou non
  * <br>
- * On retrouve dans cette classe les fonctions permettant de récupérer nom effet et usage de la carte ainsi que les fonctions permettant de mofifier ces trois attributs
+ * On retrouve dans cette classe les fonctions permettant de récupérer nom effet et usage de la carte ainsi que les fonctions permettant de modifier ces trois attributs
  * @author thibb
  */
 public abstract class Attack {

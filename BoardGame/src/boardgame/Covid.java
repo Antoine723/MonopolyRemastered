@@ -18,10 +18,10 @@ import java.util.ArrayList;
  * <br>
  * Cette classe est caractérisée par les informations suivantes :
  * <br>
- * <br>
  * Le boolean inAction permet de vérifier si l'évènement est toujours en cours
  * <br>
  * On retrouve dans cette classe les fonctions permettant de fermer et d'ouvrir les hôtels
+ * <br>
  * On retrouve aussi les fonctions permettant de récupérer le booléen inAction et de le modifier
  * @author thibb
  */
@@ -51,6 +51,7 @@ public final class Covid extends Event{
     }
 
     /**
+     * Cette méthode permet de modifier le paramètre inAction
      * @param inAction
      *      Ce paramètre permet d'indiquer si l'évènement Covid est toujours en cours
      */

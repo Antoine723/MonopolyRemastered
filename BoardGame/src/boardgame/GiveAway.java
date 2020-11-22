@@ -38,7 +38,7 @@ public final class GiveAway extends Attack {
     /**
      *Cette méthode permet de vendre une avenue
      * @param avenue
-     *        Le paramètre correspond à l'avenue qui doit être vendu
+     *        Le paramètre correspond à l'avenue qui doit être vendue
      * @param attackedPlayer
      *        Le paramètre correspond au joueur qui subit l'effet de la carte attaque
      */
@@ -67,14 +67,14 @@ public final class GiveAway extends Attack {
      */
     @Override
     public boolean effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board){
-        Scanner attacked_player_scanner=new Scanner(System.in);
-        Scanner avenue_scanner=new Scanner(System.in);
+        Scanner attackedPlayerScanner=new Scanner(System.in);
+        Scanner avenueScanner=new Scanner(System.in);
         System.out.println("Quel joueur voulez-vous attaquer ?");
         for(int i=0;i<players.size();i++){
             if(!players.get(i).equals(attacker)) System.out.print(players.get(i).getName());
         }
         System.out.println("");
-        String attackedPlayerName=attacked_player_scanner.nextLine();
+        String attackedPlayerName=attackedPlayerScanner.nextLine();
         Player attackedPlayer=null;
         for(int i=0;i<players.size();i++){
             if(players.get(i).getName().equals(attackedPlayerName)) attackedPlayer=players.get(i);
@@ -88,13 +88,13 @@ public final class GiveAway extends Attack {
             for(int i=0;i<attackedPlayer.getAvenues().size();i++){
                 System.out.println(attackedPlayer.getAvenues().get(i).getName());
             }
-            String chosen_avenue_name=avenue_scanner.nextLine();
-            Avenue chosen_avenue=null;
+            String chosenAvenueName=avenueScanner.nextLine();
+            Avenue chosenAvenue=null;
             for(int i=0;i<attackedPlayer.getAvenues().size();i++){
-                if(chosen_avenue_name.equals(attackedPlayer.getAvenues().get(i).getName())) chosen_avenue=attackedPlayer.getAvenues().get(i);
+                if(chosenAvenueName.equals(attackedPlayer.getAvenues().get(i).getName())) chosenAvenue=attackedPlayer.getAvenues().get(i);
             }
 
-            sellAvenue(chosen_avenue,attackedPlayer);
+            sellAvenue(chosenAvenue,attackedPlayer);
             return true;
         }
         
