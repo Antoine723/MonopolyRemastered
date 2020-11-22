@@ -5,6 +5,12 @@
  */
 package boardgame;
 
+import static boardgame.BoardGame.board;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
  *
  * @author Antoine
@@ -76,463 +82,41 @@ public final class Avenue extends Property{
     {
         float houseCoefficient;
         float hotelCoefficient;
-        
-        switch(this.getCaseNumber())
-        {
-            case 1:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient =1.2F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
+        String line;
+        int numberCase;
+        String nameInstance=null;
+        try (BufferedReader reader = new BufferedReader(new FileReader("coeffs.txt"))) {
+            while( (line=reader.readLine())!=null){
+                String [] splitted=line.split("\t"); //On split la ligne récupéré au niveau des tabulations et on la stocke dans un tableau
+                numberCase=Integer.parseInt(splitted[0]);
+                houseCoefficient=Float.parseFloat(splitted[1]);
+                hotelCoefficient=Float.parseFloat(splitted[2]);
+                if(splitted.length==4) nameInstance=splitted[3];
+                if(this.getCaseNumber()==numberCase){
+                    if(this.getHouse()>0){
+                        if(nameInstance!=null && player.getClass().getSimpleName().equals(nameInstance)) this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
+                        else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
+                    }
+                    else if (this.getHouse()==0 && this.getHotel()==0)
+                    {
+                        if(nameInstance!=null && player.getClass().getSimpleName().equals(nameInstance)) this.setRent((int)this.basedRent *2);
+                        else this.setRent((int)this.basedRent);
+                    }
+                    else if(this.getHotel() > 0)
+                    {
+                        if(nameInstance!=null && player.getClass().getSimpleName().equals(nameInstance)) this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
+                        else this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
+                    }
                 }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 2.0F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-            
-            case 3:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient =1.2F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 2.0F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-            
-            case 6:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient =1.3F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 2.1F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
                 
-            case 8:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient =1.4F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 2.2F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 9:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient =1.5F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 2.3F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 11:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient =1.6F;
-                    if(player instanceof Cannon){
-                        this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    if(player instanceof Cannon){
-                        this.setRent((int) (this.basedRent *2));
-                    }
-                    else this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 2.4F;
-                    if(player instanceof Cannon){
-                        this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 13:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient =1.7F;
-                    if(player instanceof Cannon){
-                        this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    if(player instanceof Cannon){
-                        this.setRent((int) (this.basedRent *2));
-                    }
-                    else this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 2.5F;
-                    if(player instanceof Cannon){
-                        this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 14:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient =1.8F;
-                    if(player instanceof Cannon){
-                        this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    if(player instanceof Cannon){
-                        this.setRent((int) (this.basedRent *2));
-                    }
-                    else this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 2.6F;
-                    if(player instanceof Cannon){
-                        this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 16:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient =1.9F;
-                    if(player instanceof Car){
-                        this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    if(player instanceof Car){
-                        this.setRent((int) (this.basedRent *2));
-                    }
-                    else this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 2.7F;
-                    if(player instanceof Car){
-                        this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 18:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 2.0F;
-                    if(player instanceof Car){
-                        this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    if(player instanceof Car){
-                        this.setRent((int) (this.basedRent *2));
-                    }
-                    else this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 2.8F;
-                    if(player instanceof Car){
-                        this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 19:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 2.1F;
-                    if(player instanceof Car){
-                        this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    if(player instanceof Car){
-                        this.setRent((int) (this.basedRent *2));
-                    }
-                    else this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 2.9F;
-                    if(player instanceof Car){
-                        this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 21:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 2.2F;
-                    if(player instanceof Hat){
-                        this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    if(player instanceof Hat){
-                        this.setRent((int) (this.basedRent *2));
-                    }
-                    else this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 3.0F;
-                    if(player instanceof Hat){
-                        this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 23:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 2.3F;
-                    if(player instanceof Hat){
-                        this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    if(player instanceof Hat){
-                        this.setRent((int) (this.basedRent *2));
-                    }
-                    else this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 3.1F;
-                    if(player instanceof Hat){
-                        this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 24:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 2.4F;
-                    if(player instanceof Hat){
-                        this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    if(player instanceof Hat){
-                        this.setRent((int) (this.basedRent *2));
-                    }
-                    else this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 3.2F;
-                    if(player instanceof Hat){
-                        this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient*2));
-                    }
-                    else this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 26:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 2.5F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 3.3F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 27:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 2.6F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 3.4F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 29:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 2.7F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 3.5F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 31:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 2.8F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 3.6F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 32:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 2.9F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 3.7F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 34:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 3.0F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 3.8F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 37:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 3.1F;
-                    this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 3.9F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
-                
-            case 39:
-                if(this.getHouse() > 0)
-                {
-                    houseCoefficient = 3.2F;
-                    this.setRent((int) (this.basedRent* this.getHouse() *houseCoefficient));
-                }
-                else if (this.getHouse()==0 && this.getHotel()==0)
-                {
-                    this.setRent((int)this.basedRent);
-                }
-                else if(this.getHotel() > 0)
-                {
-                    hotelCoefficient = 4.0F;
-                    this.setRent((int) (this.basedRent * this.getHotel() *hotelCoefficient));
-                }
-                break;
+            }   
+            reader.close();
+        }
+        catch(FileNotFoundException ex){
+            System.out.println("Fichier introuvable");
+        }
+        catch(IOException ex){
+            System.out.println("Input/Output Exception");
         }
         return this.getRent();
     }  

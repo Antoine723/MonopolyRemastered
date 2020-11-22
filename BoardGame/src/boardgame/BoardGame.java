@@ -5,6 +5,10 @@
  */
 package boardgame;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.InputMismatchException;
@@ -92,8 +96,8 @@ public class BoardGame{
                 
             }
         }
-        Collections.sort(players); //Tri de l'arraylist joueurs par leur ordre de jeu
-        board_creation();
+        Collections.sort(players); //Tri de l'arraylist joueurs par leur ordre de jeu*/
+        board_creation("board.txt");
         //Attribution des cartes attaques
         for (i=0;i<numberOfPlayers;i++){
             players.get(i).setAttack_card(attacks.get(rand.nextInt(attacks.size())));
@@ -209,7 +213,7 @@ public class BoardGame{
                 System.out.println(desc_pieces.get(j));
             }
             
-            while(isChoiceCorrect==false){
+            while(!isChoiceCorrect){
                 String choice=scanner.next();
                 
                 if(pieces.contains(choice)){ //Voir pour gérer la casse
@@ -240,48 +244,38 @@ public class BoardGame{
         
         
     }
-    public static void board_creation(){
-        
-        board.add(new Case("Départ",0));
-        board.add(new Avenue(60,200,"Boulevard de Belleville",1,ColorAvenue.VIOLET,5000,3000));        // AJOUT DE L'HYPOTHEQUE EN DERNIER ARGUMENT + VRAI PRIX DES LOYERS
-        board.add(new Bonus("Caisse de communauté",2));
-        board.add(new Avenue(60,400,"Rue Lecourbe",3,ColorAvenue.VIOLET,5000,3000));
-        board.add(new Taxes("Impôt sur le revenu",4,200));
-        board.add(new RailRoad(200,2500,"Gare Montparnasse",5,10000));
-        board.add(new Avenue(100,600,"Rue de Vaugirard",6,ColorAvenue.CIEL,5000,5000));
-        board.add(new Bonus("Chance",7));
-        board.add(new Avenue(100,600,"Rue de Courcelles",8,ColorAvenue.CIEL,5000,5000));
-        board.add(new Avenue(120,800,"Avenue de la République",9,ColorAvenue.CIEL,5000,6000));
-        board.add(new Prison("Prison",10));
-        board.add(new Avenue(140,1000,"Boulevard de la Villette",11,ColorAvenue.ROSE,10000,7000));
-        board.add(new Company(150,"Compagnie de distribution d'électricité",12,7500));
-        board.add(new Avenue(140,1000,"Avenue de Neuilly",13,ColorAvenue.ROSE,10000,7000));
-        board.add(new Avenue(160,1200,"Rue de Paradis",14,ColorAvenue.ROSE,10000,8000));
-        board.add(new RailRoad(200,2500,"Gare de Lyon",15,10000));
-        board.add(new Avenue(180,1400,"Avenue Mozart",16,ColorAvenue.ORANGE,10000,9000));
-        board.add(new Bonus("Caisse de communauté",17));
-        board.add(new Avenue(180,1400,"Boulevard Saint-Michel",18,ColorAvenue.ORANGE,10000,9000));
-        board.add(new Avenue(200,1600,"Place Pigalle",19,ColorAvenue.ORANGE,10000,10000));
-        board.add(new Case("Parc gratuit",20));
-        board.add(new Avenue(220,1800,"Avenue Matignon",21,ColorAvenue.ROUGE,15000,11000));
-        board.add(new Bonus("Chance",22));
-        board.add(new Avenue(220,1800,"Boulevard Malesherbes",23,ColorAvenue.ROUGE,15000,11000));
-        board.add(new Avenue(240,2000,"Avenue Henri-Martin",24,ColorAvenue.ROUGE,15000,12000));
-        board.add(new RailRoad(200,2500,"Gare du Nord",25,10000));
-        board.add(new Avenue(260,2200,"Faubourg Saint-Honoré",26,ColorAvenue.JAUNE,15000,13000));
-        board.add(new Avenue(260,2200,"Place de la bourse",27,ColorAvenue.JAUNE,15000,13000));
-        board.add(new Company(150,"Compagnie de distribution des eaux",28,7500));
-        board.add(new Avenue(280,2400,"Rue La Fayette",29,ColorAvenue.JAUNE,15000,14000));
-        board.add(new Case("Allez en prison",30));
-        board.add(new Avenue(300,2600,"Avenue de Breuteuil",31,ColorAvenue.VERT,20000,15000));
-        board.add(new Avenue(300,2600,"Avenue Foch",32,ColorAvenue.VERT,20000,15000));
-        board.add(new Bonus("Caisse de communauté",33));
-        board.add(new Avenue(320,2800,"Boulevard des Capucines",34,ColorAvenue.VERT,20000,16000));
-        board.add(new RailRoad(200,2500,"Gare Saint-Lazare",35,10000));
-        board.add(new Bonus("Chance",36));
-        board.add(new Avenue(350,3500,"Avenue des Champs-Elysées",37,ColorAvenue.BLEU,20000,17500));
-        board.add(new Taxes("Taxe de luxe",38,100));
-        board.add(new Avenue(400,5000,"Rue de la Paix",39,ColorAvenue.BLEU,20000,20000));
+    public static void board_creation(String pathName){
+        String line;
+        try (BufferedReader reader = new BufferedReader(new FileReader(pathName))) {
+            while( (line=reader.readLine())!=null){
+                String [] splitted=line.split("\t"); //On split la ligne récupéré au niveau des tabulations et on la stocke dans un tableau
+                if(splitted[0].equals("Case")){
+                    board.add(new Case(splitted[1],Integer.parseInt(splitted[2])));
+                }
+                else if(splitted[0].equals("Taxes")){
+                    board.add(new Taxes(splitted[1],Integer.parseInt(splitted[2]),Integer.parseInt(splitted[3])));
+                }
+                else if (splitted[0].equals("RailRoad")){
+                    board.add(new RailRoad(Integer.parseInt(splitted[1]),Integer.parseInt(splitted[2]),splitted[3],Integer.parseInt(splitted[4]),Integer.parseInt(splitted[5])));
+                }
+                else if(splitted[0].equals("Bonus")){
+                    board.add(new Bonus(splitted[1],Integer.parseInt(splitted[2])));
+                }
+                else if(splitted[0].equals("Company")){
+                    board.add(new Company(Integer.parseInt(splitted[1]),splitted[2],Integer.parseInt(splitted[3]),Integer.parseInt(splitted[4])));
+                }
+                else if(splitted[0].equals("Avenue")){
+                    board.add(new Avenue(Integer.parseInt(splitted[1]),Integer.parseInt(splitted[2]),splitted[3],Integer.parseInt(splitted[4]),ColorAvenue.valueOf(splitted[5]),Integer.parseInt(splitted[6]),Integer.parseInt(splitted[7])));
+                }
+            }   
+            reader.close();
+        }
+        catch(FileNotFoundException ex){
+            System.out.println("Fichier introuvable");
+        }
+        catch(IOException ex){
+            System.out.println("Input/Output Exception");
+        }
     }
 
     public static void choice(Player player){
