@@ -38,7 +38,7 @@ import java.util.Scanner;
  * <br>
  * Le paramètre i ,valeur itérative, qui permet d'éviter tout conflit entre variable lors de l'utilisation de boucles for
  * <br>
- * Le paramètre index_player ,valeur itérative, qui permet de gérer le nombre de tours
+ * Le paramètre indexPlayer ,valeur itérative, qui permet de gérer le nombre de tours
  * <br>
  * Le paramètre line qui permet de réaliser la lecture de fichier texte
  * <br>
@@ -70,7 +70,7 @@ import java.util.Scanner;
  * <br>
  * Le paramètre players qui contient l'ensemble des joueurs  
  * <br>
- * Le paramètre players_in_game qui contient l'ensemble des joueurs en jeu
+ * Le paramètre playersInGame qui contient l'ensemble des joueurs en jeu
  * <br>
  * Le paramètre board qui contient l'ensemble des cases du jeu
  * <br>
@@ -82,7 +82,7 @@ import java.util.Scanner;
  * <br>
  * Le paramètre pieces              ATTENTION
  * <br>
- * Le paramètre desc_pieces              ATTENTION
+ * Le paramètre descPieces              ATTENTION
  * <br>
  * 
  *  AJOUTER SCANNER ET RANDOM
@@ -120,7 +120,7 @@ public class BoardGame{
     static int sumOfDice;
     static int randomNum;
     static int i;
-    static int index_player;
+    static int indexPlayer;
     static int countDouble;
     static int deposit=50;
     static int firstDice;
@@ -202,11 +202,11 @@ public class BoardGame{
         initialize();
         //Instanciation des pions dans le main selon l'initialisation de la partie (choix des joueurs)
         Collections.sort(players); //Tri de l'arraylist joueurs par leur ordre de jeu*/
-        board_creation("board.txt");
+        boardCreation("board.txt");
         //Attribution des cartes attaques
         for (i=0;i<numberOfPlayers;i++){
-            players.get(i).setAttack_card(attacks.get(rand.nextInt(attacks.size())));
-            players.get(i).setPlayer_case(board.get(0));
+            players.get(i).setAttackCard(attacks.get(rand.nextInt(attacks.size())));
+            players.get(i).setPlayerCase(board.get(0));
         }
         playersInGame.addAll(players);
         
@@ -245,15 +245,17 @@ public class BoardGame{
                 strike.setInAction(false);
                 strike.openRailRoad(board);
             }
-            
-            for(index_player=0;index_player<playersInGame.size();index_player++){ //On fait le tour des joueurs encore en jeu
-                if(playersInGame.get(index_player).isIsInJail()) {
-                    displayInventory(playersInGame.get(index_player));
-                    getOutOfJail(playersInGame.get(index_player));
+            for(indexPlayer=0;indexPlayer<playersInGame.size();indexPlayer++){
+                playersInGame.get(indexPlayer).getCapital();
+            }
+            for(indexPlayer=0;indexPlayer<playersInGame.size();indexPlayer++){ //On fait le tour des joueurs encore en jeu
+                if(playersInGame.get(indexPlayer).isIsInJail()) {
+                    displayInventory(playersInGame.get(indexPlayer));
+                    getOutOfJail(playersInGame.get(indexPlayer));
                 }//On teste d'abord si le joueur est en prison
                 else{ //S'il ne l'est pas, il joue son tour normalement
-                    displayInventory(playersInGame.get(index_player));
-                    choice(playersInGame.get(index_player));
+                    displayInventory(playersInGame.get(indexPlayer));
+                    choice(playersInGame.get(indexPlayer));
                 }
             }
             
@@ -342,7 +344,7 @@ public class BoardGame{
      * @param pathName
      *      Le paramètre correspond au nom du chemin où est enregistré le fichier texte
      */
-    public static void board_creation(String pathName){
+    public static void boardCreation(String pathName){
         try (BufferedReader reader = new BufferedReader(new FileReader(pathName))) {
             while( (line=reader.readLine())!=null){
                 String [] splitted=line.split("\t"); //On split la ligne récupéré au niveau des tabulations et on la stocke dans un tableau
@@ -388,8 +390,8 @@ public class BoardGame{
             if(!groupColor.isEmpty() && !firstTurnChoice) putHouseHotel=true; //Si le joueur possède un groupe complet d'avenues (de même couleur), on va pouvoir lui proposer de poser maisons et hôtels
             System.out.println("Vous pouvez : ");
             System.out.println("Lancer les dés (rollsdice) ");
-            if(!player.getAttack_card().isItUsed() && !firstTurnChoice) {
-                System.out.println("Utiliser votre carte attaque (attack) "+player.getAttack_card().getName()+" "+player.getAttack_card().getEffect());
+            if(!player.getAttackCard().isItUsed() && !firstTurnChoice) {
+                System.out.println("Utiliser votre carte attaque (attack) "+player.getAttackCard().getName()+" "+player.getAttackCard().getEffect());
                 System.out.println("Rappel : utiliser votre carte attaque vous fait passer votre tour");
             }
             if(sellProp && !firstTurnChoice) {
@@ -418,8 +420,8 @@ public class BoardGame{
                         choiceDone=true;
                         break;
                     case "attack": //Attention prendre en compte si l'utilisateur effectue une action qu'il n'a pas le droit de faire
-                        if(!player.getAttack_card().isItUsed()){
-                            turnChoice=player.getAttack_card().effect(players,player,board);
+                        if(!player.getAttackCard().isItUsed()){
+                            turnChoice=player.getAttackCard().effect(players,player,board);
                         }
                         else System.out.println("Vous avez déjà utilisé votre carte");
                         choiceDone=true;
@@ -506,8 +508,6 @@ public class BoardGame{
                     case "putHouse":case"puthouse":
                         if(putHouseHotel){ //Même remarque que pour sellProp
                             if(!firstTurnChoice){
-                                //Scanner avenues_put_house_hotel_scanner=new Scanner(System.in);
-                                //Scanner choice_house_or_hotel_scanner=new Scanner(System.in);
                                 avenuesPlayerCanPut.clear();
                                 for(i=0;i<player.getAvenues().size();i++){
                                     if(groupColor.contains((player.getAvenues().get(i)).getColor())) avenuesPlayerCanPut.add(player.getAvenues().get(i));
@@ -582,7 +582,6 @@ public class BoardGame{
                         if(!firstTurnChoice){
                             canMortgage=false;
                             while(!canMortgage){
-                                //Scanner prop_to_mortgage_scanner= new Scanner(System.in);
                                 propToMortgage=null;
                                 System.out.println("Quelle propriété voulez-vous hypothéquer ?");
                                 displayProperties(player);
@@ -616,18 +615,18 @@ public class BoardGame{
                                 System.out.println("Vous avez fait un double, quel petit veinard !");
                             }
                             move(sumOfDice,player); //Effet de la case départ (rémunération) géré dans move
-                            if(player.getPlayer_case() instanceof Bonus) ((Bonus)player.getPlayer_case()).effect(player, board); //Effet de cases bonus
-                            if(player.getPlayer_case() instanceof Taxes) {
-                                player.setCapital(player.getCapital()-((Taxes)player.getPlayer_case()).getPrice());
-                                System.out.println("Vous avez payé "+((Taxes)player.getPlayer_case()).getPrice()+" francs");
+                            if(player.getPlayerCase() instanceof Bonus) ((Bonus)player.getPlayerCase()).effect(player, board); //Effet de cases bonus
+                            if(player.getPlayerCase() instanceof Taxes) {
+                                player.setCapital(player.getCapital()-((Taxes)player.getPlayerCase()).getPrice());
+                                System.out.println("Vous avez payé "+((Taxes)player.getPlayerCase()).getPrice()+" francs");
                             }
-                            if(player.getPlayer_case().equals(board.get(30))) {
+                            if(player.getPlayerCase().equals(board.get(30))) {
                                 player.inJail(board);
                                 countDouble=3; //On met cette condition pour sortir de la boucle et donc pour que le joueur ne puisse pas rejouer même s'il a fait un double
                             }
-                            if(player.getPlayer_case().getName().equals("Parc gratuit") && player instanceof Car) ((Car)player).moveTo(board);
-                            if(player.getPlayer_case() instanceof Property && ((Property)player.getPlayer_case()).isItBought() && !((Property)player.getPlayer_case()).getAssociatedPlayer().equals(player)){
-                                Property prop=(Property)player.getPlayer_case();
+                            if(player.getPlayerCase().getName().equals("Parc gratuit") && player instanceof Car) ((Car)player).moveTo(board);
+                            if(player.getPlayerCase() instanceof Property && ((Property)player.getPlayerCase()).isItBought() && !((Property)player.getPlayerCase()).getAssociatedPlayer().equals(player)){
+                                Property prop=(Property)player.getPlayerCase();
                                 if(prop.isMortgaged()){
                                     System.out.println("Cette propriété a été hypothéquée, voulez-vous la racheter au prix de "+(prop.getBoughtPrice()+prop.getMortgage())+" Francs ?");
                                     isChoiceCorrect=false;
@@ -655,14 +654,14 @@ public class BoardGame{
 
                                 }
                             }
-                            else if(player.getPlayer_case() instanceof Property && !((Property)player.getPlayer_case()).isItBought()){ //Dernier cas à faire : si la propriété n'est pas achetée, on propose au joueur de l'acheter
-                                System.out.println("Voulez-vous acheter "+player.getPlayer_case().getName()+" ? (Oui/Non)");
+                            else if(player.getPlayerCase() instanceof Property && !((Property)player.getPlayerCase()).isItBought()){ //Dernier cas à faire : si la propriété n'est pas achetée, on propose au joueur de l'acheter
+                                System.out.println("Voulez-vous acheter "+player.getPlayerCase().getName()+" ? (Oui/Non)");
                                 isChoiceCorrect=false;
                                 while(!isChoiceCorrect){
                                     switch(stringScanner.next()){
                                        case "Oui":case"oui":case"OUI":
-                                           ((Property)player.getPlayer_case()).buy(player);
-                                           System.out.println("Vous avez acheté "+player.getPlayer_case().getName());
+                                           ((Property)player.getPlayerCase()).buy(player);
+                                           System.out.println("Vous avez acheté "+player.getPlayerCase().getName());
                                            isChoiceCorrect=true;
                                            break;
                                        case "Non":case"non":case"NON":
@@ -729,23 +728,23 @@ public class BoardGame{
     
     /**
      * Cette méthode permet de déplacer un joueur suite à un lancer de dés
-     * @param sum_of_dice
+     * @param sumOfDice
      *      Le paramètre correspond au montant affiché par les deux dés
      * @param player
      *      Le paramètre correspond au joueur qui a lancé les dés
      */
-    public static void move(int sum_of_dice, Player player){
-        System.out.println("Vous avez fait "+sum_of_dice);
-        arrivalCaseNumber= (player.getPlayer_case().getCaseNumber()+sum_of_dice)%40;
+    public static void move(int sumOfDice, Player player){
+        System.out.println("Vous avez fait "+sumOfDice);
+        arrivalCaseNumber= (player.getPlayerCase().getCaseNumber()+sumOfDice)%40;
         arrivalCase = null;
         for(i=0;i<board.size();i++){
             if(board.get(i).getCaseNumber()==arrivalCaseNumber) arrivalCase=board.get(i);
         }
-        if(arrivalCaseNumber<player.getPlayer_case().getCaseNumber()){
+        if(arrivalCaseNumber<player.getPlayerCase().getCaseNumber()){
             player.setCapital(player.getCapital()+20000);
         }
         if(arrivalCase!=null){ //Juste pour éviter des warnings, mais normalement arrivalCase ne devrait jamais être null
-            player.setPlayer_case(arrivalCase);
+            player.setPlayerCase(arrivalCase);
             System.out.println("Vous êtes sur la case "+arrivalCase.getName());
         }
         else System.out.println("Cette erreur ne devrait pas arriver");
@@ -780,10 +779,10 @@ public class BoardGame{
             } //Si la case est une propriété, on caste la case pour pouvoir utiliser les méthodes propres à la classe Property
             
         }
-        if(!player.getAttack_card().isItUsed()){
+        if(!player.getAttackCard().isItUsed()){
             System.out.println("");
-            System.out.println("Vous pouvez utiliser votre carte attaque "+player.getAttack_card().getName());
-            System.out.println("En utilisant cette carte, "+player.getAttack_card().getEffect());
+            System.out.println("Vous pouvez utiliser votre carte attaque "+player.getAttackCard().getName());
+            System.out.println("En utilisant cette carte, "+player.getAttackCard().getEffect());
             useAttack=true;
         }
         else useAttack=false;
@@ -794,7 +793,7 @@ public class BoardGame{
         if(strike.isInAction()){
             System.out.println("Il y a actuellement une grève des trains");
         }
-        System.out.println("Vous êtes actuellement sur la case n° "+player.getPlayer_case().getCaseNumber()+", "+player.getPlayer_case().getName());
+        System.out.println("Vous êtes actuellement sur la case n° "+player.getPlayerCase().getCaseNumber()+", "+player.getPlayerCase().getName());
     }
     
     
@@ -816,7 +815,7 @@ public class BoardGame{
             }
         }
         for(i=0;i<allBoardAvenues.size();i++){ //On parcourt cette liste
-            if(!groupBoardAvenues.isEmpty() && allBoardAvenues.get(i).getColor().equals(groupBoardAvenues.get(0).getColor())) groupBoardAvenues.add(allBoardAvenues.get(i)); //group_board_avenues est une liste qui va contenir les avenues qui sont de même couleur
+            if(!groupBoardAvenues.isEmpty() && allBoardAvenues.get(i).getColor().equals(groupBoardAvenues.get(0).getColor())) groupBoardAvenues.add(allBoardAvenues.get(i)); //groupBoardAvenues est une liste qui va contenir les avenues qui sont de même couleur
             else if(!groupBoardAvenues.isEmpty() && !allBoardAvenues.get(i).getColor().equals(groupBoardAvenues.get(0).getColor())){
                 if(avenues.containsAll(groupBoardAvenues)) colorGroups.add(groupBoardAvenues.get(0).getColor());
                 groupBoardAvenues.clear();
@@ -827,7 +826,7 @@ public class BoardGame{
             }
             
         }
-        return colorGroups; //On va, au fur et à mesure, insérer dans une liste (group_board_avenues) les avenues de même couleur, puis comparer avec celles possédées du joueur pour savoir s'il a le groupe en question, si c'est le cas, on ajotue à notre liste "color_group" la couleur du groupe qu'il possède
+        return colorGroups; //On va, au fur et à mesure, insérer dans une liste (groupBoardAvenues) les avenues de même couleur, puis comparer avec celles possédées du joueur pour savoir s'il a le groupe en question, si c'est le cas, on ajotue à notre liste "colorGroups" la couleur du groupe qu'il possède
     }
    
     
@@ -845,11 +844,11 @@ public class BoardGame{
             {
                 case "freecard":                
 
-                    if(player.getFree_card() > 0)               // si le joueur posséde une carte, il sort de prison
+                    if(player.getFreeCard() > 0)               // si le joueur posséde une carte, il sort de prison
                     {
                         player.setIsInJail(false);
-                        player.setFree_card(player.getFree_card() - 1);     // on actualise le nombre de cartes
-                        System.out.println("Il vous reste à présent " + player.getFree_card() + " cartes pour sortir de prison");
+                        player.setFreeCard(player.getFreeCard() - 1);     // on actualise le nombre de cartes
+                        System.out.println("Il vous reste à présent " + player.getFreeCard() + " cartes pour sortir de prison");
                         tryDone=true;
                     }
                     else System.out.println("Vous n'avez pas de cartes pour sortir de prison");
