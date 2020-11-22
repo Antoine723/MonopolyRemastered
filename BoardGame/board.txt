@@ -1,40 +1,40 @@
 Case	Départ	0
-Avenue	60	200	Boulevard de Belleville	1	VIOLET	5000	3000
+Avenue	6000	200	Boulevard de Belleville	1	VIOLET	5000	3000
 Bonus	Caisse de communauté	2
-Avenue	60	400	Rue Lecourbe	3	VIOLET	5000	3000
+Avenue	6000	400	Rue Lecourbe	3	VIOLET	5000	3000
 Taxes	Impôt sur le revenu	4	200
-RailRoad	200	2500	Gare Montparnasse	5	10000
-Avenue	100	600	Rue de Vaugirard	6	CIEL	5000	5000
+RailRoad	20000	2500	Gare Montparnasse	5	10000
+Avenue	10000	600	Rue de Vaugirard	6	CIEL	5000	5000
 Bonus	Chance	7
-Avenue	100	600	Rue de Courcelles	8	CIEL	5000	5000
-Avenue	120	800	Avenue de la République	9	CIEL	5000	6000
+Avenue	10000	600	Rue de Courcelles	8	CIEL	5000	5000
+Avenue	12000	800	Avenue de la République	9	CIEL	5000	6000
 Case	Prison	10
-Avenue	140	1000	Boulevard de la Villette	11	ROSE	10000	7000
-Company	150	Compagnie de distribution d'électricité	12	7500
-Avenue	140	1000	Avenue de Neuilly	13	ROSE	10000	7000
-Avenue	160	1200	Rue de Paradis	14	ROSE	10000	8000
-RailRoad	200	2500	Gare de Lyon	15	10000
-Avenue	180	1400	Avenue Mozart	16	ORANGE	10000	9000
+Avenue	14000	1000	Boulevard de la Villette	11	ROSE	10000	7000
+Company	15000	Compagnie de distribution d'électricité	12	7500
+Avenue	14000	1000	Avenue de Neuilly	13	ROSE	10000	7000
+Avenue	16000	1200	Rue de Paradis	14	ROSE	10000	8000
+RailRoad	20000	2500	Gare de Lyon	15	10000
+Avenue	18000	1400	Avenue Mozart	16	ORANGE	10000	9000
 Bonus	Caisse de communauté	17
-Avenue	180	1400	Boulevard Saint-Michel	18	ORANGE	10000	9000
-Avenue	200	1600	Place Pigalle	19	ORANGE	10000	10000
+Avenue	18000	1400	Boulevard Saint-Michel	18	ORANGE	10000	9000
+Avenue	20000	1600	Place Pigalle	19	ORANGE	10000	10000
 Case	Parc gratuit	20
-Avenue	220	1800	Avenue Matignon	21	ROUGE	15000	11000
+Avenue	22000	1800	Avenue Matignon	21	ROUGE	15000	11000
 Bonus	Chance	22
-Avenue	220	1800	Boulevard Malesherbes	23	ROUGE	15000	11000
-Avenue	240	2000	Avenue Henri-Martin	24	ROUGE	15000	12000
-RailRoad	200	2500	Gare du Nord	25	10000
-Avenue	260	2200	Faubourg Saint-Honoré	26	JAUNE	15000	13000
-Avenue	260	2200	Place de la bourse	27	JAUNE	15000	13000
-Company	150	Compagnie de distribution des eaux	28	7500
-Avenue	280	2400	Rue La Fayette	29	JAUNE	15000	14000
+Avenue	22000	1800	Boulevard Malesherbes	23	ROUGE	15000	11000
+Avenue	24000	2000	Avenue Henri-Martin	24	ROUGE	15000	12000
+RailRoad	20000	2500	Gare du Nord	25	10000
+Avenue	26000	2200	Faubourg Saint-Honoré	26	JAUNE	15000	13000
+Avenue	26000	2200	Place de la bourse	27	JAUNE	15000	13000
+Company	15000	Compagnie de distribution des eaux	28	7500
+Avenue	28000	2400	Rue La Fayette	29	JAUNE	15000	14000
 Case	Allez en prison	30
-Avenue	300	2600	Avenue de Breuteuil	31	VERT	20000	15000
-Avenue	300	2600	Avenue Foch	32	VERT	20000	15000
+Avenue	30000	2600	Avenue de Breuteuil	31	VERT	20000	15000
+Avenue	30000	2600	Avenue Foch	32	VERT	20000	15000
 Bonus	Caisse de communauté	33
-Avenue	320	2800	Boulevard des Capucines	34	VERT	20000	16000
-RailRoad	200	2500	Gare Saint-Lazare	35	10000
+Avenue	32000	2800	Boulevard des Capucines	34	VERT	20000	16000
+RailRoad	20000	2500	Gare Saint-Lazare	35	10000
 Bonus	Chance	36
-Avenue	350	3500	Avenue des Champs-Elysées	37	BLEU	20000	17500
-Taxes	Taxe de luxe	38	100
-Avenue	400	5000	Rue de la Paix	39	BLEU	20000	20000
+Avenue	35000	3500	Avenue des Champs-Elysées	37	BLEU	20000	17500
+Taxes	Taxe de luxe	38	10000
+Avenue	40000	5000	Rue de la Paix	39	BLEU	20000	20000
