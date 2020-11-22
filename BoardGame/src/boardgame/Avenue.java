@@ -179,7 +179,7 @@ public final class Avenue extends Property{
         String nameInstance=null;
         try (BufferedReader reader = new BufferedReader(new FileReader("coeffs.txt"))) {
             while( (line=reader.readLine())!=null){
-                String [] splitted=line.split("\t"); //On split la ligne récupéré au niveau des tabulations et on la stocke dans un tableau
+                String [] splitted=line.split("\t"); //On split la ligne récupérée au niveau des tabulations et on la stocke dans un tableau
                 numberCase=Integer.parseInt(splitted[0]);
                 houseCoefficient=Float.parseFloat(splitted[1]);
                 hotelCoefficient=Float.parseFloat(splitted[2]);

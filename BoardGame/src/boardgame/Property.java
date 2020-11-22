@@ -150,7 +150,7 @@ public abstract class Property extends Case {
      *      Le paramètre indique le joueur qui achète la propriété
      * @return  Cette méthode retourne 1 si l'achat s'est bien passé -1 sinon
      */
-    public int buy(Player player){
+    public boolean buy(Player player){
         int price;
         if(player.isInflated()) price=2*this.getBoughtPrice();
         else price=this.getBoughtPrice();
@@ -178,12 +178,12 @@ public abstract class Property extends Case {
             }
             this.computing(this, player);
             this.isBought=true;
-            return 1; //Si renvoie 1, alors l'achat a été effectué correctement, si -1, alors non
+            return true; //Si renvoie true, alors l'achat a été effectué correctement, si -false alors non
         }
         
         else {
             System.out.println("Vous n'avez pas assez d'argent pour acheter cette propriété");
-            return -1;
+            return false;
         }
     }
     

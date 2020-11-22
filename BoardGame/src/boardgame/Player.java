@@ -60,7 +60,7 @@ import java.util.Random;
 public abstract class Player implements Comparable<Player> {
     
     private String name;
-    private int capital=60000;
+    private int capital=150000;
     private Case playerCase;
     private boolean isInJail=false;
     private int playerNumber;

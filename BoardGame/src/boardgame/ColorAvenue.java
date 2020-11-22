@@ -16,5 +16,12 @@ package boardgame;
  */
 public enum ColorAvenue 
 {
-    VIOLET,CIEL,ROSE,ORANGE,ROUGE,JAUNE,VERT,BLEU;
+    VIOLET,
+    CIEL,
+    ROSE,
+    ORANGE,
+    ROUGE,
+    JAUNE,
+    VERT,
+    BLEU;
 }

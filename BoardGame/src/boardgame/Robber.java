@@ -38,7 +38,7 @@ public final class Robber extends Attack
     public Robber()
     {
         this.setName("Robber");
-        this.setEffect("Vous pouvez voler une rue d'un autre joueur");   
+        this.setEffect("vous pouvez voler une rue d'un autre joueur");   
     }
     
     /**

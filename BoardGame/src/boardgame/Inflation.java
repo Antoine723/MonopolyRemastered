@@ -35,7 +35,7 @@ public final class Inflation extends Attack {
     
     public Inflation(){
         this.setName("Inflation");
-        this.setEffect("Vous pouvez imposer à un joueur de payer 2 fois plus cher le prochain terrain qu'il veut acheter");
+        this.setEffect("vous pouvez imposer à un joueur de payer 2 fois plus cher le prochain terrain qu'il veut acheter");
         
     }
     

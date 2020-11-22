@@ -58,13 +58,9 @@ import java.util.Scanner;
  * <br>
  * Le paramètre warning qui indique le niveau d'alerte de l'évènement Covid (entre 1 et 3)
  * <br>
- * Le paramètre choiceDone qui empêche une erreur lorsque le joueur doit choisir son pion
- * <br>
  * Le paramètre names qui contient l'ensemble des noms des joueurs
  * <br>
  * Le paramètre order qui contient l'ensemble des numéros des joueurs
- * <br>
- * Le paramètre choiceDone qui empêche une erreur lorsque le joueur doit choisir son pion
  * <br>
  * Le paramètre choices qui contient les noms des pions
  * <br>
@@ -78,20 +74,62 @@ import java.util.Scanner;
  * <br>
  * Le paramètre groupBoardAvenues qui contient l'ensemble des avenues de même couleur du jeu
  * <br>
- * Le paramètre colorGroups     ATTENTION
+ * Le paramètre colorGroups qui contient les couleurs des avenues dont le joueur en question possède le groupe complet
  * <br>
- * Le paramètre pieces              ATTENTION
+ * Le paramètre groupColor qui contient toutes les avenues d'un même groupe de couleur (contiendra un groupe à la fois)
  * <br>
- * Le paramètre descPieces              ATTENTION
+ * Le paramètre pieces qui contient les noms des différents pions du jeu
+ * <br>
+ * Le paramètre descPieces qui contient les noms des différents pions du jeu avec leurs capacités correspondantes
  * <br>
  * 
- *  AJOUTER SCANNER ET RANDOM
- * 
- * 
- * 
- * 
+ * Le paramètre propToSellName qui va contenir le nom de la propriété que le joueur souhaite vendre
+ * <br>
+ * Le paramètre playerToSellName qui va contenir le nom du joueur auquel le vendeur souhaite vendre sa propriété
+ * <br>
+ * Le paramètre avenuePutHouseName qui va contenir le nom de l'avenue où le joueur souhaite mettre une maison ou un hôtel
+ * <br>
+ * Le paramètre propToMortgageName qui va contenir le nom de la propriété que le joueur souhaite hypothéquer
+ * <br>
+ * Le paramètre numberPlayerScanner qui correspond au scanner du nombre de joueur
+ * <br>
+ * Le paramètre stringScanner qui correspond à notre 2ème scanner qui va être utilisé dès que le programme doit interagir avec l'utilisateur
+ * <br>
+ * Le paramètre rand qui correspond à un random qui va être utilisé dès que le programme a besoin de générer un paramètre aléatoire
+ * <br>
+ * Le paramètre turnChoice qui va permettre de savoir si l'utilisateur a fini son tour ou non (en prenant en compte les actions qui font passer son tour)
+ * <br>
+ * Le paramètre firstTurnChoice qui va permettre de proposer à l'utilisateur les actions possibles pendant son tour de jeu après avoir déjà réalisé une 1ère action
+ * <br>
+ * Le paramètre sellProp qui va indiquer si le joueur peut vendre une propriété
+ * <br>
+ * Le paramètre putHouseHotel qui va indiquer si le joueur peut poser une maison ou un hôtel (donc s'il possède toutes les avenues d'un même groupe de couleur)
+ * <br>
+ * Le paramètre canDestroy qui va indiquer si le joueur qui a choisi le pion "Canon" peut détruire une maison ou non
+ * <br>
+ * Le paramètre canSell qui va indiquer si le joueur peut vendre une propriété sans avoir à payer l'hypothèque
+ * <br>
+ * Le paramètre putAgain qui va indiquer si le joueur veut continuer de poser des maisons et des hôtels
+ * <br>
+ * Le paramètre canMortgage qui va éviter que l'utilisateur hypothèqe une propriété déjà hypothéquée
+ * <br>
+ * Le paramètre isChoiceCorrect qui permet à l'utilisateur de saisir à nouveau son choix, et est utilisé pour chaque choix qu'il doit faire
+ * <br>
+ * Le paramètre propToSell qui va correspondre à la propriété que le joueur souhaite vendre
+ * <br>
+ * Le paramètre propToMortgage qui va correspondre à la propriété que le joueur souhaite hypothéquer
+ * <br>
+ * Le paramètre avenuePutHouse qui va correspondre à l'avenue sur laquelle le joueur souhaite poser une maison ou un hôtel
+ * <br>
+ * Le paramètre playerToSell qui va correspondre au joueur à qui le joueur actuel veut vendre une propriété
  * <br>
  * Le paramètre attacks qui contient l'ensemble des cartes attaques
+ * <br>
+ * Le paramètre avenuesWhereDestroyHouse qui contient l'ensemble des avenues qui possède au moins 1 maison
+ * <br>
+ * Le paramètre avenuesPlayerCanPut qui contient l'ensemble des avenues du joueur sur lesquelles il peut poser une maison ou un hôtel
+ * <br>
+ * Le paramètre resultOfDice qui va contenir les 2 résultats des dés
  * <br>
  * Le paramètre covid qui correspond à l'évènement Covid
  * <br>
@@ -140,7 +178,6 @@ public class BoardGame{
     
     static boolean useAttack=true;
     static boolean tryDone=false;
-    static boolean choiceDone=false;
     static boolean turnChoice;
     static boolean firstTurnChoice;
     static boolean sellProp; 
@@ -149,7 +186,7 @@ public class BoardGame{
     static boolean canSell;
     static boolean putAgain;
     static boolean canMortgage;
-    static boolean isChoiceCorrect;
+    static boolean isChoiceCorrect=false;
     
     static Case arrivalCase;
     static Property propToSell;
@@ -209,7 +246,6 @@ public class BoardGame{
             players.get(i).setPlayerCase(board.get(0));
         }
         playersInGame.addAll(players);
-        
         //Tant que la partie n'est pas terminée (tant qu'il reste plus d'un joueur en jeu
         while(playersInGame.size()>1){
             numberOfTurns++;
@@ -245,19 +281,29 @@ public class BoardGame{
                 strike.setInAction(false);
                 strike.openRailRoad(board);
             }
-            for(indexPlayer=0;indexPlayer<playersInGame.size();indexPlayer++){
-                playersInGame.get(indexPlayer).getCapital();
-            }
-            for(indexPlayer=0;indexPlayer<playersInGame.size();indexPlayer++){ //On fait le tour des joueurs encore en jeu
-                if(playersInGame.get(indexPlayer).isIsInJail()) {
-                    displayInventory(playersInGame.get(indexPlayer));
-                    getOutOfJail(playersInGame.get(indexPlayer));
-                }//On teste d'abord si le joueur est en prison
-                else{ //S'il ne l'est pas, il joue son tour normalement
-                    displayInventory(playersInGame.get(indexPlayer));
-                    choice(playersInGame.get(indexPlayer));
+            for(indexPlayer=0;indexPlayer<playersInGame.size();indexPlayer++){ //On teste si un joueur n'a plus d'argent : il est éliminé
+                if(playersInGame.get(indexPlayer).getCapital()<=0) {
+                    System.out.println(playersInGame.get(indexPlayer).getName()+", vous avez fait faillite, vous êtes éliminé");
+                    suppressPlayer(playersInGame.get(indexPlayer));
+                    playersInGame.remove(playersInGame.get(indexPlayer));
                 }
             }
+            if(playersInGame.size()==1){
+                System.out.println("Bravo "+playersInGame.get(0).getName()+" vous avez gagné la partie !");
+            }
+            else{
+                for(indexPlayer=0;indexPlayer<playersInGame.size();indexPlayer++){ //On fait le tour des joueurs encore en jeu
+                    if(playersInGame.get(indexPlayer).isIsInJail()) {
+                        displayInventory(playersInGame.get(indexPlayer));
+                        getOutOfJail(playersInGame.get(indexPlayer));
+                    }//On teste d'abord si le joueur est en prison
+                    else{ //S'il ne l'est pas, il joue son tour normalement
+                        displayInventory(playersInGame.get(indexPlayer));
+                        choice(playersInGame.get(indexPlayer));
+                    }
+                }
+            }
+            
             
             
             
@@ -272,17 +318,17 @@ public class BoardGame{
         
         System.out.println("Bonjour, voici une version du Monopoly remasterisée par Antoine Asset et Thibaut Blasselle");
         System.out.println("Combien de joueurs vont jouer ? (maximum 3)"); //Max 4 pour l'instant car 4 pions
-        while(!choiceDone){
+        while(!isChoiceCorrect){
             try{ //Saisie du nombre de joueurs
             numberOfPlayers=numberPlayerScanner.nextInt();
-            choiceDone=true;
+            isChoiceCorrect=true;
             }
             catch(InputMismatchException e){
                 System.out.println("Veuillez saisir un entier");
                 numberPlayerScanner.nextLine();
             }
         }
-        choiceDone=false;
+        isChoiceCorrect=false;
         
         for(i=0;i<numberOfPlayers;i++){
             isChoiceCorrect=false;
@@ -347,7 +393,7 @@ public class BoardGame{
     public static void boardCreation(String pathName){
         try (BufferedReader reader = new BufferedReader(new FileReader(pathName))) {
             while( (line=reader.readLine())!=null){
-                String [] splitted=line.split("\t"); //On split la ligne récupéré au niveau des tabulations et on la stocke dans un tableau
+                String [] splitted=line.split("\t"); //On split la ligne récupérée au niveau des tabulations et on la stocke dans un tableau
                 if(splitted[0].equals("Case")){
                     board.add(new Case(splitted[1],Integer.parseInt(splitted[2])));
                 }
@@ -376,7 +422,14 @@ public class BoardGame{
             System.out.println("Input/Output Exception");
         }
     }
-
+    
+    /**
+     * Cette méthode va proposer les différentes actions possibles au joueur et les réaliser selon son choix.
+     * @param player 
+     *      Ce paramètre permet d'effectuer toutes les actions par rapport à ce joueur
+     */
+    
+    
     public static void choice(Player player){
         avenuesWhereDestroyHouse.clear();
         turnChoice=false;//booléen qui va permettre de savoir si l'utilisateur joue sa carte attaque (et donc ne fait que ça lors de son tour)
@@ -391,7 +444,7 @@ public class BoardGame{
             System.out.println("Vous pouvez : ");
             System.out.println("Lancer les dés (rollsdice) ");
             if(!player.getAttackCard().isItUsed() && !firstTurnChoice) {
-                System.out.println("Utiliser votre carte attaque (attack) "+player.getAttackCard().getName()+" "+player.getAttackCard().getEffect());
+                System.out.println("Utiliser votre carte attaque (attack) "+player.getAttackCard().getName()+" : "+player.getAttackCard().getEffect());
                 System.out.println("Rappel : utiliser votre carte attaque vous fait passer votre tour");
             }
             if(sellProp && !firstTurnChoice) {
@@ -411,22 +464,22 @@ public class BoardGame{
             if(player instanceof Cannon && canDestroy) System.out.println("Détruire une maison (shoot)");
             if(putHouseHotel && !firstTurnChoice) System.out.println("Poser des maisons ou hôtel sur vos avenues (putHouse)"); 
             if(player instanceof Hat && numberOfTurns%2==0 && numberOfTurns>=5) System.out.println("Essayer de récupérer de l'argent en arnaquant les autres joueurs (scam), attention, cela passe votre tour");
-            choiceDone=false;
-            while(!choiceDone){
+            isChoiceCorrect=false;
+            while(!isChoiceCorrect){
                 switch(stringScanner.next()){
                     case "shoot":
                         ((Cannon)player).shoot(avenuesWhereDestroyHouse);
                         turnChoice=true;
-                        choiceDone=true;
+                        isChoiceCorrect=true;
                         break;
-                    case "attack": //Attention prendre en compte si l'utilisateur effectue une action qu'il n'a pas le droit de faire
+                    case "attack":
                         if(!player.getAttackCard().isItUsed()){
                             turnChoice=player.getAttackCard().effect(players,player,board);
                         }
                         else System.out.println("Vous avez déjà utilisé votre carte");
-                        choiceDone=true;
+                        isChoiceCorrect=true;
                         break;
-                    case "sell": //Fini, mais voir pour ajouter while par rapport au choix et optimiser le code (ex : déclaration de variables)
+                    case "sell": 
                         if(sellProp){
                             if(!firstTurnChoice){
                                 canSell=true;
@@ -441,29 +494,29 @@ public class BoardGame{
                                     }
                                     if(propToSell==null) System.out.println("Veuillez saisir une propriété valide");
                                 }
-                                if(propToSell.isMortgaged()){
+                                if(propToSell.isMortgaged()){ //S'il a hypothéqué la propriété qu'il veut vendre
                                     System.out.println("Vous avez hypothéqué cette propriété. Pour pouvoir la vendre, vous devez payer le prix de l'hypothèque qui est de "+propToSell.getMortgage()+" Francs");
                                     System.out.println("Voulez-vous payer ce prix pour la vendre ?");
-                                    choiceDone=false;
+                                    isChoiceCorrect=false;
                                     do{
                                         switch(stringScanner.nextLine()){
                                         case "Oui":case"oui":case"OUI":
                                             player.setCapital(player.getCapital()-propToSell.getMortgage());
                                             propToSell.setMortgaged(false);
-                                            choiceDone=true;
+                                            isChoiceCorrect=true;
                                             break;
                                         case "Non":case"non":case"NON":
                                             canSell=false;
-                                            choiceDone=true;
+                                            isChoiceCorrect=true;
                                             System.out.println("Vous n'avez pas payé le prix de l'hypothèque, vous ne pouvez donc pas vendre cette propriété");
                                             break;
                                         default:
                                             System.out.println("Veuillez choisir un argument valide");
                                             break;
                                     }
-                                    }while(!choiceDone);
+                                    }while(!isChoiceCorrect);
                                 }
-                                if(canSell){
+                                if(canSell){ //Cette condition permet de donner la possibilité au joueur de vendre sa propriété uniquement si elle n'est pas hypothéquée ou qu'il paye l'hypothèque en plus pour la vendre
                                     System.out.println("A qui souhaitez-vous la vendre ?");
                                     displayPlayers(player);
                                     playerToSell=null;
@@ -497,23 +550,23 @@ public class BoardGame{
                                 }
                         }
                         else System.out.println("Vous n'avez pas de propriétés à vendre");
-                        choiceDone=true;
+                        isChoiceCorrect=true;
                         break;
                         }
                     case "scam":
                         ((Hat)player).scam(playersInGame);
                         turnChoice=true;
-                        choiceDone=true;
+                        isChoiceCorrect=true;
                         break;
                     case "putHouse":case"puthouse":
-                        if(putHouseHotel){ //Même remarque que pour sellProp
+                        if(putHouseHotel){
                             if(!firstTurnChoice){
                                 avenuesPlayerCanPut.clear();
                                 for(i=0;i<player.getAvenues().size();i++){
                                     if(groupColor.contains((player.getAvenues().get(i)).getColor())) avenuesPlayerCanPut.add(player.getAvenues().get(i));
                                 }
                                 putAgain=true;
-                                while(putAgain){
+                                while(putAgain){ //Permet de donner la possibilité au joueur de poser plusieurs maisons/hôtels pendant son tour de jeu
                                     System.out.println("Sur quelle(s) avenue(s) voulez-vous poser une maison ou un hôtel ?");
                                     for(i=0;i<avenuesPlayerCanPut.size();i++){
                                         System.out.println(avenuesPlayerCanPut.get(i).getName());
@@ -576,7 +629,7 @@ public class BoardGame{
                                 firstTurnChoice=true;
                             }
                         else System.out.println("Vous ne pouvez pas poser de maison ou d'hôtel, il vous faut un groupe complet d'avenues de même couleur pour pouvoir en poser");
-                        choiceDone=true;
+                        isChoiceCorrect=true;
                         break;
                     case "mortgage":
                         if(!firstTurnChoice){
@@ -591,9 +644,8 @@ public class BoardGame{
                                     for(i=0;i<player.getProperties().size();i++){
                                         if(player.getProperties().get(i).getName().equals(propToMortgageName)) propToMortgage=(Property)(player.getProperties().get(i));
                                     }
-                                    if(propToMortgage==null) System.out.println("Veuillez saisir une propriété valide");
+                                    if(propToMortgage==null) System.out.println("Veuillez saisir une propriété valide ou indiquer \"Stop\" si vous ne voulez pas hypothéquer");
                                 }
-                                
                                 if(propToMortgage.isMortgaged()) System.out.println("Vous avez déjà hypothéqué cette maison, veuillez en choisir une autre");
                                 else{
                                     player.putOnMortgage(player, propToMortgage);
@@ -602,78 +654,79 @@ public class BoardGame{
                                 }
                             }
                             firstTurnChoice=true;
-                            choiceDone=true;
+                            isChoiceCorrect=true;
                         }
                         break;
                     case "rollsdice":
                         countDouble=0;
                         do{
-                            resultOfDice=player.rollsDice();
-                            sumOfDice=resultOfDice.get(0)+resultOfDice.get(1);
-                            if(resultOfDice.get(0).equals(resultOfDice.get(1))) {
-                                countDouble++;
-                                System.out.println("Vous avez fait un double, quel petit veinard !");
-                            }
-                            move(sumOfDice,player); //Effet de la case départ (rémunération) géré dans move
-                            if(player.getPlayerCase() instanceof Bonus) ((Bonus)player.getPlayerCase()).effect(player, board); //Effet de cases bonus
-                            if(player.getPlayerCase() instanceof Taxes) {
-                                player.setCapital(player.getCapital()-((Taxes)player.getPlayerCase()).getPrice());
-                                System.out.println("Vous avez payé "+((Taxes)player.getPlayerCase()).getPrice()+" francs");
-                            }
-                            if(player.getPlayerCase().equals(board.get(30))) {
-                                player.inJail(board);
-                                countDouble=3; //On met cette condition pour sortir de la boucle et donc pour que le joueur ne puisse pas rejouer même s'il a fait un double
-                            }
-                            if(player.getPlayerCase().getName().equals("Parc gratuit") && player instanceof Car) ((Car)player).moveTo(board);
-                            if(player.getPlayerCase() instanceof Property && ((Property)player.getPlayerCase()).isItBought() && !((Property)player.getPlayerCase()).getAssociatedPlayer().equals(player)){
-                                Property prop=(Property)player.getPlayerCase();
-                                if(prop.isMortgaged()){
-                                    System.out.println("Cette propriété a été hypothéquée, voulez-vous la racheter au prix de "+(prop.getBoughtPrice()+prop.getMortgage())+" Francs ?");
+                            if(!player.isIsInJail()){ //On vérifie cette condition car le joueur peut se retrouver en prison pendant son tour de jeu (s'il a fait un double mais qu'il est en prison entre temps par exemple)
+                                resultOfDice=player.rollsDice();
+                                sumOfDice=resultOfDice.get(0)+resultOfDice.get(1);
+                                if(resultOfDice.get(0).equals(resultOfDice.get(1))) {
+                                    countDouble++;
+                                    System.out.println("Vous avez fait un double, quel petit veinard !");
+                                }
+                                move(sumOfDice,player); //Effet de la case départ (rémunération) géré dans move
+                                if(player.getPlayerCase() instanceof Bonus) ((Bonus)player.getPlayerCase()).effect(player, board); //Effet de cases bonus
+                                if(player.getPlayerCase() instanceof Taxes) {
+                                    player.setCapital(player.getCapital()-((Taxes)player.getPlayerCase()).getPrice());
+                                    System.out.println("Vous avez payé "+((Taxes)player.getPlayerCase()).getPrice()+" francs");
+                                }
+                                if(player.getPlayerCase().equals(board.get(30))) { //Si le joueur est sur la case "allez en prison"
+                                    player.inJail(board);
+                                }
+                                if(player.getPlayerCase().getName().equals("Parc gratuit") && player instanceof Car) ((Car)player).moveTo(board);
+                                if(player.getPlayerCase() instanceof Property && ((Property)player.getPlayerCase()).isItBought() && !((Property)player.getPlayerCase()).getAssociatedPlayer().equals(player)){
+                                    Property prop=(Property)player.getPlayerCase();
+                                    if(prop.isMortgaged()){
+                                        System.out.println("Cette propriété a été hypothéquée, voulez-vous la racheter au prix de "+(prop.getBoughtPrice()+prop.getMortgage())+" Francs ?");
+                                        isChoiceCorrect=false;
+                                        while(!isChoiceCorrect){
+                                            switch(stringScanner.nextLine()){
+                                                case "Oui":case"oui":case"OUI":
+                                                    prop.buy(player);
+                                                    isChoiceCorrect=true;
+                                                    System.out.println("Vous avez racheté la propriété hypothéquée");
+                                                    break;
+                                                case "Non":case"non":case"NON":
+                                                    isChoiceCorrect=true;
+                                                    break;
+                                                default:
+                                                    System.out.println("Veuillez saisir une réponse valide (Oui/Non)");
+                                                    break;
+
+                                            }
+                                        }
+
+                                    }
+                                    else{
+                                        player.setCapital(player.getCapital()-(prop.getRent()));
+                                        System.out.println("Vous êtes chez "+prop.getAssociatedPlayer().getName()+ ", vous avez payé "+prop.getRent()+" Francs");
+
+                                    }
+                                }
+                                else if(player.getPlayerCase() instanceof Property && !((Property)player.getPlayerCase()).isItBought() ){ //Si la propriété n'est pas achetée, on propose au joueur de l'acheter
+                                    System.out.println("Voulez-vous acheter "+player.getPlayerCase().getName()+" pour la somme de "+((Property)player.getPlayerCase()).getBoughtPrice()+" Francs ? (Oui/Non)");
                                     isChoiceCorrect=false;
                                     while(!isChoiceCorrect){
-                                        switch(stringScanner.nextLine()){
-                                            case "Oui":case"oui":case"OUI":
-                                                prop.buy(player);
-                                                isChoiceCorrect=true;
-                                                System.out.println("Vous avez racheté la propriété hypothéquée");
-                                                break;
-                                            case "Non":case"non":case"NON":
-                                                isChoiceCorrect=true;
-                                                break;
-                                            default:
-                                                System.out.println("Veuillez saisir une réponse valide (Oui/Non)");
-                                                break;
+                                        switch(stringScanner.next()){
+                                           case "Oui":case"oui":case"OUI":
+                                               if(((Property)player.getPlayerCase()).buy(player)) System.out.println("Vous avez acheté "+player.getPlayerCase().getName()+" pour "+((Property)player.getPlayerCase()).getBoughtPrice()+" Francs");
+                                               isChoiceCorrect=true;
+                                               break;
+                                           case "Non":case"non":case"NON":
+                                               isChoiceCorrect=true;
+                                               break;
+                                           default:
+                                               System.out.println("Veuillez saisir une réponse valide (Oui/Non)");
+                                               break;
 
-                                        }
+                                       }   
                                     }
-                                    
-                                }
-                                else{
-                                    player.setCapital(player.getCapital()-(prop.getRent()));
-                                    System.out.println("Vous êtes chez "+prop.getAssociatedPlayer().getName()+ ", vous avez payé "+prop.getRent());
-
                                 }
                             }
-                            else if(player.getPlayerCase() instanceof Property && !((Property)player.getPlayerCase()).isItBought()){ //Dernier cas à faire : si la propriété n'est pas achetée, on propose au joueur de l'acheter
-                                System.out.println("Voulez-vous acheter "+player.getPlayerCase().getName()+" ? (Oui/Non)");
-                                isChoiceCorrect=false;
-                                while(!isChoiceCorrect){
-                                    switch(stringScanner.next()){
-                                       case "Oui":case"oui":case"OUI":
-                                           ((Property)player.getPlayerCase()).buy(player);
-                                           System.out.println("Vous avez acheté "+player.getPlayerCase().getName());
-                                           isChoiceCorrect=true;
-                                           break;
-                                       case "Non":case"non":case"NON":
-                                           isChoiceCorrect=true;
-                                           break;
-                                       default:
-                                           System.out.println("Veuillez saisir une réponse valide (Oui/Non)");
-                                           break;
-
-                                   }   
-                                }
-                            }
+                            
                         }while(resultOfDice.get(0).equals(resultOfDice.get(1)) && countDouble<3);
 
                         if(countDouble==3){
@@ -681,7 +734,7 @@ public class BoardGame{
                             player.inJail(board);
                         }
                         turnChoice=true;
-                        choiceDone=true;
+                        isChoiceCorrect=true;
                         break;
                     default:
                         System.out.println("Veuillez saisir un argument valide");
@@ -769,7 +822,7 @@ public class BoardGame{
             if(player.getProperties().get(i) instanceof Avenue){ //Si la propriété est une avenue, on affiche le nombre de maisons/hôtel s'il y en a
                 if(((Avenue)player.getProperties().get(i)).getHotel()>0) System.out.println((player.getProperties().get(i)).getName()+", de couleur "+((Avenue)player.getProperties().get(i)).getColor()+" avec "+((Avenue)(player.getProperties().get(i))).getHotel()+" hôtel dessus, ");
                 else if( ((Avenue)player.getProperties().get(i)).getHouse()>0) System.out.println((player.getProperties().get(i)).getName()+", de couleur "+((Avenue)player.getProperties().get(i)).getColor()+ " avec "+((Avenue)(player.getProperties().get(i))).getHouse()+" maison(s) dessus, ");
-                else System.out.println((player.getProperties().get(i)).getName());
+                else System.out.println((player.getProperties().get(i)).getName()+", de couleur "+((Avenue)player.getProperties().get(i)).getColor());
             }
             else if(player.getProperties().get(i) instanceof RailRoad){
                 System.out.println(((RailRoad)player.getProperties().get(i)).getName());
@@ -798,12 +851,12 @@ public class BoardGame{
     
     
     /**
-     * Cette méthode DESCRIPTION FONCTION
+     * Cette méthode va regarder parmi toutes les avenues du joueur, s'il possède un ou plusieurs groupes d'avenues de même couleur pour pouvoir poser des maisons et hôtel dessus
      * @param player
      *      Le paramètre correspond au joueur qui possède les avenues
      * @param avenues
      *      Le paramètre correspond à la liste des avenues que possède le joueur
-     * @return  cette méthode renvoit ATTENTION
+     * @return  Cette méthode renvoit la liste des couleurs dont le joueur possède le groupe complet d'avenues
      */
     public static ArrayList <ColorAvenue> groupOfAvenues(Player player,ArrayList <Avenue> avenues){ //Va regarder si le joueur passé en paramètre possède un groupe complet d'avenues de même couleurs
         colorGroups.clear();
@@ -839,6 +892,7 @@ public class BoardGame{
     {
         tryDone=false;
         System.out.println("Pour sortir, faites votre choix : freecard si vous avec une carte de libération, pay si vous voulez payer ("+deposit+" Francs), ou roll si vous voulez tenter votre chance avec un double");
+        stringScanner.nextLine();
         do {
             switch(stringScanner.nextLine())                           // on lit la réponse du joueur
             {
@@ -887,4 +941,18 @@ public class BoardGame{
            }
     }while(!tryDone);
 }
+    /**
+     * Cette méthode permet de désapproprier le joueur pour toutes ses propriétés et de réinitialiser le loyer. Elle est utilisée lorsqu'un joueur a perdu
+     * @param player
+     *      Ce paramètre correspond au joueur qui a perdu et qui se voit désapproprié
+     */
+    public static void suppressPlayer(Player player){
+        for(int k=0;k<player.getProperties().size();k++){
+            player.getProperties().get(k).setAssociatedPlayer(null);
+            player.getProperties().get(k).setIsBought(false);
+            player.getProperties().get(k).setMortgaged(false);
+            if(player.getProperties().get(k) instanceof Avenue) player.getProperties().get(k).setRent(((Avenue)player.getProperties().get(k)).getBasedRent());
+            else if(player.getProperties().get(k) instanceof RailRoad) player.getProperties().get(k).setRent(2500);
+        }
+    }
 }

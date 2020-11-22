@@ -32,7 +32,7 @@ public final class GiveAway extends Attack {
      */
     public GiveAway(){
         this.setName("GiveAway");
-        this.setEffect("Vous pouvez forcer un joueur à vendre son terrain");   
+        this.setEffect("vous pouvez forcer un joueur à vendre son terrain");   
     }
     
     /**
