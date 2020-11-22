@@ -24,12 +24,19 @@ import java.io.IOException;
  * <br>
  * <br>
  * Le paramètre house qui indique le nombre de maison sur une avenue
+ * <br>
  * Le paramètre hotel qui indique le nombre d'hôtel sur une avenue
+ * <br>
  * Le paramètre color qui indique la couleur d'une avenue
+ * <br>
  * Le paramètre priceOfHouseAndHotels  indiquant le prix des maisons et des hôtels
+ * <br>
  * Le paramètre soldAvenueCoeff qui correspond à un coefficient lors de la vente d'une avenue
+ * <br>
  * Le paramètre basedRent qui correspond au prix de base de l'avenue
+ * <br>
  * On retrouve dans cette classe les fonctions permettant de récupérer et modifier les précédents paramètres
+ * <br>
  * On retrouve aussi la fonction permettant d'ajuster le loyer des avenues selon le nombre de maisons et d'hôtels
  * @author thibb
  */
@@ -154,7 +161,14 @@ public final class Avenue extends Property{
     }
 
     
-    
+    /**
+     * Cette méthode permet d'attribuer à chaque propriété un loyer basé sur le nombre de maisons et d'hôtels
+     * @param player
+     *      Le paramètre correspond à l'ensemble des joueurs
+     * @param prop
+     *      Le paramètre correspond à la propriété étudiée
+     * @return  Cette méthode retourne le loyer de la propriété étudiée
+     */
     @Override
     public int computing(Property prop,Player player)
     {

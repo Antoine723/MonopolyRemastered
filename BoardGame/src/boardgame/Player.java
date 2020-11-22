@@ -21,21 +21,40 @@ import java.util.Random;
  * <br>
  * <br>
  * Le paramètre name qui indique le nom du joueur
+ * <br>
  * Le paramètre capital qui indique le capitale du joueur
+ * <br>
  * Le paramètre playerCase qui indique la case sur laquelle se trouve le joueur
+ * <br>
  * Le paramètre isInJail indiquant si le joueur est en prison
+ * <br>
  * Le paramètre playerNumber qui indique le numéro du joueur
+ * <br>
  * Le paramètre freeCard qui indique si le nombre de cartes "libéré de prison" que possède un joueur
+ * <br>
  * Le paramètre numberOfRailRoads qui correspond au nombre de gare que possède un joueur
+ * <br>
  * Le paramètre numberOfCompanies qui correspond au nombre de compagnie que possède un joueur
+ * <br>
  * Le paramètre inflated qui indique si le joueur a été attaqué avec une carte Inflation
+ * <br>
  * Le paramètre scamed qui indique si le joueur a été attaqué avec une carte Robber
+ * <br>
  * Le paramètre amountScamed qui précise le montant que le joueur a perdu suite à l'utilisation de la carte Robber
+ * <br>
  * Le paramètre attackCard qui précise la carte attaque que possède le joueur
+ * <br>
  * Le paramètre properties qui représente la liste de propriété que possède un joueur
+ * <br>
  * Le paramètre avenues qui représente la liste d'avenues que possède un joueur
+ * <br>
  * On retrouve dans cette classe les fonctions permettant de récupérer et modifier les précédents paramètres
- * On retrouve aussi la fonction permettant d'ajuster le loyer des propriétés ainsi que les fonctions pour acheter et vendre des propriétés
+ * <br>
+ * On retrouve aussi la fonction permettant de construire maisons et hôtels ainsi que la fonction permettant de lancer les dés
+ * <br>
+ * De plus on retrouve la fonction permettant d'hypothéquer une propriété et de savoir si le joueur est en prison
+ * <br>
+ * Enfin une dernière fonction permet de classer les jouerus par leurs ordres de jeu
  * @author thibb
  * @author thibb
  */
@@ -58,132 +77,271 @@ public abstract class Player implements Comparable<Player> {
     private ArrayList <Property> properties=new ArrayList();
     private ArrayList <Avenue> avenues=new ArrayList();
     
+    /**
+     * @return  Cette méthode retourne le nom du joueur
+     */
     public String getName() {
         return name;
     }
-
+    
+    
+    /**
+     * @return  Cette méthode retourne le capital du joueur
+     */
     public int getCapital() {
         return capital;
     }
-
+    
+    /**
+     * @return  Cette méthode indique si le joueur est en prison
+     */
     public boolean isIsInJail() {
         return isInJail;
     }
-
+    /**
+     * @return  Cette méthode retourne le numéro du joueur
+     */
     public int getPlayerNumber() {
         return playerNumber;
     }
 
+    /**
+     * @return  Cette méthode retourne le nombre de carte "Libéré de prison"
+     */
     public int getFree_card() {
         return free_card;
     }
     
 
-
+    /**
+     * @return  Cette méthode retourne le nombre de gare possédé par un joueur
+     */
     public int getNumberOfRailRoads() {
         return numberOfRailRoads;
     }
-
+    
+    
+    /**
+     * @return  Cette méthode retourne le nombre de compagnie possédé par un joueur
+     */
     public int getNumberOfCompanies() {
         return numberOfCompanies;
     }
-
+    
+    
+    /**
+     * @return  Cette méthode le nom de la carte attaque que possède le joueur
+     */
     public Attack getAttack_card() {
         return attack_card;
     }
-
+    
+    
+    /**
+     * @return  Cette méthode retourne la liste de propriétés que possède un joueur
+     */
     public ArrayList<Property> getProperties() {
         return properties;
     }
-
+    
+    
+    /**
+     * @return Cette méthode indique si le joueur a été attaqué par une carte attaque Inflation
+     */
     public boolean isInflated() {
         return inflated;
     }
-
+    
+    
+    /**
+     * @return  Cette méthode retourne la case sur laquelle se trouve le joueur
+     */
     public Case getPlayer_case() {
         return player_case;
     }
-
+    
+    
+     /**
+     * @return  Cette méthode retourne la liste d'avenues que possède un joueur
+     */
     public ArrayList<Avenue> getAvenues() {
         return avenues;
     }
-
+    
+    
+   /**
+     * @return Cette méthode indique si le joueur a été attaqué par une carte attaque Robber
+     */
     public boolean isScamed() {
         return scamed;
     }
-
+    
+    
+    /**
+     * @return Cette méthode retourne la quantité d'argent perdu par un joueur suite à l'attaque par une carte attaque Robber
+     */
     public int getAmountScamed() {
         return amountScamed;
     }
     
     
-    
-    
+    /**
+     * Cette méthode modifie le nom du joueur
+     * @param name
+     *      Le paramètre indique le nom du joueur
+     */
     public void setName(String name) {
         this.name = name;
     }
-
+    
+    
+    /**
+     * Cette méthode modifie le numéro du joueur
+     * @param playerNumber
+     *      Le paramètre indique le numéro du joueur
+     */
     public void setPlayerNumber(int playerNumber) {
         this.playerNumber = playerNumber;
     }
-
+    
+    
+    /**
+     * Cette méthode modifie le capital du joueur
+     * @param capital
+     *      Le paramètre indique le capital du joueur
+     */
     public void setCapital(int capital) {
         this.capital = capital;
     }
-
+    
+    
+    /**
+     * Cette méthode modifie la case sur laquelle se trouve le joueur
+     * @param player_case 
+     *      Le paramètre indique la case sur laquelle se trouve le joueur
+     */
     public void setPlayer_case(Case player_case) {
         this.player_case = player_case;
     }
-
+    
+    
+    /**
+     * Cette méthode modifie l'état du joueur (en prison ou non)
+     * @param isInJail 
+     *      Le paramètre indique si le joueur est en prison
+     */
     public void setIsInJail(boolean isInJail) {
         this.isInJail = isInJail;
     }
 
-
+    /**
+     * Cette méthode modifie le nombre de cartes "Libéré de prison" du joueur
+     * @param free_card 
+     *      Le paramètre indique le nombre de cartes "Libéré de prison" du joueur
+     */
     public void setFree_card(int free_card) {
         this.free_card = free_card;
     }
 
-
+    /**
+     * Cette méthode modifie le nombre de gare possédés par le joueur
+     * @param numberOfRailRoads
+     *      Le paramètre indique le nombre de gare possédées par le joueur
+     */
     public void setNumberOfRailRoads(int numberOfRailRoads) {
         this.numberOfRailRoads = numberOfRailRoads;
     }
-
+    
+    
+     /**
+     * Cette méthode modifie le nombre de compagnie possédés par le joueur
+     * @param numberOfCompanies
+     *      Le paramètre indique le nombre de compagnie possédées par le joueur
+     */
     public void setNumberOfCompanies(int numberOfCompanies) {
         this.numberOfCompanies = numberOfCompanies;
     }
-
+    
+    
+    /**
+     * Cette méthode modifie la carte attaque que possède le joueur
+     * @param attack_card
+     *      Le paramètre indique la carte attaque que possède le joueur
+     */
     public void setAttack_card(Attack attack_card) {
         this.attack_card = attack_card;
     }
-
+    
+    
+    /**
+     * Cette méthode ajoute une propriété à un joueur
+     * @param prop
+     *      Le paramètre indique la propriété ajoutée pour le joueur
+     */
     public void addProperty(Property prop){
         this.properties.add(prop);
     }
+    
+    /**
+     * Cette méthode retire une propriété à un joueur
+     * @param prop 
+     *      Le paramètre indique la propriété retirée pour le joueur
+     */
     public void removeProperty(Property prop){
         this.properties.remove(prop);
     }
     
+    /**
+     * Cette méthode ajoute une avenue à un joueur
+     * @param avenue
+     *      Le paramètre indique l'avenue ajoutée pour le joueur
+     */
     public void addAvenue(Avenue avenue){
         this.avenues.add(avenue);
     }
+    
+    /**
+     * Cette méthode retire une avenue à un joueur
+     * @param avenue
+     *      Le paramètre indique l'avenue retirée pour le joueur
+     */
     public void removeAvenue(Avenue avenue){
         this.avenues.remove(avenue);
     }
-
+    
+    
+    /**
+     * Cette méthode modifie l'état du joueur (attaqué par la carte attaque Inflation ou non)
+     * @param inflated 
+     *      Le paramètre indique l'état du joueur (attaqué par la carte attaque Inflation ou non)
+     */
     public void setInflated(boolean inflated) {
         this.inflated = inflated;
     }
-
+    
+     /**
+     * Cette méthode modifie l'état du joueur (attaqué par la carte attaque Robber ou non)
+     * @param scamed 
+     *      Le paramètre indique l'état du joueur (attaqué par la carte attaque Robber ou non)
+     */
     public void setScamed(boolean scamed) {
         this.scamed = scamed;
     }
-
+    
+    
+    /**
+     *  Cette méthode modifie le montant perdu par un joueur aprés avoir été attaqué par la carte attaque Robber
+     * @param amountScamed
+     *     Le paramètre indique le montant perdu par un joueur aprés avoir été attaqué par la carte attaque Robber 
+     */
     public void setAmountScamed(int amountScamed) {
         this.amountScamed = amountScamed;
     }
     
-    
+    /**
+     * Cette méthodee implémente le lancer de dés
+     * @return  Cette méthode retourne la somme des deux dés lancés
+     */
     public ArrayList <Integer> rollsDice(){
         Random rand=new Random();
         ArrayList <Integer> dice= new ArrayList();
@@ -193,6 +351,14 @@ public abstract class Player implements Comparable<Player> {
         return dice;
     }
     
+    
+    /**
+     * Cette méthde permet de construire une maison
+     * @param avenue
+     *      Le paramètre correspond à l'avenue sur laquelle une maison est construite
+     * @param group_avenues
+     *      Le paramètre correspond à l'ensemble des avenues possédés par le joueur et de même couleur
+     */
     public void putHouse(Avenue avenue, ArrayList <Avenue> group_avenues){
         boolean isPutHouse=true;
         if(avenue.getHouse()==4){
@@ -214,6 +380,14 @@ public abstract class Player implements Comparable<Player> {
         
 
     }
+    
+     /**
+     * Cette méthde permet de construire un hôtel
+     * @param avenue
+     *      Le paramètre correspond à l'avenue sur laquelle un hôtel est construit
+     * @param group_avenues
+     *      Le paramètre correspond à l'ensemble des avenues possédés par le joueur et de même couleur
+     */
     public void putHotel(Avenue avenue, ArrayList <Avenue> group_avenues ){
         boolean isPutHotel=true;
         if(avenue.getHotel()==1){
@@ -234,6 +408,12 @@ public abstract class Player implements Comparable<Player> {
         }
     }
     
+    
+    /**
+     * Cette méthode permet de savoir si le joueur est en prison
+     * @param board
+     *      Le paramètre correspond au plateau de jeu
+     */
     public void inJail(ArrayList <Case> board){
         isInJail=true;
         for(int i=0;i<board.size();i++){
@@ -243,13 +423,24 @@ public abstract class Player implements Comparable<Player> {
     
     
     
-    
+    /**
+     * Cette méthode permet de comparer les joueurs par rapport à leur ordre de jeu
+     * @param player
+     *      Le paramètre correspond à l'ensemble des joueurs
+     * @return  Cette méthode retourne une liste des joueurs triée selon leur ordre de jeu
+     */
     @Override //Pour comparer le numéro de 2 joueurs et pouvoir les trier dans l'ordre de jeu
     public int compareTo(Player player) {
         return this.getPlayerNumber()-player.getPlayerNumber();
     }
     
-    
+    /**
+     * Cette méthode permet d'hypothéquer une propriété
+     * @param player
+     *      Le paramètre correspond à l'ensemble des joueurs
+     * @param prop
+     *      Le paramètre correspond à la propriété qui est hypothéquée
+     */
     public void putOnMortgage(Player player, Property prop)                     // mortgage = hypothèque
     {
         if (prop instanceof Avenue)                                             // si c'est une avenue on supprime maisons et hôtels
