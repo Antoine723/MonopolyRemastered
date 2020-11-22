@@ -11,14 +11,37 @@ import java.util.Scanner;
  *
  * @author Antoine
  */
+
+/**
+ * Cette classe correspond à la carte attaque GiveAway permettant de faire faire vendre la propriété d'un joueur
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * On retrouve dans cette classe les fonctions permettant de faire faire vendre une avenue et d'utiliser la crte attaque GiveAway
+ * @author thibb
+ */
 public final class GiveAway extends Attack {
     Scanner scanner = new Scanner(System.in);
     
+    /**<b> Constructeur de GiveAway </b>
+     * <br>
+     * On attribut un nom à la carte attaque et on indique son effet à l'utilisateur
+     *
+     */
     public GiveAway(){
         this.setName("GiveAway");
         this.setEffect("Vous pouvez forcer un joueur à vendre son terrain");   
     }
     
+    /**
+     *Cette méthode permet de vendre une avenue
+     * @param avenue
+     *        Le paramètre correspond à l'avenue qui doit être vendu
+     * @param attackedPlayer
+     *        Le paramètre correspond au joueur qui subit l'effet de la carte attaque
+     */
     public void sellAvenue(Avenue avenue ,Player attackedPlayer)
     {
             attackedPlayer.setCapital(attackedPlayer.getCapital() + avenue.getBoughtPrice()/2 + avenue.getPriceOfHouseAndHotels()* (int) avenue.getSoldAvenueCoeff());     // On modifie le capital et on ajoute le prix d'achat + prix maisons et/ou hotels à définir
@@ -31,6 +54,17 @@ public final class GiveAway extends Attack {
             this.setIsUsed(true);
     }
     
+    /**
+     *Cette méthode permet de gérer l'interaction avec l'utilisateur lorsque celui-ci utilise la carte attaque GiveAway
+     * @param players
+     *      Le paramètre correspond à une liste de joueurs pour ainsi accéder à l'ensemble de leurs propriétés
+     * @param attacker
+     *      Le paramètre correspond au joueur initiateur de l'attaque
+     * @param board
+     *      Le paramètre correspond au plateau de jeu pour pouvoir accéder aux différentes cases
+     * @return
+     *      La méthode retourne vrai si l'opération s'est bien passée sinon elle retourne faux dans le cas où l'attaquant s'est trompé dans l'utilisation de la carte
+     */
     @Override
     public boolean effect(ArrayList <Player> players, Player attacker,ArrayList <Case> board){
         Scanner attacked_player_scanner=new Scanner(System.in);
