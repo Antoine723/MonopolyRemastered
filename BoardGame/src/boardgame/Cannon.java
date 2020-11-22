@@ -35,7 +35,7 @@ public final class Cannon extends Player implements Citizen {
             }
             if(avenue!=null){
                 avenue.setHouse(avenue.getHouse()-1);
-                avenue.computing(avenue, this);
+                avenue.computing(avenue, avenue.getAssociatedPlayer());
                 System.out.println("Quel malheur ! Un joueur vient de détruire une maison sur " + avenue.getName());
                 isHouseDestroyed = true;
             }

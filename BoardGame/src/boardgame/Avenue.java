@@ -132,6 +132,10 @@ public final class Avenue extends Property{
                     houseCoefficient =1.2F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 2.0F;
@@ -144,6 +148,10 @@ public final class Avenue extends Property{
                 {
                     houseCoefficient =1.2F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
+                }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
                 }
                 else if(this.getHotel() > 0)
                 {
@@ -158,6 +166,10 @@ public final class Avenue extends Property{
                     houseCoefficient =1.3F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 2.1F;
@@ -171,6 +183,10 @@ public final class Avenue extends Property{
                     houseCoefficient =1.4F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 2.2F;
@@ -183,6 +199,10 @@ public final class Avenue extends Property{
                 {
                     houseCoefficient =1.5F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
+                }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
                 }
                 else if(this.getHotel() > 0)
                 {
@@ -199,6 +219,13 @@ public final class Avenue extends Property{
                         this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
                     }
                     else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
+                }
+                else if (this.getHouse()==0)
+                {
+                    if(player instanceof Cannon){
+                        this.setRent((int) (this.basedRent *2));
+                    }
+                    else this.setRent((int)this.basedRent);
                 }
                 else if(this.getHotel() > 0)
                 {
@@ -219,6 +246,13 @@ public final class Avenue extends Property{
                     }
                     else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    if(player instanceof Cannon){
+                        this.setRent((int) (this.basedRent *2));
+                    }
+                    else this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 2.5F;
@@ -237,6 +271,13 @@ public final class Avenue extends Property{
                         this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
                     }
                     else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
+                }
+                else if (this.getHouse()==0)
+                {
+                    if(player instanceof Cannon){
+                        this.setRent((int) (this.basedRent *2));
+                    }
+                    else this.setRent((int)this.basedRent);
                 }
                 else if(this.getHotel() > 0)
                 {
@@ -257,6 +298,13 @@ public final class Avenue extends Property{
                     }
                     else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    if(player instanceof Car){
+                        this.setRent((int) (this.basedRent *2));
+                    }
+                    else this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 2.7F;
@@ -275,6 +323,13 @@ public final class Avenue extends Property{
                         this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
                     }
                     else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
+                }
+                else if (this.getHouse()==0)
+                {
+                    if(player instanceof Car){
+                        this.setRent((int) (this.basedRent *2));
+                    }
+                    else this.setRent((int)this.basedRent);
                 }
                 else if(this.getHotel() > 0)
                 {
@@ -295,6 +350,13 @@ public final class Avenue extends Property{
                     }
                     else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    if(player instanceof Car){
+                        this.setRent((int) (this.basedRent *2));
+                    }
+                    else this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 2.9F;
@@ -313,6 +375,13 @@ public final class Avenue extends Property{
                         this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient*2));
                     }
                     else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
+                }
+                else if (this.getHouse()==0)
+                {
+                    if(player instanceof Hat){
+                        this.setRent((int) (this.basedRent *2));
+                    }
+                    else this.setRent((int)this.basedRent);
                 }
                 else if(this.getHotel() > 0)
                 {
@@ -333,6 +402,13 @@ public final class Avenue extends Property{
                     }
                     else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    if(player instanceof Hat){
+                        this.setRent((int) (this.basedRent *2));
+                    }
+                    else this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 3.1F;
@@ -352,6 +428,13 @@ public final class Avenue extends Property{
                     }
                     else this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    if(player instanceof Hat){
+                        this.setRent((int) (this.basedRent *2));
+                    }
+                    else this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 3.2F;
@@ -368,6 +451,10 @@ public final class Avenue extends Property{
                     houseCoefficient = 2.5F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 3.3F;
@@ -380,6 +467,10 @@ public final class Avenue extends Property{
                 {
                     houseCoefficient = 2.6F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
+                }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
                 }
                 else if(this.getHotel() > 0)
                 {
@@ -394,6 +485,10 @@ public final class Avenue extends Property{
                     houseCoefficient = 2.7F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 3.5F;
@@ -406,6 +501,10 @@ public final class Avenue extends Property{
                 {
                     houseCoefficient = 2.8F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
+                }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
                 }
                 else if(this.getHotel() > 0)
                 {
@@ -420,6 +519,10 @@ public final class Avenue extends Property{
                     houseCoefficient = 2.9F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 3.7F;
@@ -432,6 +535,10 @@ public final class Avenue extends Property{
                 {
                     houseCoefficient = 3.0F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
+                }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
                 }
                 else if(this.getHotel() > 0)
                 {
@@ -446,6 +553,10 @@ public final class Avenue extends Property{
                     houseCoefficient = 3.1F;
                     this.setRent((int) (this.basedRent * this.getHouse() *houseCoefficient));
                 }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
+                }
                 else if(this.getHotel() > 0)
                 {
                     hotelCoefficient = 3.9F;
@@ -458,6 +569,10 @@ public final class Avenue extends Property{
                 {
                     houseCoefficient = 3.2F;
                     this.setRent((int) (this.basedRent* this.getHouse() *houseCoefficient));
+                }
+                else if (this.getHouse()==0)
+                {
+                    this.setRent((int)this.basedRent);
                 }
                 else if(this.getHotel() > 0)
                 {
