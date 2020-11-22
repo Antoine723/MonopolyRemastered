@@ -12,8 +12,28 @@ import java.util.Scanner;
  *
  * @author Antoine
  */
+
+/**
+ * La classe Car correspond au pouvoir Car permettant de se déplacer sur la case choisie par l'utilisateur
+ * <br>
+ * <br>
+ * Cette classe est caractérisée par les informations suivantes :
+ * <br>
+ * <br>
+ * On retrouve dans cette classe les fonctions permettant de se déplacer sur la case souhaitée et de bénéficier du bonus de couleur d'avenue
+ * @author thibb
+ */
 public final class Car extends Player implements Citizen{
     
+    
+    /**
+     * <b> Constructeur de Car </b>
+     * <br>
+     * @param name
+     *       Le paramètre indique le nom du joueur qui a choisi le pouvoir Car
+     * @param playerNumber 
+     *       Le paramètre indique le numéro du joueur qui a choisi le pouvoir Car
+     */
     public Car(String name,int playerNumber){
         this.setName(name);
         this.setPlayerNumber(playerNumber);
@@ -22,6 +42,11 @@ public final class Car extends Player implements Citizen{
     Scanner case_choice_scanner = new Scanner(System.in);
     
     
+    /**
+     * Cette méthode permet de se déplacer sur la case sélectionnée
+     * @param board
+     *      Le paramètre correspond au plateau de jeu pour pouvoir se déplacer sur la case indiquée
+     */
     public void moveTo(ArrayList <Case> board){
         boolean isChoiceCorrect=false;
         String case_choice_name;
@@ -40,6 +65,12 @@ public final class Car extends Player implements Citizen{
         this.setPlayer_case(case_choice);
     }
     
+    
+    /**
+     Cette méthode permet de doubler le loyer des avenues dont la couleur correspond au bonus du pouvoir
+     * @param avenue
+     *      Le paramètre permet de doubler le loyer de l'avenue si celle-ci est d'une couleur identique à celle du bonus
+     */
     @Override
     public void doubleRent(Avenue avenue)
     {
